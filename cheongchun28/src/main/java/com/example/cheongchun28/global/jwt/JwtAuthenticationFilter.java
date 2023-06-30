@@ -1,0 +1,29 @@
+package com.example.cheongchun28.global.jwt;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter implements Filter {
+
+    private final JwtTokenProvider jwtTokenProvider;
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        // get JWT at Header
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+
+        //Token 유효성 검사
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            // get info at token
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            // SecurityContext에 Authentication 객체를 저장
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        chain.doFilter(request, response);
+    }
+}
