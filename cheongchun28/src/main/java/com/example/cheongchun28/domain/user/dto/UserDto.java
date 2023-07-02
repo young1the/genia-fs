@@ -1,13 +1,10 @@
 package com.example.cheongchun28.domain.user.dto;
 
-import com.example.cheongchun28.domain.user.entity.Role;
 import com.example.cheongchun28.domain.user.entity.User;
-import lombok.Getter;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
+import lombok.Getter;
 
 public class UserDto {
 
