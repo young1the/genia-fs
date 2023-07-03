@@ -1,33 +1,32 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Input from "../commons/inputs/Input";
 import { RegisterStepProps } from "./RegisterForm";
+import GreenButton from "../commons/buttons/GreenButton";
+import { sendCodeToEmail } from "@/lib/api";
+import useFocus from "@/hooks/useFocus";
 
 const Email = (props: RegisterStepProps) => {
-  const { userInputs, setIsActive } = props;
-  const emailInputState = useState("");
-  const [isValidEmail, setIsValidEmail] = useState(true);
-  const firstElement = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (firstElement.current) firstElement.current.focus();
-    setIsActive(false);
-  }, []);
-  useEffect(() => {
-    const email = emailInputState[0];
-    setIsValidEmail(true);
-    if (email === "") return;
-    const emailRegex = /^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (emailRegex.test(email)) {
-      setIsActive(true);
-      if (userInputs) userInputs["email"] = email;
-    } else {
-      setIsValidEmail(false);
-      setIsActive(false);
+  const { userInputs, nextStep } = props;
+  const [emailInput, setEmailInput] = useState("");
+  const [isError, setIsError] = useState(false);
+  const firstElement = useFocus<HTMLInputElement>();
+  const onClickHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userInputs) userInputs["email"] = emailInput;
+    const isOkay = await sendCodeToEmail(userInputs);
+    if (!isOkay) {
+      setIsError(true);
+      setEmailInput("");
+      if (firstElement.current) firstElement.current.focus();
+      return;
     }
-  }, [emailInputState[0]]);
+    nextStep();
+  };
+  const emailRegex = /^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   return (
-    <>
+    <form className='space-y-4'>
       <h1
         className='text-xl font-bold
 	leading-tight tracking-tight
@@ -37,18 +36,29 @@ const Email = (props: RegisterStepProps) => {
         <br />
         <p className='inline text-green-600'>이메일</p>을 입력해주세요.
       </h1>
-      <div className='relative'>
-        <Input
-          state={emailInputState}
-          placeholder='이메일을 입력하세요.'
-          ref={firstElement}
-          type='email'
+      <div className='flex flex-col space-y-8'>
+        <div className='relative'>
+          <Input
+            state={[emailInput, setEmailInput]}
+            placeholder='이메일을 입력하세요.'
+            ref={firstElement}
+            type='email'
+          />
+          {emailInput !== "" && !emailRegex.test(emailInput) ? (
+            <p className='text-red-600 absolute'>이메일 형식이 다릅니다.</p>
+          ) : null}
+          {isError && emailInput === "" ? (
+            <p className='text-red-600 absolute'>이메일이 중복입니다.</p>
+          ) : null}
+        </div>
+        <GreenButton
+          title='다음'
+          type='submit'
+          isActive={emailRegex.test(emailInput)}
+          onClickHandler={onClickHandler}
         />
-        {!isValidEmail ? (
-          <p className='text-red-600 absolute'>이메일 형식이 다릅니다.</p>
-        ) : null}
       </div>
-    </>
+    </form>
   );
 };
 

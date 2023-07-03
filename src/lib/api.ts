@@ -11,11 +11,7 @@ export const sendCodeToEmail = async ({ email }: Pick<User, "email">) => {
       email,
     }),
   });
-  if (response.ok) {
-    alert("성공");
-  } else {
-    alert("실패");
-  }
+  return response.ok;
 };
 
 export const verifyCode = async ({
@@ -32,11 +28,7 @@ export const verifyCode = async ({
       code,
     }),
   });
-  if (response.ok) {
-    alert("성공");
-  } else {
-    alert("실패");
-  }
+  return response.ok;
 };
 
 export const register = async (userInputs: User) => {
@@ -47,9 +39,5 @@ export const register = async (userInputs: User) => {
     },
     body: JSON.stringify(userInputs),
   });
-  if (response.ok) {
-    alert("성공");
-  } else {
-    alert("실패");
-  }
+  return response.ok;
 };

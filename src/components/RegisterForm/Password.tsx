@@ -1,31 +1,24 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { RegisterStepProps } from "./RegisterForm";
 import NewPasswordInput from "../commons/inputs/NewPasswordInput";
 import RepeatPassword from "../commons/inputs/RepeatPassword";
+import GreenButton from "../commons/buttons/GreenButton";
+import useFocus from "@/hooks/useFocus";
 
 const Password = (props: RegisterStepProps) => {
-  const { userInputs, setIsActive } = props;
+  const { userInputs, nextStep } = props;
   const passwordInputState = useState("");
   const repeatInputState = useState("");
-  const firstElement = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (firstElement.current) firstElement.current.focus();
-    setIsActive(false);
-  }, [setIsActive]);
-  useEffect(() => {
-    const password = passwordInputState[0];
-    const repeat = repeatInputState[0];
-    const passwordRegex =
-      /(?=.*\d)(?=.*[!@#$%^&*()\-=_+[\]{};':"\\|,.<>/?]).{10,}/;
-    const validPassword = passwordRegex.test(password);
-    const validRepeat = password === repeat;
-    setIsActive(!!(validPassword && validRepeat));
-    if (userInputs) userInputs.password = password;
-  }, [userInputs, setIsActive, passwordInputState, repeatInputState]);
+  const firstElement = useFocus<HTMLInputElement>();
+  const onClickHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userInputs) userInputs["password"] = passwordInputState[0];
+    nextStep();
+  };
 
   return (
-    <>
+    <form className='space-y-4'>
       <h1
         className='text-xl font-bold
 	leading-tight tracking-tight
@@ -40,7 +33,13 @@ const Password = (props: RegisterStepProps) => {
         newPassword={passwordInputState[0]}
         state={repeatInputState}
       />
-    </>
+      <GreenButton
+        title='다음'
+        type='submit'
+        isActive={passwordInputState[0] === repeatInputState[0]}
+        onClickHandler={onClickHandler}
+      />
+    </form>
   );
 };
 

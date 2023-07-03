@@ -1,25 +1,24 @@
 "use client";
-import { Dispatch, SetStateAction } from "react";
 
 interface CheckboxProps {
   label: string;
   children: any;
-  state: [boolean, Dispatch<SetStateAction<boolean>>];
+  name: string;
   textSize?: "text-sm" | "text-md" | "text-lg";
+  checked: boolean;
+  onChangeHandler: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const Checkbox = (props: CheckboxProps) => {
-  const { label, children, textSize, state } = props;
-  const [isChecked, setIsChecked] = state;
+  const { label, name, children, textSize, checked, onChangeHandler } = props;
   return (
     <div className='flex flex-col space-y-2'>
       <div className='flex items-center h-5 gap-2 '>
         <input
           type='checkbox'
-          checked={isChecked}
-          onChange={(e) => {
-            setIsChecked(e.target.checked);
-          }}
+          name={name}
+          checked={checked}
+          onChange={onChangeHandler}
           className='w-4 h-4 rounded-full text-green-600
           bg-gray-100 border-gray-300 focus:ring-green-500
           dark:focus:ring-green-600 dark:ring-offset-gray-800
