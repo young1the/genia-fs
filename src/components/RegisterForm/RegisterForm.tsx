@@ -95,9 +95,9 @@ const RegisterForm = () => {
     >
       <div className='w-full h-1 bg-gray-200 my-8'>
         <div
-          className={`flex justify-center h-1 bg-green-600 transition-all ease ${Width[currentStep]}`}
+          className={`flex justify-end h-1 bg-green-600 transition-all ease ${Width[currentStep]}`}
         >
-          <p className='text-xs md:text-sm text-green-600 -mt-5'>
+          <p className='absolute text-xs md:text-sm text-green-600 -mt-5'>
             {RegisterStep[currentStep].key}
           </p>
         </div>
