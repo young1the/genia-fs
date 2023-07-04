@@ -57,12 +57,15 @@ const NewPasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       state: [value, setValue],
     } = props;
     const { state: show, toggleState } = useToggle(false);
+    const [hasCapital, setHasCapital] = useState(false);
     const [hasNumber, setHasNumber] = useState(false);
     const [hasSpecial, setHasSpecial] = useState(false);
     const [moreThanTen, setMoreThanTen] = useState(false);
     useEffect(() => {
       const digitRegex = /\d/;
       const specialRegex = /[!@#$%^&*()\-=_+[\]{};':"\\|,.<>/?]/;
+      const capitalRegex = /(?=.*?[a-z])(?=.*?[A-Z])/;
+      setHasCapital(capitalRegex.test(value));
       setHasNumber(digitRegex.test(value));
       setHasSpecial(specialRegex.test(value));
       setMoreThanTen(value.length >= 10);
@@ -88,6 +91,11 @@ const NewPasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           />
         </div>
         <div className='flex space-x-3 mx-2'>
+          <p
+            className={`font-semibold text-xs ${hasCapital ? valid : invalid}`}
+          >
+            ✓ 대소문자
+          </p>
           <p className={`font-semibold text-xs ${hasNumber ? valid : invalid}`}>
             ✓ 숫자
           </p>

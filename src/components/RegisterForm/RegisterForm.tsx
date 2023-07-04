@@ -1,38 +1,32 @@
 "use client";
+import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
 import TermAndConditions from "./TermAndConditions";
 import Name from "./Name";
 import Email from "./Email";
 import VerifyCode from "./VerifyCode";
 import Password from "./Password";
 import EmployeeNumber from "./EmployeeNumber";
-import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
 import GreenButton from "../commons/buttons/GreenButton";
-
-type UserInputs =
-  | {
-      email: string;
-      password: string;
-      username: string;
-      empNumber: string;
-    }
-  | undefined;
+import StepBar from "./StepBar";
+import { User } from "@/types/common";
 
 const UserInputsInitialState = {
   email: "",
+  code: "",
   password: "",
   username: "",
   empNumber: "",
 };
 
 export interface RegisterStepProps {
-  userInputs: UserInputs;
+  userInputs: User;
   setIsActive: Dispatch<SetStateAction<boolean>>;
 }
 
 const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const { current: userInputs } = useRef<UserInputs>(UserInputsInitialState);
+  const { current: userInputs } = useRef<User>(UserInputsInitialState);
 
   const RegisterStep = useMemo(
     () => [
@@ -89,19 +83,15 @@ const RegisterForm = () => {
   };
   return (
     <div
-      className='flex flex-col justify-center w-full bg-white rounded-lg shadow dark:border
-	md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700
-	p-6 space-y-6 md:space-y-8 sm:p-8'
+      className='flex flex-col justify-center w-full
+      bg-white rounded-lg shadow dark:border
+	      md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700
+	      p-6 space-y-6 md:space-y-8 sm:p-8'
     >
-      <div className='w-full h-1 bg-gray-200 my-8'>
-        <div
-          className={`flex justify-center h-1 bg-green-600 transition-all ease ${Width[currentStep]}`}
-        >
-          <p className='text-xs md:text-sm text-green-600 -mt-5'>
-            {RegisterStep[currentStep].key}
-          </p>
-        </div>
-      </div>
+      <StepBar
+        description={RegisterStep[currentStep].key + ""}
+        width={Width[currentStep]}
+      />
       <form
         onSubmit={(e) => {
           e.preventDefault();
