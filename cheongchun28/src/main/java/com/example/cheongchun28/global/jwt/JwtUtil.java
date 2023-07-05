@@ -31,7 +31,7 @@ public class JwtUtil {
 
     @Value("${jwt.security.key}")
     private String secretKey;
-    private long tokenValidTime = 30 * 60 * 1000L;  //token 유효 시간
+    private long tokenValidTime = 60 * 60 * 1000L;  //token 유효 시간
 
     private final UserDetailsService userDetailsService;
 
@@ -80,8 +80,6 @@ public class JwtUtil {
     //토큰의 유효성 + 만료인자 확인
     public boolean validateToken(String jwtToken) {
         try {
-//            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-//            return !claims.getBody().getExpiration().before(new Date());
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
@@ -94,13 +92,5 @@ public class JwtUtil {
             log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
         }
         return false;
-    }
-
-    public Claims getUserInfoFromToken(String jwtToken) {
-        try {
-            return Jwts.parser().setSigningKey(jwtToken).parseClaimsJws(jwtToken).getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        }
     }
 }
