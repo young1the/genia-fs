@@ -5,7 +5,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class UserDto {
 
     @Getter
@@ -13,7 +15,7 @@ public class UserDto {
 
         @Email
         @NotBlank(message ="이메일은 필수 입력값입니다.")
-        private String userEmail;
+        private String email;
 
         @NotBlank
         @Size(min = 5, max = 20, message = "비밀번호 최소 조건을 만족시켜주세요.")
@@ -24,17 +26,15 @@ public class UserDto {
 
         private String profileImage;
 
-        private short deleted;
+        private String empNumber;
 
-        private int empNumber;
-
-        public User toEntity() {
-            return new User(this.userEmail, this.password, this.userName, this.profileImage, this.empNumber);
+        public User toEntity(String encodePassword) {
+            return new User(this.email, this.password = encodePassword, this.userName, this.profileImage, this.empNumber);
         }
     }
 
     @Getter
-    public class loginRequestDto {
+    public static class loginRequestDto {
         private String email;
         private String password;
     }

@@ -53,9 +53,9 @@ public class User implements UserDetails {
     private short userDeleted;
 
     @Column(name = "EMP_NUMBER", nullable = true)
-    private int empNumber;
+    private String empNumber;
 
-    public User(String userEmail, String password, String userName, String profileImage, int empNumber) {
+    public User(String userEmail, String password, String userName, String profileImage, String empNumber) {
         this.role = Role.USER;
         this.userEmail = userEmail;
         this.encodedPassword = password;
