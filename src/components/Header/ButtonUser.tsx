@@ -3,12 +3,12 @@ import Image from "next/image";
 import DropdownUser from "./DropdownUser";
 import Link from "next/link";
 import { TITLES, URLS } from "@/constants/navigation";
+import { useSession } from "next-auth/react";
 
 const ButtonUser = () => {
   const { showDropdown, buttonRef, toggleState } = useDropdown();
-  // TODO : Auth 상태에 따라 다르게 보이게
-  const isLogin = false;
-  return isLogin ? (
+  const { status } = useSession();
+  return status == "authenticated" ? (
     <>
       {showDropdown ? <DropdownUser /> : null}
       <button

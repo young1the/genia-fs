@@ -1,11 +1,12 @@
-import { KEYS, NavigationType, UserStates } from "@/types/navigation";
+import { KEYS, NavigationType } from "@/types/navigation";
+import { UserStatus } from "../types/navigation";
 
 export const URLS: Record<KEYS, string> = {
   HOME: "/",
   INFO: "/info/",
   RESERVATION: "/reservation/",
   LOGIN: "/user/login/",
-  LOGOUT: "/user/logout/",
+  LOGOUT: "/user/signout",
   MYPAGE: "/mypage/",
   SUPER: "/super/",
   REGISTER: "/user/register/",
@@ -33,14 +34,14 @@ export const NAVIS: Record<KEYS, NavigationType> = {
   REGISTER: { title: TITLES["REGISTER"], href: URLS["REGISTER"] },
 } as const;
 
-export const NAVIGATIONS: Record<UserStates, NavigationType[]> = {
-  LOGIN: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
-  LOGOUT: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
-  SUPER: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"], NAVIS["SUPER"]],
+export const NAVIGATIONS: Record<UserStatus, NavigationType[]> = {
+  authenticated: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
+  unauthenticated: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
+  loading: [],
 };
 
-export const USERMENUS: Record<UserStates, NavigationType[]> = {
-  LOGIN: [NAVIS["MYPAGE"], NAVIS["LOGOUT"]],
-  LOGOUT: [NAVIS["LOGIN"]],
-  SUPER: [NAVIS["MYPAGE"], NAVIS["LOGOUT"], NAVIS["SUPER"]],
+export const USERMENUS: Record<UserStatus, NavigationType[]> = {
+  authenticated: [NAVIS["MYPAGE"], NAVIS["LOGOUT"]],
+  unauthenticated: [NAVIS["LOGIN"]],
+  loading: [],
 };
