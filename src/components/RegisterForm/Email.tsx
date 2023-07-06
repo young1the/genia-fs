@@ -45,10 +45,14 @@ const Email = (props: RegisterStepProps) => {
             type='email'
           />
           {emailInput !== "" && !emailRegex.test(emailInput) ? (
-            <p className='text-red-600 absolute'>이메일 형식이 다릅니다.</p>
+            <p className='text-red-600 absolute -bottom-7'>
+              이메일 형식이 다릅니다.
+            </p>
           ) : null}
           {isError && emailInput === "" ? (
-            <p className='text-red-600 absolute'>이메일이 중복입니다.</p>
+            <p className='text-red-600 absolute -bottom-7'>
+              이메일이 중복입니다.
+            </p>
           ) : null}
         </div>
         <GreenButton

@@ -4,12 +4,10 @@ import Input from "../commons/inputs/Input";
 import { RegisterStepProps } from "./RegisterForm";
 import GreenButton from "../commons/buttons/GreenButton";
 import { register } from "@/lib/api";
-import { useRouter } from "next/navigation";
 import useFocus from "@/hooks/useFocus";
 
 const EmployeeNumber = (props: RegisterStepProps) => {
-  const { userInputs } = props;
-  const router = useRouter();
+  const { userInputs, nextStep } = props;
   const firstElement = useFocus<HTMLInputElement>();
   const [empNumberInput, setEmpNumberInput] = useState("");
   const onClickHandler = async (e: React.FormEvent) => {
@@ -17,7 +15,7 @@ const EmployeeNumber = (props: RegisterStepProps) => {
     if (userInputs) userInputs["empNumber"] = empNumberInput;
     const registerResult = await register(userInputs);
     if (registerResult) {
-      router.replace("/user/login");
+      nextStep();
     }
   };
   return (

@@ -8,6 +8,7 @@ import Password from "./Password";
 import EmployeeNumber from "./EmployeeNumber";
 import StepBar from "./StepBar";
 import { User } from "@/types/common";
+import Done from "./Done";
 
 const UserInputsInitialState = {
   email: "",
@@ -26,11 +27,8 @@ const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const { current: userInputs } = useRef<User>(UserInputsInitialState);
   const RegisterStep = useMemo(() => {
-    const STEP_LENGTH = 6;
     const nextStep = () => {
-      if (currentStep !== STEP_LENGTH - 1) {
-        setCurrentStep((curr) => curr + 1);
-      }
+      setCurrentStep((curr) => curr + 1);
     };
     return [
       <TermAndConditions
@@ -55,8 +53,9 @@ const RegisterForm = () => {
         userInputs={userInputs}
         nextStep={nextStep}
       />,
+      <Done key='완료' />,
     ];
-  }, [userInputs, currentStep]);
+  }, [userInputs]);
   const widthArray = ["w-1/6", "w-1/3", "w-1/2", "w-2/3", "w-5/6", "w-full"];
   return (
     <div
