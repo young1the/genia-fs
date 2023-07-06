@@ -1,9 +1,9 @@
 "use client";
-import Input from "../commons/inputs/Input";
 import React, { useState } from "react";
-import { RegisterStepProps } from "./RegisterForm";
-import GreenButton from "../commons/buttons/GreenButton";
 import useFocus from "@/hooks/useFocus";
+import Input from "@/components/commons/inputs/Input";
+import GreenButton from "@/components/commons/buttons/GreenButton";
+import { RegisterStepProps } from "./RegisterForm";
 
 const Name = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;

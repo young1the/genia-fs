@@ -1,7 +1,6 @@
-import { KEYS, NavigationType } from "@/types/navigation";
-import { UserStatus } from "../types/navigation";
+import { LinkKey, NavigationType, UserStatus } from "./types";
 
-export const URLS: Record<KEYS, string> = {
+export const URLS: Record<LinkKey, string> = {
   HOME: "/",
   INFO: "/info/",
   RESERVATION: "/reservation/",
@@ -12,7 +11,7 @@ export const URLS: Record<KEYS, string> = {
   REGISTER: "/user/register/",
 } as const;
 
-export const TITLES: Record<KEYS, string> = {
+export const TITLES: Record<LinkKey, string> = {
   HOME: "홈으로",
   INFO: "과정 소개",
   RESERVATION: "예약하기",
@@ -23,7 +22,7 @@ export const TITLES: Record<KEYS, string> = {
   REGISTER: "회원가입",
 } as const;
 
-export const NAVIS: Record<KEYS, NavigationType> = {
+export const LINKS: Record<LinkKey, NavigationType> = {
   HOME: { title: TITLES["HOME"], href: URLS["HOME"] },
   INFO: { title: TITLES["INFO"], href: URLS["INFO"] },
   RESERVATION: { title: TITLES["RESERVATION"], href: URLS["RESERVATION"] },
@@ -35,13 +34,13 @@ export const NAVIS: Record<KEYS, NavigationType> = {
 } as const;
 
 export const NAVIGATIONS: Record<UserStatus, NavigationType[]> = {
-  authenticated: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
-  unauthenticated: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
+  authenticated: [LINKS["HOME"], LINKS["INFO"], LINKS["RESERVATION"]],
+  unauthenticated: [LINKS["HOME"], LINKS["INFO"], LINKS["RESERVATION"]],
   loading: [],
 };
 
 export const USERMENUS: Record<UserStatus, NavigationType[]> = {
-  authenticated: [NAVIS["MYPAGE"], NAVIS["LOGOUT"]],
-  unauthenticated: [NAVIS["LOGIN"]],
+  authenticated: [LINKS["MYPAGE"], LINKS["LOGOUT"]],
+  unauthenticated: [LINKS["LOGIN"]],
   loading: [],
 };

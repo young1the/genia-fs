@@ -1,4 +1,4 @@
-export type KEYS =
+export type LinkKey =
   | "HOME"
   | "INFO"
   | "RESERVATION"

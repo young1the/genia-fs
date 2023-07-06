@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { RegisterStepProps } from "./RegisterForm";
-import Checkbox from "../commons/inputs/Checkbox";
+import Checkbox from "@/components/commons/inputs/Checkbox";
+import GreenButton from "@/components/commons/buttons/GreenButton";
 import Term from "./Term";
-import GreenButton from "../commons/buttons/GreenButton";
+import { RegisterStepProps } from "./RegisterForm";
 
 type AgreementsType = "personalAgreed" | "marketingAgreed";
 

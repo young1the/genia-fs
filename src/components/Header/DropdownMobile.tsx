@@ -1,7 +1,7 @@
 "use client";
-import LinkDropdown from "./LinkDropdown";
-import { NAVIGATIONS, USERMENUS } from "../../constants/navigation";
 import { useSession } from "next-auth/react";
+import LinkDropdown from "./LinkDropdown";
+import * as LINK from "@/lib/link";
 
 const dropdownContainerStyle =
   "flex flex-col font-medium p-2 border border-gray-100 rounded-lg dark:bg-gray-800 dark:border-gray-700";
@@ -18,7 +18,7 @@ const DropdownMobile = () => {
     >
       <ul className={dropdownContainerStyle}>
         {status != "loading" &&
-          NAVIGATIONS[status].map((item) => (
+          LINK.constants.NAVIGATIONS[status].map((item) => (
             <LinkDropdown
               key={item.title}
               title={item.title}
@@ -28,7 +28,7 @@ const DropdownMobile = () => {
       </ul>
       <ul className={dropdownContainerStyle}>
         {status != "loading" &&
-          USERMENUS[status].map((item) => (
+          LINK.constants.USERMENUS[status].map((item) => (
             <LinkDropdown
               key={"DD" + item.title}
               title={item.title}

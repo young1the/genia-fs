@@ -1,14 +1,14 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
-import { TITLES, URLS } from "@/constants/navigation";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import useFocus from "@/hooks/useFocus";
+import * as LINK from "@/lib/link";
 import Input from "@/components/commons/inputs/Input";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import TitleText from "@/components/commons/texts/TitleText";
 import PasswordInput from "@/components/commons/inputs/PasswordInput";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import useFocus from "../../hooks/useFocus";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ const LoginForm = () => {
 
   return (
     <div className='w-full bg-white relative rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 space-y-10 md:space-y-12 sm:p-8'>
-      <TitleText title={TITLES["LOGIN"]} />
+      <TitleText title={LINK.constants.TITLES["LOGIN"]} />
       {isError && email === "" && password === "" ? (
         <p className=' text-red-600 absolute top-5 text-xs md:text-sm md:top-6'>
           아이디 또는 비밀번호가 올바르지 않습니다.
@@ -63,10 +63,10 @@ const LoginForm = () => {
           </Link>
           {"    "}|{"    "}
           <Link
-            href={URLS["REGISTER"]}
+            href={LINK.constants.URLS["REGISTER"]}
             className='font-medium text-primary-600 hover:underline dark:text-primary-500'
           >
-            {TITLES["REGISTER"]}
+            {LINK.constants.TITLES["REGISTER"]}
           </Link>
         </p>
       </form>

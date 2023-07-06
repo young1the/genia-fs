@@ -1,7 +1,7 @@
-import { NavigationType } from "@/types/navigation";
 import Link from "next/link";
+import * as LINK from "@/lib/link";
 
-const LinkDropdown = (props: NavigationType) => {
+const LinkDropdown = (props: LINK.types.NavigationType) => {
   const { title, href } = props;
 
   return (

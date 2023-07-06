@@ -1,10 +1,11 @@
 "use client";
+
 import { useState } from "react";
-import Input from "../commons/inputs/Input";
-import { RegisterStepProps } from "./RegisterForm";
-import GreenButton from "../commons/buttons/GreenButton";
-import { sendCodeToEmail } from "@/lib/api";
 import useFocus from "@/hooks/useFocus";
+import * as API from "@/lib/api";
+import Input from "@/components/commons/inputs/Input";
+import GreenButton from "@/components/commons/buttons/GreenButton";
+import { RegisterStepProps } from "./RegisterForm";
 
 const Email = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
@@ -14,7 +15,7 @@ const Email = (props: RegisterStepProps) => {
   const onClickHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["email"] = emailInput;
-    const isOkay = await sendCodeToEmail(userInputs);
+    const isOkay = await API.methods.sendCodeToEmail(userInputs);
     if (!isOkay) {
       setIsError(true);
       setEmailInput("");

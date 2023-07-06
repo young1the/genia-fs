@@ -1,4 +1,4 @@
-import { URL } from "@/constants/api";
+import { URL } from "./constants";
 import { User } from "@/types/common";
 
 export const sendCodeToEmail = async ({ email }: Pick<User, "email">) => {

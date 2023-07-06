@@ -1,7 +1,8 @@
 "use client";
-import { signIn } from "next-auth/react";
+
 import React from "react";
-import GreenButton from "../commons/buttons/GreenButton";
+import { signIn } from "next-auth/react";
+import GreenButton from "@/components/commons/buttons/GreenButton";
 
 const Done = () => {
   return (

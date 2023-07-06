@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import { RegisterStepProps } from "./RegisterForm";
-import NewPasswordInput from "../commons/inputs/NewPasswordInput";
-import RepeatPassword from "../commons/inputs/RepeatPassword";
-import GreenButton from "../commons/buttons/GreenButton";
 import useFocus from "@/hooks/useFocus";
+import NewPasswordInput from "@/components/commons/inputs/NewPasswordInput";
+import RepeatPassword from "@/components/commons/inputs/RepeatPassword";
+import GreenButton from "@/components/commons/buttons/GreenButton";
+import { RegisterStepProps } from "./RegisterForm";
 
 const Password = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;

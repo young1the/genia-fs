@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import GreenButton from "@/components/commons/buttons/GreenButton";
 import { signOut } from "next-auth/react";
+import GreenButton from "@/components/commons/buttons/GreenButton";
 
 const SignOutBox = () => {
   const router = useRouter();

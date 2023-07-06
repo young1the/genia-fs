@@ -1,6 +1,6 @@
 "use client";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const UnauthenticatedOnly = ({ children }: { children: React.ReactNode }) => {
   const { status } = useSession();

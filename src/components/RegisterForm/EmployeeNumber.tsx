@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import Input from "../commons/inputs/Input";
-import { RegisterStepProps } from "./RegisterForm";
-import GreenButton from "../commons/buttons/GreenButton";
-import { register } from "@/lib/api";
 import useFocus from "@/hooks/useFocus";
+import * as API from "@/lib/api";
+import GreenButton from "@/components/commons/buttons/GreenButton";
+import Input from "@/components/commons/inputs/Input";
+import { RegisterStepProps } from "./RegisterForm";
 
 const EmployeeNumber = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
@@ -13,7 +13,7 @@ const EmployeeNumber = (props: RegisterStepProps) => {
   const onClickHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["empNumber"] = empNumberInput;
-    const registerResult = await register(userInputs);
+    const registerResult = await API.methods.register(userInputs);
     if (registerResult) {
       nextStep();
     }

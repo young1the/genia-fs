@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import Input from "../commons/inputs/Input";
-import { RegisterStepProps } from "./RegisterForm";
-import { verifyCode } from "@/lib/api";
-import GreenButton from "../commons/buttons/GreenButton";
 import useFocus from "@/hooks/useFocus";
+import * as API from "@/lib/api";
+import GreenButton from "@/components/commons/buttons/GreenButton";
+import Input from "@/components/commons/inputs/Input";
+import { RegisterStepProps } from "./RegisterForm";
 
 const VerifyCode = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
@@ -14,7 +14,7 @@ const VerifyCode = (props: RegisterStepProps) => {
   const onClickHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["code"] = codeInputState[0];
-    const verifyCodeResult = await verifyCode(userInputs);
+    const verifyCodeResult = await API.methods.verifyCode(userInputs);
     if (verifyCodeResult) nextStep();
     else {
       setIsError(true);

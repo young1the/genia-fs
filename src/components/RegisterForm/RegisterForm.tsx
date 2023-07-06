@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useRef, useState } from "react";
+import { User } from "@/types/common";
 import TermAndConditions from "./TermAndConditions";
 import Name from "./Name";
 import Email from "./Email";
@@ -7,7 +8,6 @@ import VerifyCode from "./VerifyCode";
 import Password from "./Password";
 import EmployeeNumber from "./EmployeeNumber";
 import StepBar from "./StepBar";
-import { User } from "@/types/common";
 import Done from "./Done";
 
 const UserInputsInitialState = {
