@@ -1,4 +1,4 @@
-const BASIC_URL = process.env.API_ROOT_URL;
+const BASIC_URL = "http://10.41.0.102:8080";
 const AUTH_URL = process.env.NEXTAUTH_URL;
 
 export const URL: Record<string, string> = {

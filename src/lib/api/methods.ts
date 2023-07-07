@@ -2,6 +2,7 @@ import { URL } from "./constants";
 import { User } from "@/types/common";
 
 export const sendCodeToEmail = async ({ email }: Pick<User, "email">) => {
+  console.log(URL["CODE_SEND"]);
   const response = await fetch(URL["CODE_SEND"], {
     method: "POST",
     headers: {
