@@ -1,4 +1,4 @@
-export type KEYS =
+export type LinkKey =
   | "HOME"
   | "INFO"
   | "RESERVATION"
@@ -7,5 +7,5 @@ export type KEYS =
   | "MYPAGE"
   | "SUPER"
   | "REGISTER";
-export type UserStates = "LOGIN" | "LOGOUT" | "SUPER";
+export type UserStatus = "authenticated" | "loading" | "unauthenticated";
 export type NavigationType = { title: string; href: string };

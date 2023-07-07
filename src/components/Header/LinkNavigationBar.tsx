@@ -1,7 +1,7 @@
-import { NavigationType } from "@/types/navigation";
 import Link from "next/link";
+import * as LINK from "@/lib/link";
 
-const LinkNavigationBar = (props: NavigationType) => {
+const LinkNavigationBar = (props: LINK.types.NavigationType) => {
   const { title, href } = props;
 
   return (

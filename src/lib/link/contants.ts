@@ -1,17 +1,17 @@
-import { KEYS, NavigationType, UserStates } from "@/types/navigation";
+import { LinkKey, NavigationType, UserStatus } from "./types";
 
-export const URLS: Record<KEYS, string> = {
+export const URLS: Record<LinkKey, string> = {
   HOME: "/",
   INFO: "/info/",
   RESERVATION: "/reservation/",
   LOGIN: "/user/login/",
-  LOGOUT: "/user/logout/",
+  LOGOUT: "/user/signout",
   MYPAGE: "/mypage/",
   SUPER: "/super/",
   REGISTER: "/user/register/",
 } as const;
 
-export const TITLES: Record<KEYS, string> = {
+export const TITLES: Record<LinkKey, string> = {
   HOME: "홈으로",
   INFO: "과정 소개",
   RESERVATION: "예약하기",
@@ -22,7 +22,7 @@ export const TITLES: Record<KEYS, string> = {
   REGISTER: "회원가입",
 } as const;
 
-export const NAVIS: Record<KEYS, NavigationType> = {
+export const LINKS: Record<LinkKey, NavigationType> = {
   HOME: { title: TITLES["HOME"], href: URLS["HOME"] },
   INFO: { title: TITLES["INFO"], href: URLS["INFO"] },
   RESERVATION: { title: TITLES["RESERVATION"], href: URLS["RESERVATION"] },
@@ -33,14 +33,14 @@ export const NAVIS: Record<KEYS, NavigationType> = {
   REGISTER: { title: TITLES["REGISTER"], href: URLS["REGISTER"] },
 } as const;
 
-export const NAVIGATIONS: Record<UserStates, NavigationType[]> = {
-  LOGIN: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
-  LOGOUT: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"]],
-  SUPER: [NAVIS["HOME"], NAVIS["INFO"], NAVIS["RESERVATION"], NAVIS["SUPER"]],
+export const NAVIGATIONS: Record<UserStatus, NavigationType[]> = {
+  authenticated: [LINKS["HOME"], LINKS["INFO"], LINKS["RESERVATION"]],
+  unauthenticated: [LINKS["HOME"], LINKS["INFO"], LINKS["RESERVATION"]],
+  loading: [],
 };
 
-export const USERMENUS: Record<UserStates, NavigationType[]> = {
-  LOGIN: [NAVIS["MYPAGE"], NAVIS["LOGOUT"]],
-  LOGOUT: [NAVIS["LOGIN"]],
-  SUPER: [NAVIS["MYPAGE"], NAVIS["LOGOUT"], NAVIS["SUPER"]],
+export const USERMENUS: Record<UserStatus, NavigationType[]> = {
+  authenticated: [LINKS["MYPAGE"], LINKS["LOGOUT"]],
+  unauthenticated: [LINKS["LOGIN"]],
+  loading: [],
 };

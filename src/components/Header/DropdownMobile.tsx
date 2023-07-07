@@ -1,11 +1,13 @@
-import React from "react";
+"use client";
+import { useSession } from "next-auth/react";
 import LinkDropdown from "./LinkDropdown";
-import { NAVIGATIONS, USERMENUS } from "../../constants/navigation";
+import * as LINK from "@/lib/link";
 
 const dropdownContainerStyle =
   "flex flex-col font-medium p-2 border border-gray-100 rounded-lg dark:bg-gray-800 dark:border-gray-700";
 
 const DropdownMobile = () => {
+  const { status } = useSession();
   return (
     <nav
       className='absolute bg-white border-gray-200 dark:bg-gray-900
@@ -15,20 +17,24 @@ const DropdownMobile = () => {
 		w-full md:hidden'
     >
       <ul className={dropdownContainerStyle}>
-        {/* TODO: Login 상태에 따라 Navbar 다르게 구현 */}
-        {NAVIGATIONS["LOGOUT"].map((item) => (
-          <LinkDropdown key={item.title} title={item.title} href={item.href} />
-        ))}
+        {status != "loading" &&
+          LINK.constants.NAVIGATIONS[status].map((item) => (
+            <LinkDropdown
+              key={item.title}
+              title={item.title}
+              href={item.href}
+            />
+          ))}
       </ul>
       <ul className={dropdownContainerStyle}>
-        {/**TODO : LOGIN을 User의 Login 상황에 맞게 변경 */}
-        {USERMENUS["LOGOUT"].map((item) => (
-          <LinkDropdown
-            key={"DD" + item.title}
-            title={item.title}
-            href={item.href}
-          />
-        ))}
+        {status != "loading" &&
+          LINK.constants.USERMENUS[status].map((item) => (
+            <LinkDropdown
+              key={"DD" + item.title}
+              title={item.title}
+              href={item.href}
+            />
+          ))}
       </ul>
     </nav>
   );

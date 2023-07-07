@@ -1,23 +1,28 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import Input from "../commons/inputs/Input";
+import { useState } from "react";
+import useFocus from "@/hooks/useFocus";
+import * as API from "@/lib/api";
+import GreenButton from "@/components/commons/buttons/GreenButton";
+import Input from "@/components/commons/inputs/Input";
 import { RegisterStepProps } from "./RegisterForm";
 
 const VerifyCode = (props: RegisterStepProps) => {
-  const { userInputs, setIsActive } = props;
+  const { userInputs, nextStep } = props;
   const codeInputState = useState("");
-  const firstElement = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (firstElement.current) firstElement.current.focus();
-    setIsActive(false);
-  }, []);
-  useEffect(() => {
-    setIsActive(!!codeInputState[0]);
-    if (userInputs) userInputs["username"] = codeInputState[0];
-  }, [codeInputState[0]]);
+  const [isError, setIsError] = useState(false);
+  const firstElement = useFocus<HTMLInputElement>();
+  const onClickHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userInputs) userInputs["code"] = codeInputState[0];
+    const verifyCodeResult = await API.methods.verifyCode(userInputs);
+    if (verifyCodeResult) nextStep();
+    else {
+      setIsError(true);
+    }
+  };
 
   return (
-    <>
+    <form className='space-y-4'>
       <h1
         className='text-xl font-bold
 	leading-tight tracking-tight
@@ -27,15 +32,26 @@ const VerifyCode = (props: RegisterStepProps) => {
         <br />
         <p className='inline text-green-600'>인증번호</p>를 확인해주세요.
       </h1>
-      <div className='relative'>
-        <Input
-          state={codeInputState}
-          ref={firstElement}
-          placeholder='인증번호를 입력해주세요.'
-          type='text'
+      <div className='flex flex-col space-y-8'>
+        <div className='relative'>
+          <Input
+            state={codeInputState}
+            ref={firstElement}
+            placeholder='인증번호를 입력해주세요.'
+            type='text'
+          />
+          {isError ? (
+            <p className='text-red-600 absolute'>코드를 다시 확인해주세요.</p>
+          ) : null}
+        </div>
+        <GreenButton
+          title='다음'
+          type='submit'
+          isActive={!!codeInputState[0]}
+          onClickHandler={onClickHandler}
         />
       </div>
-    </>
+    </form>
   );
 };
 

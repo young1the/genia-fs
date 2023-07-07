@@ -1,3 +1,4 @@
+"use client";
 import ModalPortal from "./ModalPotal";
 
 interface ModalBackDropProps {

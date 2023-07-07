@@ -1,4 +1,3 @@
-"use client";
 import ButtonUser from "./ButtonUser";
 import NavigationBar from "./NavigationBar";
 

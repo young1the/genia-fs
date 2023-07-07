@@ -1,14 +1,14 @@
-import useDropdown from "@/hooks/useDropdown";
 import Image from "next/image";
-import DropdownUser from "./DropdownUser";
 import Link from "next/link";
-import { TITLES, URLS } from "@/constants/navigation";
+import { useSession } from "next-auth/react";
+import useDropdown from "@/hooks/useDropdown";
+import * as LINK from "@/lib/link";
+import DropdownUser from "./DropdownUser";
 
 const ButtonUser = () => {
   const { showDropdown, buttonRef, toggleState } = useDropdown();
-  // TODO : Auth 상태에 따라 다르게 보이게
-  const isLogin = false;
-  return isLogin ? (
+  const { status } = useSession();
+  return status == "authenticated" ? (
     <>
       {showDropdown ? <DropdownUser /> : null}
       <button
@@ -28,9 +28,9 @@ const ButtonUser = () => {
   ) : (
     <Link
       className='hidden md:flex text-white bg-green-600 hover:bg-green-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700'
-      href={URLS["LOGIN"]}
+      href={LINK.constants.URLS["LOGIN"]}
     >
-      {TITLES["LOGIN"]}
+      {LINK.constants.TITLES["LOGIN"]}
     </Link>
   );
 };

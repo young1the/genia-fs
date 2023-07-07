@@ -1,23 +1,22 @@
 "use client";
-import Input from "../commons/inputs/Input";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
+import useFocus from "@/hooks/useFocus";
+import Input from "@/components/commons/inputs/Input";
+import GreenButton from "@/components/commons/buttons/GreenButton";
 import { RegisterStepProps } from "./RegisterForm";
 
 const Name = (props: RegisterStepProps) => {
-  const { userInputs, setIsActive } = props;
-  const nameInputState = useState("");
-  const firstElement = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (firstElement.current) firstElement.current.focus();
-    setIsActive(false);
-  }, []);
-  useEffect(() => {
-    setIsActive(!!nameInputState[0]);
-    if (userInputs) userInputs["username"] = nameInputState[0];
-  }, [nameInputState[0]]);
+  const { userInputs, nextStep } = props;
+  const [nameInput, setNameInput] = useState("");
+  const firstElement = useFocus<HTMLInputElement>();
+  const onClickHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userInputs) userInputs["username"] = nameInput;
+    nextStep();
+  };
 
   return (
-    <>
+    <form className='flex flex-col space-y-4'>
       <h1
         className='text-xl font-bold
 		leading-tight tracking-tight
@@ -31,10 +30,15 @@ const Name = (props: RegisterStepProps) => {
         placeholder='이름을 입력하세요.'
         type='text'
         ref={firstElement}
-        state={nameInputState}
+        state={[nameInput, setNameInput]}
       />
-      <p></p>
-    </>
+      <GreenButton
+        title='다음'
+        type='submit'
+        isActive={!!nameInput}
+        onClickHandler={onClickHandler}
+      />
+    </form>
   );
 };
 

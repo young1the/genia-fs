@@ -1,20 +1,25 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Input from "../commons/inputs/Input";
+import React, { useState } from "react";
+import useFocus from "@/hooks/useFocus";
+import * as API from "@/lib/api";
+import GreenButton from "@/components/commons/buttons/GreenButton";
+import Input from "@/components/commons/inputs/Input";
 import { RegisterStepProps } from "./RegisterForm";
 
 const EmployeeNumber = (props: RegisterStepProps) => {
-  const { userInputs, setIsActive } = props;
-  const empNumState = useState("");
-  useEffect(() => {
-    setIsActive(true);
-  }, []);
-  useEffect(() => {
-    if (userInputs) userInputs["empNumber"] = empNumState[0];
-  }, [empNumState[0]]);
-
+  const { userInputs, nextStep } = props;
+  const firstElement = useFocus<HTMLInputElement>();
+  const [empNumberInput, setEmpNumberInput] = useState("");
+  const onClickHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userInputs) userInputs["empNumber"] = empNumberInput;
+    const registerResult = await API.methods.register(userInputs);
+    if (registerResult) {
+      nextStep();
+    }
+  };
   return (
-    <>
+    <form className='space-y-4'>
       <h1
         className='text-xl font-bold
 	leading-tight tracking-tight
@@ -25,12 +30,19 @@ const EmployeeNumber = (props: RegisterStepProps) => {
       </h1>
       <div className='relative'>
         <Input
-          state={empNumState}
+          state={[empNumberInput, setEmpNumberInput]}
+          ref={firstElement}
           placeholder='사번을 입력해주세요.'
           type='text'
         />
       </div>
-    </>
+      <GreenButton
+        title='다음'
+        type='submit'
+        isActive={true}
+        onClickHandler={onClickHandler}
+      />
+    </form>
   );
 };
 
