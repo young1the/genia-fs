@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import useFocus from "@/hooks/useFocus";
 import Input from "@/components/commons/inputs/Input";
 import GreenButton from "@/components/commons/buttons/GreenButton";
+import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
 import { RegisterStepProps } from "./RegisterForm";
 
 const Name = (props: RegisterStepProps) => {
@@ -17,15 +18,11 @@ const Name = (props: RegisterStepProps) => {
 
   return (
     <form className='flex flex-col space-y-4'>
-      <h1
-        className='text-xl font-bold
-		leading-tight tracking-tight
-		text-gray-900 md:text-2xl dark:text-white'
-      >
-        사용하실
-        <br />
-        <p className='inline text-green-600'>이름</p>을 입력해주세요.
-      </h1>
+      <KeywordHighlight
+        before='사용하실'
+        keyword='이름'
+        after='을 입력해주세요.'
+      />
       <Input
         placeholder='이름을 입력하세요.'
         type='text'

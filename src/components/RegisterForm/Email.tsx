@@ -6,6 +6,7 @@ import * as API from "@/lib/api";
 import Input from "@/components/commons/inputs/Input";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import { RegisterStepProps } from "./RegisterForm";
+import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
 
 const Email = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
@@ -28,15 +29,11 @@ const Email = (props: RegisterStepProps) => {
 
   return (
     <form className='space-y-4'>
-      <h1
-        className='text-xl font-bold
-	leading-tight tracking-tight
-	text-gray-900 md:text-2xl dark:text-white'
-      >
-        사용하실
-        <br />
-        <p className='inline text-green-600'>이메일</p>을 입력해주세요.
-      </h1>
+      <KeywordHighlight
+        before='사용하실'
+        keyword='이메일'
+        after='을 입력해주세요.'
+      />
       <div className='flex flex-col space-y-8'>
         <div className='relative'>
           <Input

@@ -5,6 +5,7 @@ import * as API from "@/lib/api";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import Input from "@/components/commons/inputs/Input";
 import { RegisterStepProps } from "./RegisterForm";
+import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
 
 const EmployeeNumber = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
@@ -20,14 +21,11 @@ const EmployeeNumber = (props: RegisterStepProps) => {
   };
   return (
     <form className='space-y-4'>
-      <h1
-        className='text-xl font-bold
-	leading-tight tracking-tight
-	text-gray-900 md:text-2xl dark:text-white'
-      >
-        임직원이신가요 ?<br />
-        <p className='inline text-green-600'>사번</p>을 입력해주세요 (선택)
-      </h1>
+      <KeywordHighlight
+        before='임직원이신가요 ?'
+        keyword='사번'
+        after='을 입력해주세요 (선택)'
+      />
       <div className='relative'>
         <Input
           state={[empNumberInput, setEmpNumberInput]}

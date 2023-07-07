@@ -4,6 +4,7 @@ import useFocus from "@/hooks/useFocus";
 import * as API from "@/lib/api";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import Input from "@/components/commons/inputs/Input";
+import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
 import { RegisterStepProps } from "./RegisterForm";
 
 const VerifyCode = (props: RegisterStepProps) => {
@@ -23,15 +24,11 @@ const VerifyCode = (props: RegisterStepProps) => {
 
   return (
     <form className='space-y-4'>
-      <h1
-        className='text-xl font-bold
-	leading-tight tracking-tight
-	text-gray-900 md:text-2xl dark:text-white'
-      >
-        메일로 전송된
-        <br />
-        <p className='inline text-green-600'>인증번호</p>를 확인해주세요.
-      </h1>
+      <KeywordHighlight
+        before='메일로 전송된'
+        keyword='인증번호'
+        after='를 입력해주세요.'
+      />
       <div className='flex flex-col space-y-8'>
         <div className='relative'>
           <Input
