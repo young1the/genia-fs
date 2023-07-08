@@ -23,3 +23,7 @@ lcheongchun28/src/main/java/com/example/cheongchun28/domain/reservation/controll
 lcheongchun28/src/main/java/com/example/cheongchun28/domain/reservation/repository/ReservationRepository.java,b\1\b1775d28758140fffdddfbc81424548413b7f691
 –
 fcheongchun28/src/main/java/com/example/cheongchun28/domain/reservation/service/ReservationService.java,4\b\4b1246248f578dda848ca40e3f896387731f829e
+€
+Pcheongchun28/src/main/java/com/example/cheongchun28/Cheongchun28Application.java,d\9\d98c78849d7ac057c7975ff97a41f8e8abe413a6
+Ž
+^cheongchun28/src/main/java/com/example/cheongchun28/domain/user/repository/UserRepository.java,0\0\009145acd3fb4174a02b98620257cc5ce7351f79
