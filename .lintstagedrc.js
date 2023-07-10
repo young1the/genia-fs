@@ -1,9 +1,15 @@
+const path = require("path");
+
+const buildEslintCommand = (filenames) =>
+  `next lint --fix --file ${filenames
+    .map((f) => path.relative(process.cwd(), f))
+    .join(" --file ")}`;
+
+const prettierCommand = (filenames) =>
+  `npx prettier --write --cache ${filenames
+    .map((f) => path.relative(process.cwd(), f))
+    .join(" --file ")}`;
+
 module.exports = {
-  // Run type-check on changes to TypeScript files
-  "**/*.ts?(x)": () => "npm run type-check",
-  // Lint & Prettify TS and JS files
-  "**/*.(ts|tsx|js)": (filenames) => [
-    `npm run lint .`,
-    `npx prettier --write .`,
-  ],
+  "*.{js,jsx,ts,tsx}": [buildEslintCommand, prettierCommand],
 };
