@@ -11,7 +11,7 @@ const EmployeeNumber = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
   const { focusElement } = useFocus<HTMLInputElement>();
   const [empNumberInput, setEmpNumberInput] = useState("");
-  const onClickHandler = async (e: React.FormEvent) => {
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["empNumber"] = empNumberInput;
     try {
@@ -22,7 +22,7 @@ const EmployeeNumber = (props: RegisterStepProps) => {
     }
   };
   return (
-    <form className='space-y-4'>
+    <form className='space-y-4' onSubmit={onSubmitHandler}>
       <KeywordHighlight
         before='임직원이신가요 ?'
         keyword='사번'
@@ -40,7 +40,6 @@ const EmployeeNumber = (props: RegisterStepProps) => {
         title='다음'
         type='submit'
         isActive={true}
-        onClickHandler={onClickHandler}
       />
     </form>
   );

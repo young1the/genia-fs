@@ -13,8 +13,11 @@ const Email = (props: RegisterStepProps) => {
   const [emailInput, setEmailInput] = useState("");
   const [isError, setIsError] = useState(false);
   const { focusElement, focus } = useFocus<HTMLInputElement>();
-  const onClickHandler = async (e: React.FormEvent) => {
+  const emailRegex = /^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isActive = emailRegex.test(emailInput);
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isActive) return;
     if (userInputs) userInputs["email"] = emailInput;
     try {
       await API.methods.sendCodeToEmail(userInputs);
@@ -25,10 +28,9 @@ const Email = (props: RegisterStepProps) => {
       focus();
     }
   };
-  const emailRegex = /^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   return (
-    <form className='space-y-4'>
+    <form className='space-y-4' onSubmit={onSubmitHandler}>
       <KeywordHighlight
         before='사용하실'
         keyword='이메일'
@@ -42,7 +44,7 @@ const Email = (props: RegisterStepProps) => {
             ref={focusElement}
             type='email'
           />
-          {emailInput !== "" && !emailRegex.test(emailInput) ? (
+          {emailInput !== "" && !isActive ? (
             <p className='text-red-600 absolute -bottom-7'>
               이메일 형식이 다릅니다.
             </p>
@@ -53,12 +55,7 @@ const Email = (props: RegisterStepProps) => {
             </p>
           ) : null}
         </div>
-        <GreenButton
-          title='다음'
-          type='submit'
-          isActive={emailRegex.test(emailInput)}
-          onClickHandler={onClickHandler}
-        />
+        <GreenButton title='다음' type='submit' isActive={isActive} />
       </div>
     </form>
   );

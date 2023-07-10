@@ -9,12 +9,14 @@ import { RegisterStepProps } from "./RegisterForm";
 
 const VerifyCode = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
-  const codeInputState = useState("");
+  const [codeInput, setCodeInput] = useState("");
   const [isError, setIsError] = useState(false);
   const { focusElement, focus } = useFocus<HTMLInputElement>();
-  const onClickHandler = async (e: React.FormEvent) => {
+  const isActive = !!codeInput
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (userInputs) userInputs["code"] = codeInputState[0];
+    if (!codeInput) return;
+    if (userInputs) userInputs["code"] = codeInput;
     try {
       await API.methods.verifyCode(userInputs);
       nextStep();
@@ -25,7 +27,7 @@ const VerifyCode = (props: RegisterStepProps) => {
   };
 
   return (
-    <form className='space-y-4'>
+    <form className='space-y-4' onSubmit={onSubmitHandler}>
       <KeywordHighlight
         before='메일로 전송된'
         keyword='인증번호'
@@ -34,7 +36,7 @@ const VerifyCode = (props: RegisterStepProps) => {
       <div className='flex flex-col space-y-8'>
         <div className='relative'>
           <Input
-            state={codeInputState}
+            state={[codeInput, setCodeInput]}
             ref={focusElement}
             placeholder='인증번호를 입력해주세요.'
             type='text'
@@ -46,8 +48,7 @@ const VerifyCode = (props: RegisterStepProps) => {
         <GreenButton
           title='다음'
           type='submit'
-          isActive={!!codeInputState[0]}
-          onClickHandler={onClickHandler}
+          isActive={isActive}
         />
       </div>
     </form>

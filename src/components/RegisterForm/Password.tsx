@@ -12,14 +12,21 @@ const Password = (props: RegisterStepProps) => {
   const passwordInputState = useState("");
   const repeatInputState = useState("");
   const { focusElement } = useFocus<HTMLInputElement>();
-  const onClickHandler = async (e: React.FormEvent) => {
+  const isActive = () => {
+    const passwordRegex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!@#$%^&*()\-=+_{}\[\];':"\\|,.<>\/?])/;
+    if (passwordRegex.test(passwordInputState[0]) && passwordInputState[0] === repeatInputState[0]) {
+      return true;
+    }
+    return false;
+  }
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isActive()) return;
     if (userInputs) userInputs["password"] = passwordInputState[0];
     nextStep();
-  };
-
+  }
   return (
-    <form className='space-y-4'>
+    <form className='space-y-4' onSubmit={onSubmitHandler}>
       <KeywordHighlight
         before='로그인에 사용하실'
         keyword='비밀번호'
@@ -33,8 +40,7 @@ const Password = (props: RegisterStepProps) => {
       <GreenButton
         title='다음'
         type='submit'
-        isActive={passwordInputState[0] === repeatInputState[0]}
-        onClickHandler={onClickHandler}
+        isActive={isActive()}
       />
     </form>
   );

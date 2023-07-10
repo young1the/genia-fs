@@ -10,14 +10,16 @@ const Name = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
   const [nameInput, setNameInput] = useState("");
   const { focusElement } = useFocus<HTMLInputElement>();
-  const onClickHandler = (e: React.FormEvent) => {
+  const isActive = !!nameInput;
+  const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isActive) return;
     if (userInputs) userInputs["username"] = nameInput;
     nextStep();
   };
 
   return (
-    <form className='flex flex-col space-y-4'>
+    <form className='flex flex-col space-y-4' onSubmit={onSubmitHandler}>
       <KeywordHighlight
         before='사용하실'
         keyword='이름'
@@ -32,8 +34,7 @@ const Name = (props: RegisterStepProps) => {
       <GreenButton
         title='다음'
         type='submit'
-        isActive={!!nameInput}
-        onClickHandler={onClickHandler}
+        isActive={isActive}
       />
     </form>
   );
