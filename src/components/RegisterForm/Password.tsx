@@ -11,7 +11,7 @@ const Password = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
   const passwordInputState = useState("");
   const repeatInputState = useState("");
-  const firstElement = useFocus<HTMLInputElement>();
+  const { focusElement } = useFocus<HTMLInputElement>();
   const onClickHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["password"] = passwordInputState[0];
@@ -25,7 +25,7 @@ const Password = (props: RegisterStepProps) => {
         keyword='비밀번호'
         after='를 입력해주세요.'
       />
-      <NewPasswordInput ref={firstElement} state={passwordInputState} />
+      <NewPasswordInput ref={focusElement} state={passwordInputState} />
       <RepeatPassword
         newPassword={passwordInputState[0]}
         state={repeatInputState}

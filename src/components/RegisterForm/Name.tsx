@@ -9,7 +9,7 @@ import { RegisterStepProps } from "./RegisterForm";
 const Name = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
   const [nameInput, setNameInput] = useState("");
-  const firstElement = useFocus<HTMLInputElement>();
+  const { focusElement } = useFocus<HTMLInputElement>();
   const onClickHandler = (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["username"] = nameInput;
@@ -26,7 +26,7 @@ const Name = (props: RegisterStepProps) => {
       <Input
         placeholder='이름을 입력하세요.'
         type='text'
-        ref={firstElement}
+        ref={focusElement}
         state={[nameInput, setNameInput]}
       />
       <GreenButton

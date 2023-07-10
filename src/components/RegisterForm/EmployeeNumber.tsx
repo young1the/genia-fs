@@ -9,14 +9,16 @@ import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
 
 const EmployeeNumber = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
-  const firstElement = useFocus<HTMLInputElement>();
+  const { focusElement } = useFocus<HTMLInputElement>();
   const [empNumberInput, setEmpNumberInput] = useState("");
   const onClickHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["empNumber"] = empNumberInput;
-    const registerResult = await API.methods.register(userInputs);
-    if (registerResult) {
+    try {
+      await API.methods.register(userInputs);
       nextStep();
+    } catch (e) {
+      alert("회원가입 실패");
     }
   };
   return (
@@ -29,7 +31,7 @@ const EmployeeNumber = (props: RegisterStepProps) => {
       <div className='relative'>
         <Input
           state={[empNumberInput, setEmpNumberInput]}
-          ref={firstElement}
+          ref={focusElement}
           placeholder='사번을 입력해주세요.'
           type='text'
         />

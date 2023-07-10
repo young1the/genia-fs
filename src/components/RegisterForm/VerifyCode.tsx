@@ -11,14 +11,16 @@ const VerifyCode = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
   const codeInputState = useState("");
   const [isError, setIsError] = useState(false);
-  const firstElement = useFocus<HTMLInputElement>();
+  const { focusElement, focus } = useFocus<HTMLInputElement>();
   const onClickHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["code"] = codeInputState[0];
-    const verifyCodeResult = await API.methods.verifyCode(userInputs);
-    if (verifyCodeResult) nextStep();
-    else {
+    try {
+      await API.methods.verifyCode(userInputs);
+      nextStep();
+    } catch (e) {
       setIsError(true);
+      focus();
     }
   };
 
@@ -33,7 +35,7 @@ const VerifyCode = (props: RegisterStepProps) => {
         <div className='relative'>
           <Input
             state={codeInputState}
-            ref={firstElement}
+            ref={focusElement}
             placeholder='인증번호를 입력해주세요.'
             type='text'
           />

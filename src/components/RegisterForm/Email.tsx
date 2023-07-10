@@ -12,18 +12,18 @@ const Email = (props: RegisterStepProps) => {
   const { userInputs, nextStep } = props;
   const [emailInput, setEmailInput] = useState("");
   const [isError, setIsError] = useState(false);
-  const firstElement = useFocus<HTMLInputElement>();
+  const { focusElement, focus } = useFocus<HTMLInputElement>();
   const onClickHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInputs) userInputs["email"] = emailInput;
-    const isOkay = await API.methods.sendCodeToEmail(userInputs);
-    if (!isOkay) {
+    try {
+      await API.methods.sendCodeToEmail(userInputs);
+      nextStep();
+    } catch (e) {
       setIsError(true);
       setEmailInput("");
-      if (firstElement.current) firstElement.current.focus();
-      return;
+      focus();
     }
-    nextStep();
   };
   const emailRegex = /^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -39,7 +39,7 @@ const Email = (props: RegisterStepProps) => {
           <Input
             state={[emailInput, setEmailInput]}
             placeholder='이메일을 입력하세요.'
-            ref={firstElement}
+            ref={focusElement}
             type='email'
           />
           {emailInput !== "" && !emailRegex.test(emailInput) ? (
