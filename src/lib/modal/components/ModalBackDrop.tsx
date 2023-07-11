@@ -11,13 +11,13 @@ interface ModalBackDropProps {
 const ModalBackDrop = ({
   children,
   state,
-  off = () => {},
-  opacity = 0.5,
+  off = () => { },
+  opacity = 0.2,
 }: ModalBackDropProps) => {
   return state ? (
     <ModalPortal>
       <div
-        className='"fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50 overflow-hidden"'
+        className="absolute z-50 top-0 left-0 w-screen h-screen flex justify-center items-center bg-black overflow-hidden"
         style={{ backgroundColor: `rgba(0, 0, 0, ${opacity})` }}
         onClick={off}
       >
