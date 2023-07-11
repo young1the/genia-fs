@@ -14,7 +14,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
-  const firstElement = useFocus<HTMLInputElement>();
+  const { focusElement, focus } = useFocus<HTMLInputElement>();
   const router = useRouter();
   const loginButtonHandler = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,7 +28,7 @@ const LoginForm = () => {
       setIsError(true);
       setPassword("");
       setEmail("");
-      firstElement?.current?.focus();
+      focus();
     } else router.replace("/");
   };
 
@@ -44,7 +44,7 @@ const LoginForm = () => {
         <Input
           state={[email, setEmail]}
           placeholder='이메일을 입력해주세요'
-          ref={firstElement}
+          ref={focusElement}
           type='email'
         />
         <PasswordInput state={[password, setPassword]} />

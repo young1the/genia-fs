@@ -26,11 +26,12 @@ export interface RegisterStepProps {
 const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const { current: userInputs } = useRef<User>(UserInputsInitialState);
-  const RegisterStep = useMemo(() => {
+  const MemoizedRegisterStep = useMemo(() => {
     const nextStep = () => {
       setCurrentStep((curr) => curr + 1);
     };
-    return [
+    const widthArray = ["w-1/6", "w-1/3", "w-1/2", "w-2/3", "w-5/6", "w-full"];
+    const RegisterStep = [
       <TermAndConditions
         key='약관동의'
         userInputs={userInputs}
@@ -55,8 +56,12 @@ const RegisterForm = () => {
       />,
       <Done key='완료' />,
     ];
+    return {
+      widthArray,
+      RegisterStep,
+    };
   }, [userInputs]);
-  const widthArray = ["w-1/6", "w-1/3", "w-1/2", "w-2/3", "w-5/6", "w-full"];
+  const { widthArray, RegisterStep } = MemoizedRegisterStep;
   return (
     <div
       className='flex flex-col justify-center w-full
