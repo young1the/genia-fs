@@ -1,7 +1,8 @@
-import Header from "@/components/Header";
-import "./globals.css";
 import { Inter } from "next/font/google";
-import AuthSessionProvider from "../components/HOC/AuthSessionProvider";
+import "./globals.css";
+import AuthSessionProvider from "@/components/HOC/AuthSessionProvider";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthSessionProvider>
           <Header />
-          {children}
+          <div className='bg-white'>{children}</div>
+          <Footer />
           <div id='modal'></div>
         </AuthSessionProvider>
       </body>
