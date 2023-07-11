@@ -1,5 +1,6 @@
 "use client";
 import ModalPortal from "./ModalPotal";
+import style from "./ModalBackDrop.module.css";
 
 interface ModalBackDropProps {
   children: JSX.Element;
@@ -11,13 +12,13 @@ interface ModalBackDropProps {
 const ModalBackDrop = ({
   children,
   state,
-  off = () => { },
+  off = () => {},
   opacity = 0.2,
 }: ModalBackDropProps) => {
   return state ? (
     <ModalPortal>
       <div
-        className="absolute z-50 top-0 left-0 w-screen h-screen flex justify-center items-center bg-black overflow-hidden"
+        className={style.backdrop}
         style={{ backgroundColor: `rgba(0, 0, 0, ${opacity})` }}
         onClick={off}
       >
