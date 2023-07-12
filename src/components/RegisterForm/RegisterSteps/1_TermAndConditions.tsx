@@ -2,8 +2,8 @@
 import { useState } from "react";
 import Checkbox from "@/components/commons/inputs/Checkbox";
 import GreenButton from "@/components/commons/buttons/GreenButton";
-import Term from "./Term";
-import { RegisterStepProps } from "./RegisterForm";
+import Term from "../Term";
+import { useRegisterStep } from "@/store/RegisterForm/hooks";
 
 type AgreementsType = "personalAgreed" | "marketingAgreed";
 
@@ -16,8 +16,8 @@ const AgreementsInitialState: AgreementsStateType = {
 
 const MandatoryAgreed: AgreementsType[] = ["personalAgreed"];
 
-const TermAndConditions = (props: RegisterStepProps) => {
-  const { nextStep } = props;
+const TermAndConditions = () => {
+  const { nextStep } = useRegisterStep();
   const [allAgreed, setAllAgreed] = useState(false);
   const [agreements, setAgreements] = useState<AgreementsStateType>(
     AgreementsInitialState

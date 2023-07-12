@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthSessionProvider from "@/components/HOC/AuthSessionProvider";
+import RecoilRootProvider from "@/components/HOC/RecoilRootProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -20,10 +21,12 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <AuthSessionProvider>
-          <Header />
-          <div className='bg-white'>{children}</div>
-          <Footer />
-          <div id='modal'></div>
+          <RecoilRootProvider>
+            <Header />
+            <div className='bg-white dark:bg-gray-800'>{children}</div>
+            <Footer />
+            <div id='modal'></div>
+          </RecoilRootProvider>
         </AuthSessionProvider>
       </body>
     </html>

@@ -4,17 +4,17 @@ import useFocus from "@/hooks/useFocus";
 import Input from "@/components/commons/inputs/Input";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
-import { RegisterStepProps } from "./RegisterForm";
+import { useRegisterStep } from "@/store/RegisterForm/hooks";
 
-const Name = (props: RegisterStepProps) => {
-  const { userInputs, nextStep } = props;
+const Name = () => {
   const [nameInput, setNameInput] = useState("");
   const { focusElement } = useFocus<HTMLInputElement>();
+  const { nextStep, setUserInput } = useRegisterStep();
   const isActive = !!nameInput;
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isActive) return;
-    if (userInputs) userInputs["username"] = nameInput;
+    setUserInput("username", nameInput);
     nextStep();
   };
 
@@ -31,11 +31,7 @@ const Name = (props: RegisterStepProps) => {
         ref={focusElement}
         state={[nameInput, setNameInput]}
       />
-      <GreenButton
-        title='다음'
-        type='submit'
-        isActive={isActive}
-      />
+      <GreenButton title='다음' type='submit' isActive={isActive} />
     </form>
   );
 };

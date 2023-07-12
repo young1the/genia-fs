@@ -1,19 +1,15 @@
-import React from "react";
+"use client";
+import { selectStepbarProps } from "@/store/RegisterForm/atoms";
+import { useRecoilValue } from "recoil";
 
-interface StepBarProps {
-  width: string;
-  description: string;
-}
-
-const StepBar = (props: StepBarProps) => {
-  const { width, description } = props;
-
+const StepBar = () => {
+  const { width, description } = useRecoilValue(selectStepbarProps);
   return (
     <div className='w-full h-1 bg-gray-200 my-8'>
       <div
         className={`flex justify-end h-1 bg-green-600 transition-all ease ${width}`}
       >
-        <p className='absolute text-xs md:text-sm text-green-600 -mt-5'>
+        <p className=' absolute text-xs md:text-sm text-green-600 -mt-5'>
           {description}
         </p>
       </div>

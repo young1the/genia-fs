@@ -4,23 +4,28 @@ import useFocus from "@/hooks/useFocus";
 import * as API from "@/lib/api";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import Input from "@/components/commons/inputs/Input";
-import { RegisterStepProps } from "./RegisterForm";
 import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
+import { useRegisterStep } from "@/store/RegisterForm/hooks";
 
-const EmployeeNumber = (props: RegisterStepProps) => {
-  const { userInputs, nextStep } = props;
-  const { focusElement } = useFocus<HTMLInputElement>();
+const EmployeeNumber = () => {
   const [empNumberInput, setEmpNumberInput] = useState("");
+  const { focusElement } = useFocus<HTMLInputElement>();
+  const { nextStep, userInput, setUserInput } = useRegisterStep({
+    api: async () => {
+      return API.methods.verifyCode(userInput);
+    },
+    errorCallback: () => {
+      focus();
+      setEmpNumberInput("");
+    },
+  });
+
   const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (userInputs) userInputs["empNumber"] = empNumberInput;
-    try {
-      await API.methods.register(userInputs);
-      nextStep();
-    } catch (e) {
-      alert("회원가입 실패");
-    }
+    setUserInput("empNumber", empNumberInput);
+    nextStep();
   };
+
   return (
     <form className='space-y-4' onSubmit={onSubmitHandler}>
       <KeywordHighlight
@@ -36,11 +41,7 @@ const EmployeeNumber = (props: RegisterStepProps) => {
           type='text'
         />
       </div>
-      <GreenButton
-        title='다음'
-        type='submit'
-        isActive={true}
-      />
+      <GreenButton title='다음' type='submit' isActive={true} />
     </form>
   );
 };

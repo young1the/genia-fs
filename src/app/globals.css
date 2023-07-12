@@ -4,18 +4,19 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
+  --background: 229,231,235;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
+    --background: 17,24,39;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: rgb(229 231 235);
-  ;
+  background-color: rgb(var(--background));
 }
 
 body, html {

@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { signIn } from "next-auth/react";
 import GreenButton from "@/components/commons/buttons/GreenButton";

@@ -5,28 +5,29 @@ import useFocus from "@/hooks/useFocus";
 import * as API from "@/lib/api";
 import Input from "@/components/commons/inputs/Input";
 import GreenButton from "@/components/commons/buttons/GreenButton";
-import { RegisterStepProps } from "./RegisterForm";
 import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
+import { useRegisterStep } from "@/store/RegisterForm/hooks";
 
-const Email = (props: RegisterStepProps) => {
-  const { userInputs, nextStep } = props;
+const Email = () => {
   const [emailInput, setEmailInput] = useState("");
-  const [isError, setIsError] = useState(false);
   const { focusElement, focus } = useFocus<HTMLInputElement>();
+  const { nextStep, isError, setUserInput } = useRegisterStep({
+    api: async () => {
+      return API.methods.sendCodeToEmail({ email: emailInput });
+    },
+    errorCallback: () => {
+      focus();
+      setEmailInput("");
+    },
+  });
+
   const emailRegex = /^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const isActive = emailRegex.test(emailInput);
   const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isActive) return;
-    if (userInputs) userInputs["email"] = emailInput;
-    try {
-      await API.methods.sendCodeToEmail(userInputs);
-      nextStep();
-    } catch (e) {
-      setIsError(true);
-      setEmailInput("");
-      focus();
-    }
+    setUserInput("email", emailInput);
+    nextStep();
   };
 
   return (
@@ -44,12 +45,12 @@ const Email = (props: RegisterStepProps) => {
             ref={focusElement}
             type='email'
           />
-          {emailInput !== "" && !isActive ? (
+          {!!emailInput && !isActive ? (
             <p className='text-red-600 absolute -bottom-7'>
               이메일 형식이 다릅니다.
             </p>
           ) : null}
-          {isError && emailInput === "" ? (
+          {!emailInput && isError ? (
             <p className='text-red-600 absolute -bottom-7'>
               이메일이 중복입니다.
             </p>
