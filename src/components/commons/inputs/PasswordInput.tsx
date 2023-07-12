@@ -72,6 +72,7 @@ const PasswordInput = (props: PasswordInputProps) => {
           type={`${show ? "text" : "password"}`}
           className={inputStyle}
           value={value}
+          autoComplete='current-password'
           onChange={(e) => setValue(e.target.value)}
           placeholder='비밀번호를 입력하세요'
         />

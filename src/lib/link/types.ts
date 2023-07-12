@@ -6,6 +6,7 @@ export type LinkKey =
   | "LOGOUT"
   | "MYPAGE"
   | "SUPER"
+  | "FINDPWD"
   | "REGISTER";
 export type UserStatus = "authenticated" | "loading" | "unauthenticated";
 export type NavigationType = { title: string; href: string };

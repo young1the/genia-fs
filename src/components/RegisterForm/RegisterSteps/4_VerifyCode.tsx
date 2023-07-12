@@ -5,26 +5,31 @@ import * as API from "@/lib/api";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import Input from "@/components/commons/inputs/Input";
 import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
-import { RegisterStepProps } from "./RegisterForm";
+import { useRegisterStep } from "@/store/RegisterForm/hooks";
 
-const VerifyCode = (props: RegisterStepProps) => {
-  const { userInputs, nextStep } = props;
+const VerifyCode = () => {
   const [codeInput, setCodeInput] = useState("");
-  const [isError, setIsError] = useState(false);
   const { focusElement, focus } = useFocus<HTMLInputElement>();
-  const isActive = !!codeInput
-  const onSubmitHandler = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!codeInput) return;
-    if (userInputs) userInputs["code"] = codeInput;
-    try {
-      await API.methods.verifyCode(userInputs);
-      nextStep();
-    } catch (e) {
-      setIsError(true);
+  const { nextStep, isError, userInput, setUserInput } = useRegisterStep({
+    api: async () => {
+      return API.methods.verifyCode({
+        email: userInput.email,
+        code: codeInput,
+      });
+    },
+    errorCallback: () => {
       focus();
-    }
+      setCodeInput("");
+    },
+  });
+
+  const onSubmitHandler = async (e: React.FormEvent) => {
+    if (!codeInput) return;
+    e.preventDefault();
+    setUserInput("code", codeInput);
+    nextStep();
   };
+  const isActive = !!codeInput;
 
   return (
     <form className='space-y-4' onSubmit={onSubmitHandler}>
@@ -45,11 +50,7 @@ const VerifyCode = (props: RegisterStepProps) => {
             <p className='text-red-600 absolute'>코드를 다시 확인해주세요.</p>
           ) : null}
         </div>
-        <GreenButton
-          title='다음'
-          type='submit'
-          isActive={isActive}
-        />
+        <GreenButton title='다음' type='submit' isActive={isActive} />
       </div>
     </form>
   );
