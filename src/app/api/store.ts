@@ -12,6 +12,10 @@ type UserVerification = {
   email: string;
   code: number;
 };
+// type passwordUpdate = {
+//   password: number;
+//   newPassword: number;
+// };
 
 class UserDB {
   db: User[] = [
@@ -63,6 +67,22 @@ class UserDB {
     }
     return false;
   }
+  passwordReset(newUser: UserEmail): number {
+    const { email } = newUser;
+    let result = -1;
+
+    for (const user of this.db) {
+      if (user.email == email) {
+        const randomPassword = Math.floor(Math.random() * 1000);
+        console.log(randomPassword);      
+        user.password = randomPassword + '';  
+        result = randomPassword;
+        return result;
+  
+      }
+    }
+      return result;
+  }
 
   emailVerification(newEmailVerify: UserVerification): boolean {
     const { email, code } = newEmailVerify;
@@ -74,6 +94,16 @@ class UserDB {
     }
     return false;
   }
+  // passwordUpdate(newEmailVerify: passwordUpdate): boolean {
+  //   const { password, newPassword } = newEmailVerify;
+  //   // console.log(email,code);
+  //   for (const user of this.vfdb) {
+  //     if (user.email == email && user.code == code) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 }
 
 export const userDB = new UserDB();

@@ -1,21 +1,21 @@
-import { userDB } from "../store";
+import { userDB } from "@/app/api/store";
 
 export const POST = async (request: Request) => {
   try {
     const { email } = await request.json();
-    const result = userDB.emailExist({ email });
-    if (result == true) {
+    const result = userDB.passwordReset({ email });
+    if (result != -1) {
       return new Response(
-        JSON.stringify({ message: "이미 존재하는 이메일입니다. " }),
+        JSON.stringify({ message: "비밀번호 초기화 성공 " + result }),
         {
-          status: 401,
+          status: 201,
         }
       );
     }
     return new Response(
-      JSON.stringify({ message: "가입 가능한 이메일입니다." }),
+      JSON.stringify({ message: "이메일 존재 X " }),
       {
-        status: 201,
+        status: 401,
       }
     );
   } catch (error) {
