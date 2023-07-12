@@ -2,15 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .cc-border-normal {
+    @apply border border-gray-300 dark:border-gray-600;
+  }
+  .cc-input {
+    @apply cc-border-normal bg-gray-50 focus:outline-primary rounded-lg w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white;
+  }
+  .cc-text-black {
+    @apply text-black dark:text-white;
+  }
+  .cc-text-gray {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background: 229,231,235;
+  --background: 229, 231, 235;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background: 17,24,39;
+    --background: 17, 24, 39;
   }
 }
 
@@ -19,6 +34,7 @@ body {
   background-color: rgb(var(--background));
 }
 
-body, html {
+body,
+html {
   min-height: 100%;
 }

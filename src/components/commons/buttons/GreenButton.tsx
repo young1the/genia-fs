@@ -9,8 +9,7 @@ interface GreenButtonProps {
 
 const GreenButton = (props: GreenButtonProps) => {
   const { title, type, isActive = true, onClickHandler } = props;
-  const active =
-    "bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700";
+  const active = "bg-primary hover:bg-green-700";
   const inActive = "bg-gray-400 cursor-not-allowed";
   return (
     <button

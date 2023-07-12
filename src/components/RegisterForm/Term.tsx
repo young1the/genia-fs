@@ -2,7 +2,7 @@ import React from "react";
 // TODO : 정확한 데이터 넣기
 const Term = () => {
   return (
-    <div className='h-40 overflow-auto bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+    <div className='h-40 cc-text-black overflow-auto bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500'>
       국회의원이 회기전에 체포 또는 구금된 때에는 현행범인이 아닌 한 국회의
       요구가 있으면 회기중 석방된다. 국가는 전통문화의 계승·발전과 민족문화의
       창달에 노력하여야 한다. 이 헌법시행 당시의 법령과 조약은 이 헌법에

@@ -4,7 +4,13 @@ import Image from "next/image";
 const Logo = () => {
   return (
     <Link href='/'>
-      <Image src='/vercel.svg' width={100} height={32} alt='Logo' />
+      <Image
+        src='/vercel.svg'
+        className='h-10'
+        width={100}
+        height={40}
+        alt='Logo'
+      />
     </Link>
   );
 };

@@ -22,6 +22,9 @@ const TermAndConditions = () => {
   const [agreements, setAgreements] = useState<AgreementsStateType>(
     AgreementsInitialState
   );
+  const isActive = MandatoryAgreed.every(
+    (agreed) => agreements[agreed] === true
+  );
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     const newAgreements = { ...agreements, [name]: checked };
@@ -44,6 +47,7 @@ const TermAndConditions = () => {
   };
   const formOnSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isActive) return;
     nextStep();
   };
 
@@ -82,9 +86,7 @@ const TermAndConditions = () => {
       <GreenButton
         title='다음'
         type='submit'
-        isActive={MandatoryAgreed.every(
-          (agreed) => agreements[agreed] === true
-        )}
+        isActive={isActive}
         onClickHandler={formOnSubmitHandler}
       />
     </form>

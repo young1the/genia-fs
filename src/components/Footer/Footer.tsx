@@ -2,15 +2,15 @@ import Logo from "../Header/Logo";
 
 const Footer = () => {
   return (
-    <footer className='bg-gray-200 dark:bg-gray-900'>
+    <footer>
       <div
         className='flex items-center
         flex-col w-full
         max-w-screen-xl
         mx-auto
         justify-center
-        p-6
-        md:py-8 space-y-4'
+        p-6 md:py-8
+        space-y-4'
       >
         <div className='lg:w-full lg:flex lg:items-center lg:justify-evenly'>
           <div className='mb-4 lg:mb-0'>
@@ -18,7 +18,7 @@ const Footer = () => {
           </div>
           <ul
             className='grid justify-center items-start
-          text-sm md:text-md font-medium text-gray-500 dark:text-gray-400'
+          text-sm md:text-md font-medium cc-text-gray'
           >
             <li>
               주소 : 서울특별시 디지털로9길 23 마리오아울렛2관 11층
@@ -30,13 +30,13 @@ const Footer = () => {
             <li>접수 문의 및 사이트 이용 문의 : 02-3282-8589</li>
           </ul>
         </div>
-        <span className='block text-sm text-gray-500 text-center dark:text-gray-400'>
+        <p className='text-sm text-center cc-text-gray'>
           COPYRIGHT ⓒ 2023 BY{" "}
           <a href='https://www.chunjae.co.kr/' className='underline'>
             CHUNJAE CO.,LTD.
           </a>{" "}
           ALL RIGHTS RESERVED.
-        </span>
+        </p>
       </div>
     </footer>
   );

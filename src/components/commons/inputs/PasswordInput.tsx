@@ -1,7 +1,6 @@
 "use client";
 
 import useToggle from "@/hooks/useToggle";
-import { inputStyle } from "./Input";
 import { Dispatch, SetStateAction } from "react";
 
 const EyeSVGS = {
@@ -70,7 +69,7 @@ const PasswordInput = (props: PasswordInputProps) => {
         </div>
         <input
           type={`${show ? "text" : "password"}`}
-          className={inputStyle}
+          className='cc-input'
           value={value}
           autoComplete='current-password'
           onChange={(e) => setValue(e.target.value)}

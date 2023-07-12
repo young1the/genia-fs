@@ -17,12 +17,12 @@ const ButtonUser = () => {
         <button
           onClick={toggleState}
           ref={buttonRef}
-          className='w-8 h-8 hidden md:flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600'
+          className='w-10 h-10 hidden md:flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600'
         >
           <Image
-            width={32}
-            height={32}
-            className='w-8 h-8 rounded-full'
+            width={40}
+            height={40}
+            className='w-10 h-10 rounded-full'
             src='/next.svg'
             alt='User Profile'
           />
@@ -32,7 +32,7 @@ const ButtonUser = () => {
     loading: <></>,
     unauthenticated: (
       <Link
-        className='hidden md:flex text-white bg-green-600 hover:bg-green-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700'
+        className='hidden md:flex text-white bg-primary hover:bg-green-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-green-700'
         href={LINK.constants.URLS["LOGIN"]}
       >
         {LINK.constants.TITLES["LOGIN"]}

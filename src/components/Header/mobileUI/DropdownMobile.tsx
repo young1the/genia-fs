@@ -5,13 +5,13 @@ import LinkDropdown from "./LinkDropdown";
 import * as LINK from "@/lib/link";
 
 const dropdownContainerStyle =
-  "flex flex-col font-medium p-2 border border-gray-100 rounded-lg dark:bg-gray-800 dark:border-gray-700";
+  "flex flex-col font-medium p-2 border-gray-100 dark:bg-gray-800 dark:border-gray-700";
 
 const DropdownMobile = () => {
   const { status } = useSession();
   return (
     <nav
-      className='absolute bg-white border-gray-200 dark:bg-gray-900
+      className='absolute bg-white border border-gray-100 dark:bg-gray-900
 		top-16 left-0
 		items-center justify-between
 		divide-y
