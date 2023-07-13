@@ -1,5 +1,5 @@
 "use client";
-import { selectStepbarProps } from "@/store/RegisterForm/atoms";
+import { selectStepbarProps } from "@/store/Register/atoms";
 import { useRecoilValue } from "recoil";
 
 const StepBar = () => {

@@ -5,7 +5,7 @@ import * as API from "@/lib/api";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import Input from "@/components/commons/inputs/Input";
 import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
-import { useRegisterStep } from "@/store/RegisterForm/hooks";
+import { useRegisterStep } from "@/store/Register/hooks";
 
 const VerifyCode = () => {
   const [codeInput, setCodeInput] = useState("");

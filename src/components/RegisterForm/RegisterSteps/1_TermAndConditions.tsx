@@ -3,7 +3,7 @@ import { useState } from "react";
 import Checkbox from "@/components/commons/inputs/Checkbox";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import Term from "../Term";
-import { useRegisterStep } from "@/store/RegisterForm/hooks";
+import { useRegisterStep } from "@/store/Register/hooks";
 
 type AgreementsType = "personalAgreed" | "marketingAgreed";
 

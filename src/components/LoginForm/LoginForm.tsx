@@ -29,7 +29,9 @@ const LoginForm = () => {
       setPassword("");
       setEmail("");
       focus();
-    } else router.replace("/");
+    } else {
+      router.replace("/");
+    }
   };
 
   return (

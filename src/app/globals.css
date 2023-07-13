@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer components {
+  .cc-page-wrapper {
+    @apply flex flex-col items-center justify-center px-6 py-8 mx-auto
+  }
   .cc-border-normal {
     @apply border border-gray-300 dark:border-gray-600;
   }

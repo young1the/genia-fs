@@ -1,9 +1,6 @@
 "use client";
 import { useRecoilValue } from "recoil";
-import {
-  registerStepIndex,
-  stepBarLoadStatus,
-} from "@/store/RegisterForm/atoms";
+import { registerStepIndex, stepBarLoadStatus } from "@/store/Register/atoms";
 import { RegisterSteps } from "./RegisterSteps";
 import StepBar from "./StepBar";
 

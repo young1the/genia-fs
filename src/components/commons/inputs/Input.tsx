@@ -22,6 +22,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <input
+        autoComplete='username'
         type={type}
         className='cc-input'
         placeholder={placeholder}

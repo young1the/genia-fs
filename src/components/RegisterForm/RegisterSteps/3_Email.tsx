@@ -6,7 +6,7 @@ import * as API from "@/lib/api";
 import Input from "@/components/commons/inputs/Input";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
-import { useRegisterStep } from "@/store/RegisterForm/hooks";
+import { useRegisterStep } from "@/store/Register/hooks";
 
 const Email = () => {
   const [emailInput, setEmailInput] = useState("");
