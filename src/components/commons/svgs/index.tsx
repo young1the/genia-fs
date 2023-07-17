@@ -74,4 +74,20 @@ export const List = ({ className, fill = "currentColor" }: SVGProps) => {
       <svg fill={fill} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m6.29 14.29-.29.3v-7.59a1 1 0 0 0 -2 0v7.59l-.29-.3a1 1 0 0 0 -1.42 1.42l2 2a1 1 0 0 0 .33.21.94.94 0 0 0 .76 0 1 1 0 0 0 .33-.21l2-2a1 1 0 0 0 -1.42-1.42zm4.71-6.29h10a1 1 0 0 0 0-2h-10a1 1 0 0 0 0 2zm10 3h-10a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2zm0 5h-10a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2z" /></svg>
     </div>
   )
+};
+export const QRScan = ({ className, fill = "currentColor" }: SVGProps) => {
+  return (
+    <div className={className}>
+      <svg fill={fill} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m8 21h-4a1 1 0 0 1 -1-1v-4a1 1 0 0 0 -2 0v4a3 3 0 0 0 3 3h4a1 1 0 0 0 0-2zm14-6a1 1 0 0 0 -1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 0 0 2h4a3 3 0 0 0 3-3v-4a1 1 0 0 0 -1-1zm-2-14h-4a1 1 0 0 0 0 2h4a1 1 0 0 1 1 1v4a1 1 0 0 0 2 0v-4a3 3 0 0 0 -3-3zm-18 8a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 0 0-2h-4a3 3 0 0 0 -3 3v4a1 1 0 0 0 1 1zm8-4h-4a1 1 0 0 0 -1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4a1 1 0 0 0 -1-1zm-1 4h-2v-2h2zm5 2h4a1 1 0 0 0 1-1v-4a1 1 0 0 0 -1-1h-4a1 1 0 0 0 -1 1v4a1 1 0 0 0 1 1zm1-4h2v2h-2zm-5 6h-4a1 1 0 0 0 -1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4a1 1 0 0 0 -1-1zm-1 4h-2v-2h2zm5-1a1 1 0 0 0 1-1 1 1 0 0 0 0-2h-1a1 1 0 0 0 -1 1v1a1 1 0 0 0 1 1zm4-3a1 1 0 0 0 -1 1v3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1v-4a1 1 0 0 0 -1-1zm-4 4a1 1 0 1 0 1 1 1 1 0 0 0 -1-1z" /></svg>
+    </div>
+  )
+}
+export const Plus = ({ className, fill = "currentColor" }: SVGProps) => {
+  return (
+    <div className={className}>
+      <svg fill={fill} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Zm4-9H13V8a1,1,0,0,0-2,0v3H8a1,1,0,0,0,0,2h3v3a1,1,0,0,0,2,0V13h3a1,1,0,0,0,0-2Z" />
+      </svg>
+    </div>
+  )
 }

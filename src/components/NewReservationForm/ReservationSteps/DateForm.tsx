@@ -8,26 +8,27 @@ import { useState } from "react";
 const options = {
   title: "",
   autoHide: true,
-  todayBtn: false,
-  clearBtn: true,
+  todayBtn: true,
+  todayBtnText: "오늘",
+  clearBtn: false,
   maxDate: new Date("2030-01-01"),
-  minDate: new Date("1950-01-01"),
+  minDate: new Date("2023-07-07"),
   theme: {
     background: "",
-    todayBtn: "",
+    todayBtn: "bg-primary hover:bg-primary-hover",
     clearBtn: "",
     icons: "",
     text: "",
-    disabledText: "",
     input: "",
-    inputIcon: "",
-    selected: "",
+    disabledText: "",
+    inputIcon: "cc-text-black",
+    selected: "bg-primary hover:bg-primary-hover",
   },
+  weekDays: ["월", "화", "수", "목", "금", "토", "일"],
   icons: {
     prev: () => <span>{"<-"}</span>,
     next: () => <span>{"->"}</span>,
   },
-  datepickerClassNames: "absolute",
   defaultDate: new Date(),
   language: "ko",
 };
@@ -36,7 +37,7 @@ const DateForm = () => {
   const setDateInput = useSetRecoilState(reservationInput("DATE"));
   const [show, setShow] = useState(false);
   return (
-    <form className='flex flex-col space-y-8 relative'>
+    <div className='flex flex-col space-y-8 relative'>
       <KeywordHighlight
         before='예약할'
         keyword='날짜'
@@ -58,7 +59,7 @@ const DateForm = () => {
           setShow(state);
         }}
       />
-    </form>
+    </div>
   );
 };
 

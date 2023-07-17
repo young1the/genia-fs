@@ -1,10 +1,16 @@
 import { ReservationType } from "@/components/NewReservationForm";
-import { newReservationOrder } from "@/components/NewReservationForm/IconContainer";
 import { atom, atomFamily, selector } from "recoil";
+
+export const newReservationOrder: ReservationType[] = [
+  "TITLE",
+  "DATE",
+  "TIME",
+  "ROOM",
+];
 
 export const reservationStep = atom<ReservationType>({
   key: "reservationStep",
-  default: "ROOM",
+  default: newReservationOrder[0],
 });
 
 export const reservationInput = atomFamily<string, ReservationType>({

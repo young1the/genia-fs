@@ -2,13 +2,13 @@ import { LinkKey, NavigationType, UserStatus } from "./types";
 
 export const URLS: Record<LinkKey, string> = {
   HOME: "/",
-  INFO: "/info/",
-  RESERVATION: "/reservation/",
-  LOGIN: "/user/login/",
+  INFO: "/info",
+  RESERVATION: "/reservation",
+  LOGIN: "/user/login",
   LOGOUT: "/user/signout",
-  MYPAGE: "/mypage/",
-  SUPER: "/super/",
-  REGISTER: "/user/register/",
+  MYPAGE: "/mypage",
+  SUPER: "/super",
+  REGISTER: "/user/register",
   FINDPWD: "/user/password",
 } as const;
 
