@@ -19,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} bg-gray-200 dark:bg-gray-900`}>
+      <body
+        className={`${inter.className} bg-gray-200 dark:bg-gray-900 scrollbar-none md:scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100`}
+      >
         <AuthSessionProvider>
           <RecoilRootProvider>
             <Header />

@@ -1,6 +1,7 @@
 .backdrop {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
@@ -9,5 +10,5 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 42;
-    overflow: hidden;
+    overflow-y: auto;
 }
