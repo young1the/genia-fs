@@ -19,10 +19,11 @@ const Checkbox = (props: CheckboxProps) => {
           name={name}
           checked={checked}
           onChange={onChangeHandler}
-          className='w-4 h-4 rounded-full text-green-600
-          bg-gray-100 border-gray-300 focus:ring-green-500
-          dark:focus:ring-green-600 dark:ring-offset-gray-800
-          focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+          className='w-4 h-4 rounded-full
+          accent-primary cc-border-normal
+          bg-gray-100 focus:ring-green-500
+          dark:focus:ring-primary dark:ring-offset-gray-800
+          focus:ring-2 dark:bg-gray-700'
         />
         <label
           className={`${

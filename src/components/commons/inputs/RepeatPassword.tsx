@@ -1,7 +1,6 @@
 "use client";
 
 import useToggle from "@/hooks/useToggle";
-import { inputStyle } from "./Input";
 import { PasswordInputProps } from "./PasswordInput";
 import { useEffect, useState } from "react";
 
@@ -65,7 +64,7 @@ const RepeatPassword = (props: RepeatPassword) => {
   useEffect(() => {
     setIsSamePassword(!!newPassword && newPassword === value);
   }, [newPassword, value]);
-  const valid = "text-green-600";
+  const valid = "text-primary";
   const invalid = "text-gray-400";
   return (
     <div>
@@ -78,7 +77,7 @@ const RepeatPassword = (props: RepeatPassword) => {
         </div>
         <input
           type={`${show ? "text" : "password"}`}
-          className={inputStyle}
+          className='cc-input'
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder='비밀번호 확인'

@@ -3,7 +3,7 @@ import LoginForm from "@/components/LoginForm/LoginForm";
 
 const page = () => {
   return (
-    <section className='flex items-center justify-center px-6 py-8'>
+    <section className='cc-page-wrapper'>
       <UnauthenticatedOnly>
         <LoginForm />
       </UnauthenticatedOnly>

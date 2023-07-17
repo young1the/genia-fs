@@ -5,7 +5,7 @@ import NewPasswordInput from "@/components/commons/inputs/NewPasswordInput";
 import RepeatPassword from "@/components/commons/inputs/RepeatPassword";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import KeywordHighlight from "@/components/commons/texts/KeywordHighlight";
-import { useRegisterStep } from "@/store/RegisterForm/hooks";
+import { useRegisterStep } from "@/store/Register/hooks";
 
 const Password = () => {
   const [passwordInput, setPasswordInput] = useState("");

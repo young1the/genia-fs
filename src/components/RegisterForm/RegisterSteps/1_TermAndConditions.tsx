@@ -3,7 +3,7 @@ import { useState } from "react";
 import Checkbox from "@/components/commons/inputs/Checkbox";
 import GreenButton from "@/components/commons/buttons/GreenButton";
 import Term from "../Term";
-import { useRegisterStep } from "@/store/RegisterForm/hooks";
+import { useRegisterStep } from "@/store/Register/hooks";
 
 type AgreementsType = "personalAgreed" | "marketingAgreed";
 
@@ -21,6 +21,9 @@ const TermAndConditions = () => {
   const [allAgreed, setAllAgreed] = useState(false);
   const [agreements, setAgreements] = useState<AgreementsStateType>(
     AgreementsInitialState
+  );
+  const isActive = MandatoryAgreed.every(
+    (agreed) => agreements[agreed] === true
   );
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
@@ -44,6 +47,7 @@ const TermAndConditions = () => {
   };
   const formOnSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isActive) return;
     nextStep();
   };
 
@@ -82,9 +86,7 @@ const TermAndConditions = () => {
       <GreenButton
         title='다음'
         type='submit'
-        isActive={MandatoryAgreed.every(
-          (agreed) => agreements[agreed] === true
-        )}
+        isActive={isActive}
         onClickHandler={formOnSubmitHandler}
       />
     </form>

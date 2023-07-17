@@ -1,7 +1,6 @@
 "use client";
 
 import useToggle from "@/hooks/useToggle";
-import { inputStyle } from "./Input";
 import { PasswordInputProps } from "./PasswordInput";
 import { forwardRef, useEffect, useState } from "react";
 
@@ -70,7 +69,7 @@ const NewPasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       setHasSpecial(specialRegex.test(value));
       setMoreThanTen(value.length >= 10);
     }, [value]);
-    const valid = "text-green-600";
+    const valid = "text-primary";
     const invalid = "text-gray-400";
     return (
       <div>
@@ -83,7 +82,7 @@ const NewPasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           </div>
           <input
             type={`${show ? "text" : "password"}`}
-            className={inputStyle}
+            className='cc-input'
             value={value}
             ref={ref}
             onChange={(e) => setValue(e.target.value)}

@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import * as LINK from "@/lib/link";
-import LinkDropdown from "./LinkDropdown";
+import LinkDropdown from "../mobileUI/LinkDropdown";
 
 const DropdownUser = () => {
   const { status } = useSession();

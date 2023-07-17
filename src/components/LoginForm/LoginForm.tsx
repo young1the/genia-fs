@@ -29,14 +29,16 @@ const LoginForm = () => {
       setPassword("");
       setEmail("");
       focus();
-    } else router.replace("/");
+    } else {
+      router.replace("/");
+    }
   };
 
   return (
     <div className='w-full bg-white relative rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 space-y-10 md:space-y-12 sm:p-8'>
       <TitleText title={LINK.constants.TITLES["LOGIN"]} />
       {isError && email === "" && password === "" ? (
-        <p className=' text-red-600 absolute top-5 text-xs md:text-sm md:top-6'>
+        <p className='text-red-600 absolute top-5 text-xs md:text-sm md:top-6'>
           아이디 또는 비밀번호가 올바르지 않습니다.
         </p>
       ) : null}
@@ -57,14 +59,14 @@ const LoginForm = () => {
         <p className='text-sm font-light text-gray-500 dark:text-gray-400 text-center'>
           <Link
             href={LINK.constants.URLS["FINDPWD"]}
-            className='font-medium text-primary-600 hover:underline dark:text-primary-500'
+            className='font-medium hover:underline'
           >
             {LINK.constants.TITLES["FINDPWD"]}
           </Link>
           {"    "}|{"    "}
           <Link
             href={LINK.constants.URLS["REGISTER"]}
-            className='font-medium text-primary-600 hover:underline dark:text-primary-500'
+            className='font-medium hover:underline'
           >
             {LINK.constants.TITLES["REGISTER"]}
           </Link>

@@ -5,7 +5,7 @@ interface TitleTextProps {
 const TitleText = (props: TitleTextProps) => {
   const { title } = props;
   return (
-    <h1 className='text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
+    <h1 className='cc-text-black text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
       {title}
     </h1>
   );

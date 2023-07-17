@@ -8,8 +8,8 @@ const LinkNavigationBar = (props: LINK.types.NavigationType) => {
     <Link
       href={href}
       className='block
-          text-gray-900
-      hover:text-green-700 dark:text-white
+      cc-text-black
+      hover:text-green-700
       dark:hover:text-green-500 dark:hover:bg-gray-700
       dark:border-gray-700'
     >
