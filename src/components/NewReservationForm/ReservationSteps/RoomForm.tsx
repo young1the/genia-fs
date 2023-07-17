@@ -77,7 +77,7 @@ const RoomForm = () => {
   const [optionSeleted, setOptionSeleted] = useState<number>(0);
   const [roomInput, setRoomInput] = useRecoilState(reservationInput("ROOM"));
   return (
-    <form className='flex flex-col space-y-8'>
+    <div className='flex flex-col space-y-8'>
       <KeywordHighlight
         before='예약할'
         keyword='강의실'
@@ -130,7 +130,7 @@ const RoomForm = () => {
           })}
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

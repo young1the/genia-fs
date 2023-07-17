@@ -36,7 +36,7 @@ const DateForm = () => {
   const setDateInput = useSetRecoilState(reservationInput("DATE"));
   const [show, setShow] = useState(false);
   return (
-    <form className='flex flex-col space-y-8 relative'>
+    <div className='flex flex-col space-y-8 relative'>
       <KeywordHighlight
         before='예약할'
         keyword='날짜'
@@ -58,7 +58,7 @@ const DateForm = () => {
           setShow(state);
         }}
       />
-    </form>
+    </div>
   );
 };
 

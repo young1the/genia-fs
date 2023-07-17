@@ -70,7 +70,7 @@ const TimeForm = () => {
     }
   }, [startTime, endTime]);
   return (
-    <form className='flex flex-col space-y-8'>
+    <div className='flex flex-col space-y-8'>
       <KeywordHighlight before='예약할' keyword='시간' after='을 적어주세요.' />
       <div className='flex w-full justify-between'>
         <div className='flex flex-col'>
@@ -116,7 +116,7 @@ const TimeForm = () => {
           );
         })}
       </div>
-    </form>
+    </div>
   );
 };
 
