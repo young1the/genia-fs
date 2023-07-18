@@ -38,15 +38,14 @@ const TimeElement = ({
   return (
     <div
       onClick={onClick}
-      className={`${
-        taken
-          ? "bg-gray-300 cursor-not-allowed"
-          : selected
+      className={`${taken
+        ? "bg-gray-300 cursor-not-allowed"
+        : selected
           ? "bg-primary text-white cursor-pointer"
           : available
-          ? "bg-primary-light text-white cursor-pointer"
-          : "bg-gray-100 hover:bg-gray-200 cursor-pointer"
-      }
+            ? "bg-primary-light text-white cursor-pointer"
+            : "bg-gray-100 hover:bg-gray-200 cursor-pointer"
+        }
     w-full rounded py-2 px-4 text-center`}
     >
       {time}:00
@@ -68,7 +67,7 @@ const TimeForm = () => {
     if (startTime >= 0 && endTime >= 0) {
       setTimeSelected(times[startTime] + " " + times[endTime + 1]);
     }
-  }, [startTime, endTime]);
+  }, [setTimeSelected, startTime, endTime]);
   return (
     <div className='flex flex-col space-y-8'>
       <KeywordHighlight before='예약할' keyword='시간' after='을 적어주세요.' />
@@ -87,6 +86,7 @@ const TimeForm = () => {
           if (index == times.length - 1) return null;
           const taken = selectedTime.indexOf(ele) >= 0;
           const onClickHandler = () => {
+            if (taken) return;
             if (startTime == -1) {
               setStartTime(index);
               setEndTime(index);

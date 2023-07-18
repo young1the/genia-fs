@@ -1,11 +1,11 @@
 import AuthenticatedOnly from "@/components/HOC/AuthenticatedOnly";
-import NewReservationForm from "@/components/NewReservationForm";
+import ReservationMain from "@/components/ReservationMain/ReservationMain";
 
 const page = () => {
   return (
     <div className='cc-page-wrapper'>
       <AuthenticatedOnly>
-        <NewReservationForm />
+        <ReservationMain />
       </AuthenticatedOnly>
     </div>
   );

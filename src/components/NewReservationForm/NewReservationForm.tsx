@@ -1,10 +1,10 @@
 "use client";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import IconContainer, { newReservationOrder } from "./IconContainer";
+import IconContainer from "./IconContainer";
 import {
-  reservationInputsSelector,
-  reservationStep,
+  newReservationOrder,
+  reservationInputsSelector, reservationStep,
 } from "@/store/Reservation/atoms";
 import TitleForm from "./ReservationSteps/TitleForm";
 import TimeForm from "./ReservationSteps/TimeForm";
@@ -21,8 +21,8 @@ const reservationSteps: Record<ReservationType, JSX.Element> = {
 };
 
 const NewReservationForm = () => {
-  const [currentKey, setCurrentKey] = useRecoilState(reservationStep);
   const reservationInputs = useRecoilValue(reservationInputsSelector);
+  const [currentKey, setCurrentKey] = useRecoilState(reservationStep);
   const isActive = !!reservationInputs[currentKey];
   const isDone = Object.values(reservationInputs).every((ele) => !!ele);
   const onClickHandler = () => {
