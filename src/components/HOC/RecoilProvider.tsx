@@ -5,8 +5,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-const RecoilRootProvider = ({ children }: Props) => {
+const RecoilProvider = ({ children }: Props) => {
   return <RecoilRoot>{children}</RecoilRoot>;
 };
 
-export default RecoilRootProvider;
+export default RecoilProvider;

@@ -3,6 +3,9 @@
 # env
 .env
 
+# intellij
+/.idea
+
 # vscode
 /.vscode
 

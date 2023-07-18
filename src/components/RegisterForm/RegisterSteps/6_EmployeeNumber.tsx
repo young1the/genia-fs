@@ -12,7 +12,7 @@ const EmployeeNumber = () => {
   const { focusElement } = useFocus<HTMLInputElement>();
   const { nextStep, userInput, setUserInput } = useRegisterStep({
     api: async () => {
-      return API.methods.verifyCode(userInput);
+      return API.methods.register(userInput);
     },
     errorCallback: () => {
       focus();

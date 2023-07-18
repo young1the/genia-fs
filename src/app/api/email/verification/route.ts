@@ -9,7 +9,6 @@ export const POST = async (request: Request) => {
         status: 201,
       });
     }
-    console.log(userDB);
     return new Response(JSON.stringify({ message: "인증 실패." }), {
       status: 401,
     });

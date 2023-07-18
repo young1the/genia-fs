@@ -1,16 +1,23 @@
 import { useCallback, useState } from "react";
 import ModalBackDrop from "./components/ModalBackDrop";
 
-const useModal = (scrollLock = true) => {
-  const [isModalOn, setIsModalOn] = useState<boolean>(false);
+interface Props {
+  scrollLock?: boolean;
+  modalState?: boolean;
+}
+
+const useModal = (props?: Props) => {
+  const [isModalOn, setIsModalOn] = useState<boolean>(
+    props?.modalState ?? false
+  );
   const on = useCallback(() => {
-    scrollLock ? (document.body.style.overflow = "hidden") : null;
+    props?.scrollLock ? (document.body.style.overflow = "hidden") : null;
     setIsModalOn(true);
-  }, [scrollLock]);
+  }, [props]);
   const off = useCallback(() => {
-    scrollLock ? document.body.style.removeProperty("overflow") : null;
+    props?.scrollLock ? document.body.style.removeProperty("overflow") : null;
     setIsModalOn(false);
-  }, [scrollLock]);
+  }, [props]);
   return { state: isModalOn, on, off, ModalBackDrop };
 };
 
