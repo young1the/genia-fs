@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface EmailRepository extends JpaRepository<EmailEntity, Long> {
 
     Optional<EmailEntity> findByEmail(String email);
+
+    Optional<EmailEntity> deleteByEmail(String email);
 }

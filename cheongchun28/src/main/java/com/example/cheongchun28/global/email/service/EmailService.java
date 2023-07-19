@@ -4,23 +4,29 @@ import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import com.example.cheongchun28.global.email.dto.EmailDto;
 import com.example.cheongchun28.global.email.entity.EmailEntity;
 import com.example.cheongchun28.global.email.repository.EmailRepository;
+import com.example.cheongchun28.global.schedule.EmailConfirmCodeReplaceScheduleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.sql.SQLDataException;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailService {
 
     private final JavaMailSender emailSender;
     private final EmailRepository emailRepository;
+    private final EmailConfirmCodeReplaceScheduleService scheduleService;
 
     /*
      * 1. 인증번호 생성하는 메서드
@@ -46,6 +52,7 @@ public class EmailService {
     }
 
     //메일 전송
+    @Transactional
     public void sendEmailConfirmMail(String recipient) throws Exception {
         String confirmCode = createConfirmCode();
         upsertConfirmCode(new EmailEntity(recipient, confirmCode), confirmCode);
@@ -60,15 +67,61 @@ public class EmailService {
 
     //upsert = update + inset = 없으면 생성 있으면 없데이트
     //인증기간 만료 전 다시 보내면 update
-    private void upsertConfirmCode(EmailEntity emailEntity, String confirmCode) {
+//    @Scheduled()
+    @Async
+    public void upsertConfirmCode(EmailEntity emailEntity, String confirmCode) {
         EmailEntity lastConfirmCode = emailRepository.findByEmail(emailEntity.getEmail()).orElse(null);
 
         if (lastConfirmCode == null) {
             emailRepository.save(emailEntity);
+            log.info("생성됨");
+//            scheduleService.start(createCorn(60));
+            try {
+                customSleepMethod(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             lastConfirmCode.setConfirmCode(confirmCode);
             emailRepository.save(lastConfirmCode);
+            log.info("생성됨");
+            try {
+                customSleepMethod(3000);
+                log.info("30초 기다림.");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+        emailRepository.deleteByEmail(emailEntity.getEmail());
+        log.info("삭제됨.");
+    }
+
+
+    public void customSleepMethod(long millis) throws InterruptedException {
+        Thread.sleep(millis);
+    }
+    private String createCorn(int second) {
+        LocalDateTime date = LocalDateTime.now().plusSeconds(second);
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+        int hour = date.getHour();
+        int minute = date.getMinute();
+        int sec = date.getSecond();
+
+        StringBuilder reservationTime = new StringBuilder();
+        reservationTime.append(sec);
+        reservationTime.append(" ");
+        reservationTime.append(minute);
+        reservationTime.append(" ");
+        reservationTime.append(hour);
+        reservationTime.append(" ");
+        reservationTime.append(day);
+        reservationTime.append(" ");
+        reservationTime.append(month);
+        reservationTime.append(" ");
+        reservationTime.append("?");
+
+        return reservationTime.toString();
     }
 
     //recipient: 받는 이 (이메일 받는 사람의 이메일)
