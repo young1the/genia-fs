@@ -6,7 +6,7 @@ import lombok.Getter;
 public class EmailDto {
 
     @Getter
-    public class EmailConfirmRequestDto {
+    public static class EmailConfirmRequestDto {
         private String email;
         private String confirmCode;
 
@@ -15,7 +15,7 @@ public class EmailDto {
         }
     }
 
-    public class CreateConfimCodeRequestDto {
+    public static class CreateConfimCodeRequestDto {
         private String email;
     }
 }

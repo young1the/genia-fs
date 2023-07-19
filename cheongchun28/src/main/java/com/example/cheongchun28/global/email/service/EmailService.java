@@ -1,23 +1,26 @@
 package com.example.cheongchun28.global.email.service;
 
+import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import com.example.cheongchun28.global.email.dto.EmailDto;
 import com.example.cheongchun28.global.email.entity.EmailEntity;
 import com.example.cheongchun28.global.email.repository.EmailRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Optional;
+import java.sql.SQLDataException;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
-    private JavaMailSender emailSender;
-    private EmailRepository emailRepository;
+    private final JavaMailSender emailSender;
+    private final EmailRepository emailRepository;
 
     /*
      * 1. 인증번호 생성하는 메서드
@@ -30,42 +33,49 @@ public class EmailService {
      * 5. 인증번호 자동 삭제  <- 서비스에서 하는게 맞나?
      * 6. 인증기간 만료 전 다시 보내면 update*/
 
-    //인증번호 발급 Service
-    public void createConfirmCode(EmailDto.CreateConfimCodeRequestDto requestDto) {
-
-    }
-
     //인증번호 비교 Service
-    public void emailConfirm(EmailDto.EmailConfirmRequestDto emailDto) {
+    public CustomResponseDto emailConfirm(EmailDto.EmailConfirmRequestDto emailDto) throws Exception {
+        EmailEntity emailEntity = emailRepository.findByEmail(emailDto.getEmail()).orElseThrow(
+                () -> new Exception(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+        );
 
+        if (!emailEntity.getConfirmCode().equals(emailDto.getConfirmCode())) {
+            return new CustomResponseDto(400);
+        }
+        return new CustomResponseDto(200);
     }
 
     //메일 전송
-    private void sendEmail(String recipient) throws Exception {
+    public void sendEmailConfirmMail(String recipient) throws Exception {
         String confirmCode = createConfirmCode();
-        MimeMessage message = createMessage(recipient);
-        upsertConfirmCode(new EmailEntity());
+        upsertConfirmCode(new EmailEntity(recipient, confirmCode), confirmCode);
+        MimeMessage message = createMessage(recipient, confirmCode);
+
+        try {
+            emailSender.send(message);
+        } catch (MailException e) {
+            e.printStackTrace();
+        }
     }
 
     //upsert = update + inset = 없으면 생성 있으면 없데이트
     //인증기간 만료 전 다시 보내면 update
-    private void upsertConfirmCode(EmailEntity emailEntity) {
+    private void upsertConfirmCode(EmailEntity emailEntity, String confirmCode) {
         EmailEntity lastConfirmCode = emailRepository.findByEmail(emailEntity.getEmail()).orElse(null);
 
-        if (emailRepository.findByEmail(lastConfirmCode.getEmail()).isPresent()) {
-            lastConfirmCode.setConfirmCode(createConfirmCode());
-            emailRepository.save(lastConfirmCode);
-        } else {
+        if (lastConfirmCode == null) {
             emailRepository.save(emailEntity);
+        } else {
+            lastConfirmCode.setConfirmCode(confirmCode);
+            emailRepository.save(lastConfirmCode);
         }
     }
 
     //recipient: 받는 이 (이메일 받는 사람의 이메일)
     //메세지 생성
 
-    private MimeMessage createMessage(String recipient) throws Exception {
+    private MimeMessage createMessage(String recipient, String confirmCode) throws Exception {
         MimeMessage message = emailSender.createMimeMessage();
-        String confirmCode = createConfirmCode();
 
         message.addRecipients(MimeMessage.RecipientType.TO, recipient);
         message.setSubject("천재교육 이메일 인증");
