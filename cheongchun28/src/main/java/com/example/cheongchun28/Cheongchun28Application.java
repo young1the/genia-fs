@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableScheduling //스케줄링 기능을 enable함.
-@EnableAsync
 public class Cheongchun28Application {
 
     public static void main(String[] args) {
