@@ -1,9 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthSessionProvider from "@/components/HOC/AuthSessionProvider";
-import RecoilRootProvider from "@/components/HOC/RecoilRootProvider";
+import RecoilProvider from "@/components/HOC/RecoilProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ReactQueryProvider from "@/components/HOC/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,12 +24,14 @@ export default function RootLayout({
         className={`${inter.className} bg-gray-200 dark:bg-gray-900 scrollbar-none md:scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100`}
       >
         <AuthSessionProvider>
-          <RecoilRootProvider>
-            <Header />
-            <div className='bg-white dark:bg-gray-800'>{children}</div>
-            <Footer />
-            <div id='modal'></div>
-          </RecoilRootProvider>
+          <RecoilProvider>
+            <ReactQueryProvider>
+              <Header />
+              <div className='bg-white dark:bg-gray-800'>{children}</div>
+              <Footer />
+              <div id='modal'></div>
+            </ReactQueryProvider>
+          </RecoilProvider>
         </AuthSessionProvider>
       </body>
     </html>

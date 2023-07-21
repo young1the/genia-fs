@@ -4,7 +4,6 @@ import KeywordHighlight from "../../commons/texts/KeywordHighlight";
 import { reservationInput } from "@/store/Reservation/atoms";
 import { useEffect, useState } from "react";
 
-const selectedTime = ["09", "10", "13", "14", "15"]; // Mock
 const times = [
   "09",
   "10",
@@ -23,24 +22,16 @@ const times = [
 interface TimeProps {
   onClick: () => void;
   time: string;
-  taken: boolean;
   selected: boolean;
   available: boolean;
 }
 
-const TimeElement = ({
-  time,
-  taken,
-  available,
-  selected,
-  onClick,
-}: TimeProps) => {
+const TimeElement = ({ time, available, selected, onClick }: TimeProps) => {
   return (
     <div
       onClick={onClick}
-      className={`${taken
-        ? "bg-gray-300 cursor-not-allowed"
-        : selected
+      className={`${
+        selected
           ? "bg-primary text-white cursor-pointer"
           : available
             ? "bg-primary-light text-white cursor-pointer"
@@ -84,7 +75,6 @@ const TimeForm = () => {
       <div className='w-full grid grid-cols-3 gap-4 place-items-center'>
         {times.map((ele, index) => {
           if (index == times.length - 1) return null;
-          const taken = selectedTime.indexOf(ele) >= 0;
           const onClickHandler = () => {
             if (taken) return;
             if (startTime == -1) {
@@ -107,9 +97,10 @@ const TimeForm = () => {
           return (
             <TimeElement
               selected={index >= startTime && index <= endTime}
-              available={index >= startTime && index <= startTime + 2}
+              available={
+                startTime >= 0 && index >= startTime && index <= startTime + 2
+              }
               onClick={onClickHandler}
-              taken={taken}
               key={ele}
               time={ele}
             />

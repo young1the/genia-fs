@@ -4,7 +4,13 @@ import KeywordHighlight from "../../commons/texts/KeywordHighlight";
 import * as SVG from "@/components/commons/svgs";
 import { useRecoilState } from "recoil";
 import { reservationInput } from "@/store/Reservation/atoms";
-import { RoomType, RoomTypeWrapper, RoomWrapper, Rooms } from "@/components/ReservationMain/Room";
+import {
+  RoomType,
+  RoomTypeWrapper,
+  RoomWrapper,
+  mockRooms,
+} from "@/components/ReservationMain/Room";
+
 
 const RoomForm = () => {
   const [optionSeleted, setOptionSeleted] = useState<number>(0);
@@ -41,7 +47,7 @@ const RoomForm = () => {
           </div>
         </div>
         <div className='w-full grid grid-cols-2 gap-4 place-items-center'>
-          {Rooms.map((ele) => {
+          {mockRooms.map((ele) => {
             const { id, type, name } = ele;
             return (
               <RoomWrapper

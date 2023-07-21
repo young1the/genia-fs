@@ -8,7 +8,7 @@ const Logo = () => {
         src='/vercel.svg'
         className='h-10'
         width={100}
-        height={40}
+        height={80}
         alt='Logo'
       />
     </Link>

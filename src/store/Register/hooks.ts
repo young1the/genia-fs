@@ -5,7 +5,7 @@ import {
   registerStepIndex,
   stepBarLoadStatus,
 } from "./atoms";
-import { User } from "@/types/common";
+import { UserData } from "@/types/common";
 import { Keys } from "@/types/utils";
 
 interface Props {
@@ -20,7 +20,7 @@ export const useRegisterStep = (props?: Props) => {
   const [isError, setIsError] = useState(false);
   const snapshot = useRecoilSnapshot();
   const userInput = snapshot.getLoadable(registerUserInput).contents;
-  const setUserInput = (key: Keys<User>, input: string) => {
+  const setUserInput = (key: Keys<UserData>, input: string) => {
     setRegisterUserInput((prev) => {
       return { ...prev, key: input };
     });
