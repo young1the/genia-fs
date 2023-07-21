@@ -22,4 +22,3 @@ export const getReservationData = async (
   id: Pick<ReservationData, "reservationId">
 ) => {
   return http.get<ReservationData>(`/api/reservation/${id}`);
-};

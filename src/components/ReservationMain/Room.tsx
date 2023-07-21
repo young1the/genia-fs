@@ -39,6 +39,7 @@ export type RoomType = {
   name: string;
   id: string;
 };
+
 export const mockRooms: RoomType[] = [
   { id: "00", name: "빔프로젝터방", type: BEAM },
   { id: "01", name: "빔프+칠판", type: BEAM | BOARD },
@@ -69,7 +70,6 @@ export const RoomWrapper = ({
     </div>
   );
 };
-
 
 export const Rooms = () => {
   const router = useRouter();
@@ -121,3 +121,4 @@ export const Rooms = () => {
     </div>
   )
 }
+

@@ -34,9 +34,9 @@ const TimeElement = ({ time, available, selected, onClick }: TimeProps) => {
         selected
           ? "bg-primary text-white cursor-pointer"
           : available
-          ? "bg-primary-light text-white cursor-pointer"
-          : "bg-gray-100 hover:bg-gray-200 cursor-pointer"
-      }
+            ? "bg-primary-light text-white cursor-pointer"
+            : "bg-gray-100 hover:bg-gray-200 cursor-pointer"
+        }
     w-full rounded py-2 px-4 text-center`}
     >
       {time}:00
@@ -76,6 +76,7 @@ const TimeForm = () => {
         {times.map((ele, index) => {
           if (index == times.length - 1) return null;
           const onClickHandler = () => {
+            if (taken) return;
             if (startTime == -1) {
               setStartTime(index);
               setEndTime(index);
