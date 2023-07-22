@@ -2,6 +2,7 @@ package com.example.cheongchun28.domain.user.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,13 +38,13 @@ public class User implements UserDetails {
     @Column(name = "ROLE_SEQUENCE_ID", nullable = false)
     private Role role;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String userEmail;
 
     @Column(name = "PASSWORD", nullable = false)
     private String encodedPassword;
 
-    @Column(name = "USERNAME", nullable = false)
+    @Column(name = "USERNAME", nullable = false, unique = true)
     private String userName;
 
     @Column(name = "PROFILE_IMAGE", nullable = false)
@@ -52,7 +53,7 @@ public class User implements UserDetails {
     @Column(name = "DELETED", nullable = false)
     private short userDeleted;
 
-    @Column(name = "EMP_NUMBER", nullable = true)
+    @Column(name = "EMP_NUMBER", unique = true)
     private String empNumber;
 
     public User(String userEmail, String password, String userName, String profileImage, String empNumber) {
