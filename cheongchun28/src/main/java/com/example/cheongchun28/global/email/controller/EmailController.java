@@ -23,6 +23,11 @@ public class EmailController {
     @PostMapping("/email/confirm")
     public CustomResponseDto emailConfirm(@RequestBody EmailDto.EmailConfirmRequestDto emailDto) throws Exception {
         return emailService.emailConfirm(emailDto);
-//        return new CustomResponseDto(200);
+    }
+
+    @PostMapping("/email/reset-password")
+    public CustomResponseDto sendResetPasswordMail(@RequestParam String recipient) throws Exception {
+        emailService.sendEmailResetPasswordMail(recipient);
+        return new CustomResponseDto(200);
     }
 }
