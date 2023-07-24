@@ -27,7 +27,9 @@ export default function RootLayout({
           <RecoilProvider>
             <ReactQueryProvider>
               <Header />
-              <div className='bg-white dark:bg-gray-800'>{children}</div>
+              <div className='bg-white dark:bg-gray-800 mt-[72px]'>
+                {children}
+              </div>
               <Footer />
               <div id='modal'></div>
             </ReactQueryProvider>

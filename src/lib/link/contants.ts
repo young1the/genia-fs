@@ -7,7 +7,7 @@ export const URLS: Record<LinkKey, string> = {
   LOGIN: "/user/login",
   LOGOUT: "/user/signout",
   MYPAGE: "/mypage",
-  SUPER: "/super",
+  ADMIN: "/admin",
   REGISTER: "/user/register",
   FINDPWD: "/user/password",
 } as const;
@@ -19,7 +19,7 @@ export const TITLES: Record<LinkKey, string> = {
   LOGIN: "로그인",
   LOGOUT: "로그아웃",
   MYPAGE: "마이페이지",
-  SUPER: "관리자페이지",
+  ADMIN: "관리자페이지",
   REGISTER: "회원가입",
   FINDPWD: "비밀번호 찾기",
 } as const;
@@ -31,7 +31,7 @@ export const LINKS: Record<LinkKey, NavigationType> = {
   LOGIN: { title: TITLES["LOGIN"], href: URLS["LOGIN"] },
   LOGOUT: { title: TITLES["LOGOUT"], href: URLS["LOGOUT"] },
   MYPAGE: { title: TITLES["MYPAGE"], href: URLS["MYPAGE"] },
-  SUPER: { title: TITLES["SUPER"], href: URLS["SUPER"] },
+  ADMIN: { title: TITLES["ADMIN"], href: URLS["ADMIN"] },
   REGISTER: { title: TITLES["REGISTER"], href: URLS["REGISTER"] },
   FINDPWD: { title: TITLES["FINDPWD"], href: URLS["FINDPWD"] },
 } as const;

@@ -45,6 +45,7 @@ class UserDB {
   }
   userLogin(newUser: UserLog): boolean {
     const { email, password } = newUser;
+    console.log(email, password);
     for (const user of this.db) {
       if (user.email == email && user.password == password) {
         return true;
@@ -74,14 +75,13 @@ class UserDB {
     for (const user of this.db) {
       if (user.email == email) {
         const randomPassword = Math.floor(Math.random() * 1000);
-        console.log(randomPassword);      
-        user.password = randomPassword + '';  
+        console.log(randomPassword);
+        user.password = randomPassword + "";
         result = randomPassword;
         return result;
-  
       }
     }
-      return result;
+    return result;
   }
 
   emailVerification(newEmailVerify: UserVerification): boolean {

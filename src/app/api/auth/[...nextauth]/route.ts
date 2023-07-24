@@ -12,7 +12,7 @@ const authOptions = {
       },
       async authorize(credentials) {
         const res = await fetch(
-          (process.env.BASE_URL as string) + "/api/user/login",
+          (process.env.API_SERVER as string) + "/api/user/login",
           {
             method: "POST",
             headers: {
@@ -24,6 +24,7 @@ const authOptions = {
             }),
           }
         );
+        console.log(res);
         if (!res.ok) return null;
         const user = await res.json();
         return user;
