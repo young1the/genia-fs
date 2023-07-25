@@ -7,10 +7,6 @@
 Zcheongchun28/src/main/java/com/example/cheongchun28/domain/admin/service/AdminService.java,5\8\58cc457a3e548a1e69f0814efb9a411fa9952b99
 í
 bcheongchun28/src/main/java/com/example/cheongchun28/domain/mypage/repository/MypageRepository.java,7\5\75278836e52119f5b97a80a238b3c72ddb27e07b
-é
-^cheongchun28/src/main/java/com/example/cheongchun28/global/security/config/SecurityConfig.java,9\a\9a3628dd637b8db67b5ecb59be8722366488de6e
-à
-Xcheongchun28/src/main/java/com/example/cheongchun28/global/email/entity/EmailEntity.java,0\f\0f0c921a3902ebb7ef88be2c81f86e81420a9385
 à
 Xcheongchun28/src/main/java/com/example/cheongchun28/global/email/config/EmailConfig.java,9\5\95a6067b187b72fb538873d39add721eeeb20604
 å
@@ -21,8 +17,6 @@ Xcheongchun28/src/main/java/com/example/cheongchun28/global/email/config/EmailCo
 ^cheongchun28/src/main/java/com/example/cheongchun28/domain/user/repository/UserRepository.java,0\0\009145acd3fb4174a02b98620257cc5ce7351f79
 Ä
 Pcheongchun28/src/main/java/com/example/cheongchun28/Cheongchun28Application.java,d\9\d98c78849d7ac057c7975ff97a41f8e8abe413a6
-ê
-`cheongchun28/src/main/java/com/example/cheongchun28/global/email/repository/EmailRepository.java,2\9\29a6160edc3b6e2a2923ccaf8d616e3ae50deded
 ñ
 fcheongchun28/src/main/java/com/example/cheongchun28/domain/reservation/service/ReservationService.java,4\b\4b1246248f578dda848ca40e3f896387731f829e
 ú
