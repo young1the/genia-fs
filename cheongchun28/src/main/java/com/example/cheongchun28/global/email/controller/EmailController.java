@@ -25,8 +25,8 @@ public class EmailController {
         return emailService.emailConfirm(emailDto);
     }
 
-    @PostMapping("/email/reset-password")
-    public CustomResponseDto sendResetPasswordMail(@RequestParam String recipient) throws Exception {
+    @PostMapping("/email/reset-password/{recipient}")
+    public CustomResponseDto sendResetPasswordMail(@PathVariable String recipient) throws Exception {
         emailService.sendEmailResetPasswordMail(recipient);
         return new CustomResponseDto(200);
     }
