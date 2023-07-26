@@ -2,7 +2,6 @@ package com.example.cheongchun28.domain.user.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -55,6 +54,9 @@ public class User implements UserDetails {
 
     @Column(name = "EMP_NUMBER", unique = true)
     private String empNumber;
+
+    @Column(name = "NOTIFICATION_AGREEMENT", nullable = false)
+    private boolean notificationAgreement;
 
     public User(String userEmail, String password, String userName, String profileImage, String empNumber) {
         this.role = Role.USER;
