@@ -108,6 +108,7 @@ public class EmailService {
     private String createNewPassword() {
         RandomString rs = new RandomString();
         String password = rs.make(PASSWORD_LENGTH);
+        log.info(password);
         return password;
     }
     //upsert = update + inset = 없으면 생성 있으면 업데이트
@@ -173,7 +174,7 @@ public class EmailService {
         for (int i = 0; i < CONFIRM_CODE_lENGTH; i++) {
             confirmCode.append(random.nextInt(10));
         }
-
+        log.info(confirmCode.toString());
         return confirmCode.toString();
     }
 }
