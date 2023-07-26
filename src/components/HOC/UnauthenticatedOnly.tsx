@@ -1,6 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Spinner from "../commons/loader/Spinner";
+import Spinner from "../common/loader/Spinner";
 import Link from "next/link";
 
 const UnauthenticatedOnly = ({

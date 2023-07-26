@@ -1,18 +1,18 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// TODO : 정리하기
+import * as API from "@/lib/api";
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "Username", type: "text", placeholder: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         const res = await fetch(
-          (process.env.API_SERVER as string) + "/api/user/login",
+          (process.env.NEXTAUTH_URL as string) + API.constants.URL["LOGIN"],
           {
             method: "POST",
             headers: {
@@ -24,31 +24,39 @@ const authOptions = {
             }),
           }
         );
-        console.log(res);
-        if (!res.ok) return null;
         const user = await res.json();
-        return user;
+        if (res.ok && user) {
+          return {
+            ...user,
+            ["email"]: credentials?.email,
+            ["access_token"]: res.headers.get("Authorization"),
+          };
+        }
+        return null;
       },
     }),
   ],
   pages: {
     signIn: "/user/login",
+    error: "/error",
   },
   callbacks: {
-    async jwt({ token, account, profile }: any) {
-      account;
-      profile;
-      //   if (account) {
-      // token.accessToken = account.access_token;
-      // token.id = profile.id;
-      //   }
+    async jwt(params: any) {
+      const { token, user } = params;
+      if (user) {
+        token.email = user.email;
+        token.access_token = user.access_token;
+        token.userName = user.userName;
+        token.profileImage = user.profileImage;
+      }
       return token;
     },
-    async session({ session, token, user }: any) {
-      //   session.accessToken = token.accessToken;
-      //   session.user.id = token.id;
-      token;
-      user;
+    async session(params: any) {
+      const { session, token } = params;
+      session.user.email = token.email;
+      session.user.userName = token.username;
+      session.user.profileImage = token.profileImage;
+      session.user.access_token = token.access_token;
       return session;
     },
   },

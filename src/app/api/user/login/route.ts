@@ -4,7 +4,6 @@ export const POST = async (request: Request) => {
   try {
     const { email, password } = await request.json();
     const result = userDB.userLogin({ email, password });
-    console.log(result);
     if (result == true) {
       return new Response(JSON.stringify({ message: "로그인 성공." }), {
         status: 201,

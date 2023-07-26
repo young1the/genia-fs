@@ -1,10 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AuthSessionProvider from "@/components/HOC/AuthSessionProvider";
-import RecoilProvider from "@/components/HOC/RecoilProvider";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ReactQueryProvider from "@/components/HOC/ReactQueryProvider";
+import AuthSessionProvider from "@/components/hoc/AuthSessionProvider";
+import RecoilProvider from "@/components/hoc/RecoilProvider";
+import ReactQueryProvider from "@/components/hoc/ReactQueryProvider";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 

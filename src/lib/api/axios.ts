@@ -1,11 +1,11 @@
 import Axios from "axios";
 
 const axios = Axios.create({
-  baseURL: process.env.API_SERVER,
+  baseURL: "http://localhost:3000",
   timeout: 30000,
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer fake_token",
+    // Authorization: "Bearer fake_token",
   },
 });
 

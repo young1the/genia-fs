@@ -6,8 +6,13 @@ export const sendCodeToEmail = async (body: Pick<UserData, "email">) => {
   return http.post<Pick<UserData, "email">>(URL["CODE_SEND"], body);
 };
 
-export const verifyCode = async (body: Pick<UserData, "email" | "code">) => {
-  return http.post<Pick<UserData, "email" | "code">>(URL["CODE_VERIFY"], body);
+export const verifyCode = async (
+  body: Pick<UserData, "email" | "confirmCode">
+) => {
+  return http.post<Pick<UserData, "email" | "confirmCode">>(
+    URL["CODE_VERIFY"],
+    body
+  );
 };
 
 export const register = async (body: UserData) => {

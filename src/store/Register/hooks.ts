@@ -22,7 +22,7 @@ export const useRegisterStep = (props?: Props) => {
   const userInput = snapshot.getLoadable(registerUserInput).contents;
   const setUserInput = (key: Keys<UserData>, input: string) => {
     setRegisterUserInput((prev) => {
-      return { ...prev, key: input };
+      return { ...prev, [key]: input };
     });
   };
   const nextStep = async () => {

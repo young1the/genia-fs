@@ -1,9 +1,9 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Spinner from "@/components/commons/loader/Spinner";
+import Spinner from "@/components/common/loader/Spinner";
 import Link from "next/link";
 import * as LINK from "@/lib/link";
-import KeywordHighlight from "../commons/texts/KeywordHighlight";
+import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 
 const AuthenticatedOnly = ({
   children,

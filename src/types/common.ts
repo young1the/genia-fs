@@ -1,8 +1,9 @@
 export interface UserData {
+  notificationAgreement: string;
   email: string;
-  code: string;
+  confirmCode: string;
   password: string;
-  username: string;
+  userName: string;
   empNumber: string;
 }
 

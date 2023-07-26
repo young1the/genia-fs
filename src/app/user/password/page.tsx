@@ -1,4 +1,4 @@
-import FindPasswordForm from "@/components/FindPasswordForm/FindPasswordForm";
+import FindPasswordForm from "@/components/user/FindPasswordForm/FindPasswordForm";
 
 const page = () => {
   return (
