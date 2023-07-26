@@ -12,7 +12,7 @@ export const registerUserInput = atom<UserData>({
     notificationAgreement: "",
     confirmCode: "",
     password: "",
-    userName: "",
+    nickName: "",
     empNumber: "",
   },
 });

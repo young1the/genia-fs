@@ -263,7 +263,55 @@ const Key = ({ className, fill = "currentColor" }: SVGProps) => {
     </div>
   );
 };
+const User = ({ className, fill = "currentColor" }: SVGProps) => {
+  return (
+    <div className={className}>
+      <svg
+        fill={fill}
+        width={"100%"}
+        height={"100%"}
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 24 24'
+      >
+        <path d='M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z' />
+      </svg>
+    </div>
+  );
+};
+const Pen = ({ className, fill = "currentColor" }: SVGProps) => {
+  return (
+    <div className={className}>
+      <svg
+        fill={fill}
+        width={"100%"}
+        height={"100%"}
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 24 24'
+      >
+        <path d='M22,7.24a1,1,0,0,0-.29-.71L17.47,2.29A1,1,0,0,0,16.76,2a1,1,0,0,0-.71.29L13.22,5.12h0L2.29,16.05a1,1,0,0,0-.29.71V21a1,1,0,0,0,1,1H7.24A1,1,0,0,0,8,21.71L18.87,10.78h0L21.71,8a1.19,1.19,0,0,0,.22-.33,1,1,0,0,0,0-.24.7.7,0,0,0,0-.14ZM6.83,20H4V17.17l9.93-9.93,2.83,2.83ZM18.17,8.66,15.34,5.83l1.42-1.41,2.82,2.82Z' />
+      </svg>
+    </div>
+  );
+};
+const Camera = ({ className, fill = "currentColor" }: SVGProps) => {
+  return (
+    <div className={className}>
+      <svg
+        fill={fill}
+        width={"100%"}
+        height={"100%"}
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 24 24'
+      >
+      <path d="M19,6.5H17.72l-.32-1a3,3,0,0,0-2.84-2H9.44A3,3,0,0,0,6.6,5.55l-.32,1H5a3,3,0,0,0-3,3v8a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3v-8A3,3,0,0,0,19,6.5Zm1,11a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1v-8a1,1,0,0,1,1-1H7a1,1,0,0,0,1-.68l.54-1.64a1,1,0,0,1,.95-.68h5.12a1,1,0,0,1,.95.68l.54,1.64A1,1,0,0,0,17,8.5h2a1,1,0,0,1,1,1Zm-8-9a4,4,0,1,0,4,4A4,4,0,0,0,12,8.5Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14.5Z"/></svg>
+    </div>
+  );
+};
+
 export {
+  Camera,
+  Pen,
+  User,
   Key,
   Users,
   Chart,

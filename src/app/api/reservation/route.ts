@@ -74,16 +74,11 @@
 //   }
 // };
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   try {
-    const JWT = 1;
-    const auth = await request.headers.get("Authorization");
-    const token = auth?.split(" ")[JWT];
-    if (!token) {
-      return new Response(JSON.stringify({ message: "로그인을 안했네요" }), {
-        status: 401,
-      });
-    }
+    // const JWT = 1;
+    // const auth = await request.headers.get("Authorization");
+    // const token = auth?.split(" ")[JWT];
     return new Response(JSON.stringify({ reservationId: "boyboy" }), {
       status: 201,
     });

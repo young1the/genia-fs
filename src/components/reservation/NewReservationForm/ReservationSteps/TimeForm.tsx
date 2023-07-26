@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 const times = [
   "09",
   "10",
+  "11",
   "12",
   "13",
   "14",
@@ -65,11 +66,15 @@ const TimeForm = () => {
       <div className='flex w-full justify-between'>
         <div className='flex flex-col'>
           <span className='font-bold'>시작</span>
-          {startTime < 0 ? null : `${times[startTime]}:00`}
+          <p className='h-12'>
+            {startTime < 0 ? "" : `${times[startTime]}:00`}
+          </p>
         </div>
         <div className='flex flex-col'>
           <span className='font-bold'>종료</span>
-          {endTime < 0 ? null : `${times[endTime + 1]}:00`}
+          <p className='h-12'>
+            {endTime < 0 ? "" : `${times[endTime + 1]}:00`}
+          </p>
         </div>
       </div>
       <div className='w-full grid grid-cols-3 gap-4 place-items-center'>
@@ -88,7 +93,8 @@ const TimeForm = () => {
             } else if (endTime == index) {
               setEndTime((prev) => prev - 1);
             } else if (index > startTime + 2) {
-              return;
+              setStartTime(index);
+              setEndTime(index);
             } else {
               setEndTime(index);
             }

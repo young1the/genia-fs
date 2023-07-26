@@ -9,7 +9,7 @@ import {
   RoomTypeWrapper,
   RoomWrapper,
   mockRooms,
-} from "@/components/reservation/ReservationMain/Room";
+} from "@/components/reservation/Room";
 
 const RoomForm = () => {
   const [optionSeleted, setOptionSeleted] = useState<number>(0);

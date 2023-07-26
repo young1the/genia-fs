@@ -1,14 +1,13 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import LinkDropdown from "./LinkDropdown";
 import * as LINK from "@/lib/link";
+import { UIProps } from "../ResponsiveUI";
 
 const dropdownContainerStyle =
   "flex flex-col font-medium p-2 border-gray-100 dark:bg-gray-800 dark:border-gray-700";
 
-const DropdownMobile = () => {
-  const { status } = useSession();
+const DropdownMobile = ({ status }: UIProps) => {
   return (
     <nav
       className='absolute bg-white border border-gray-100 dark:bg-gray-900

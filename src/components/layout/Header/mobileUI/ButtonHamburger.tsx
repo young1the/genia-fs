@@ -2,12 +2,13 @@
 
 import useDropdown from "@/hooks/useDropdown";
 import DropdownMobile from "./DropdownMobile";
+import { UIProps } from "../ResponsiveUI";
 
-const ButtonHamburger = () => {
+const ButtonHamburger = ({ status }: UIProps) => {
   const { showDropdown, buttonRef, toggleState } = useDropdown();
   return (
     <>
-      {showDropdown ? <DropdownMobile /> : null}
+      {showDropdown ? <DropdownMobile status={status} /> : null}
       <button
         type='button'
         ref={buttonRef}

@@ -3,10 +3,11 @@ interface KeywordHighlightProps {
   before?: string;
   after?: string;
   rest?: string;
+  color?: string;
 }
 
 const KeywordHighlight = (props: KeywordHighlightProps) => {
-  const { before, keyword, after, rest } = props;
+  const { before, keyword, after, rest, color = "text-primary" } = props;
   return (
     <h1
       className='text-xl font-bold
@@ -15,7 +16,7 @@ md:text-2xl cc-text-black'
     >
       {before}
       {before && keyword ? <br /> : null}
-      <p className='inline text-primary'>{keyword}</p>
+      <p className={`inline ${color}`}>{keyword}</p>
       {after}
       {rest ? <br /> : null}
       {rest}

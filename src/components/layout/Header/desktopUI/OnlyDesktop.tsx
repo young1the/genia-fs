@@ -1,11 +1,12 @@
+import { UIProps } from "../ResponsiveUI";
 import ButtonUser from "./ButtonUser";
 import NavigationBar from "./NavigationBar";
 
-const OnlyDesktop = () => {
+const OnlyDesktop = ({ status }: UIProps) => {
   return (
     <>
-      <NavigationBar />
-      <ButtonUser />
+      <NavigationBar status={status} />
+      <ButtonUser status={status} />
     </>
   );
 };

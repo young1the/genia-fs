@@ -3,7 +3,7 @@ export interface UserData {
   email: string;
   confirmCode: string;
   password: string;
-  userName: string;
+  nickName: string;
   empNumber: string;
 }
 

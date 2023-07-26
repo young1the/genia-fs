@@ -1,14 +1,20 @@
+import * as API from "@/lib/api";
+import { axios } from "@/lib/api/axios";
+
 export const POST = async (request: Request) => {
   try {
     const { email } = await request.json();
-    const result = await fetch(
-      `http://10.41.0.102:8080/api/email/send/${email}`,
-      { method: "POST" }
+    email;
+    const result = await axios.post(
+      process.env.NEXT_PUBLIC_API_SERVER + API.constants.URL["EMAIL_SEND"],
+      {
+        validateStatus: (status: number) => {
+          return status < 500;
+        },
+      }
     );
-    console.log(email);
-    if (result.ok) return new Response(null, { status: 200 });
-    else throw new Error();
-  } catch (error) {
-    return new Response("연결에 실패했습니다.", { status: 501 });
+    return result;
+  } catch (error: any) {
+    return new Response(undefined, { ...error.response });
   }
 };

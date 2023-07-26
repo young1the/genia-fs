@@ -2,10 +2,11 @@
 import useDropdown from "@/hooks/useDropdown";
 
 interface Props {
+  actionSelected: string;
   itemOnclick: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const UserActionDropdown = ({ itemOnclick }: Props) => {
+const UserActionDropdown = ({ actionSelected, itemOnclick }: Props) => {
   const { showDropdown, buttonRef, toggleState } = useDropdown();
 
   return (
@@ -16,7 +17,7 @@ const UserActionDropdown = ({ itemOnclick }: Props) => {
         onClick={toggleState}
         ref={buttonRef}
       >
-        Action
+        {actionSelected}
         <svg
           className='w-2.5 h-2.5 ml-2.5'
           aria-hidden='true'
@@ -38,37 +39,29 @@ const UserActionDropdown = ({ itemOnclick }: Props) => {
           <ul className='py-1 text-sm text-gray-700 dark:text-gray-200'>
             <li
               onClick={() => {
-                itemOnclick("Reward");
+                itemOnclick("사원등록");
               }}
               className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
             >
-              Reward
+              사원등록
             </li>
             <li
               onClick={() => {
-                itemOnclick("Promote");
+                itemOnclick("관리자권한부여");
               }}
               className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
             >
-              Promote
-            </li>
-            <li
-              onClick={() => {
-                itemOnclick("Activate");
-              }}
-              className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-            >
-              Activate account
+              관리자권한부여
             </li>
           </ul>
           <div className='py-1'>
             <span
               onClick={() => {
-                itemOnclick("Delete");
+                itemOnclick("유저삭제");
               }}
               className='block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'
             >
-              Delete User
+              유저삭제
             </span>
           </div>
         </div>

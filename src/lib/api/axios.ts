@@ -1,13 +1,20 @@
 import Axios from "axios";
 
-const axios = Axios.create({
-  baseURL: "http://localhost:3000",
+export const axios = Axios.create({
   timeout: 30000,
   headers: {
     "Content-Type": "application/json",
     // Authorization: "Bearer fake_token",
   },
+  withCredentials: true,
 });
+
+export const setToken = (token: string) => {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+};
+export const unsetToken = () => {
+  delete axios.defaults.headers.common["Authorization"];
+};
 
 export const http = {
   get: <Response = any>(url: string) => {

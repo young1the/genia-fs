@@ -8,7 +8,7 @@ const Logo = () => {
         src='/logo.png'
         className='h-10'
         width={170}
-        height={80}
+        height={40}
         alt='Logo'
       />
     </Link>

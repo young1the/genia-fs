@@ -1,9 +1,10 @@
+import { UIProps } from "../ResponsiveUI";
 import ButtonHamburger from "./ButtonHamburger";
 
-const OnlyMobile = () => {
+const OnlyMobile = ({ status }: UIProps) => {
   return (
     <>
-      <ButtonHamburger />
+      <ButtonHamburger status={status} />
     </>
   );
 };

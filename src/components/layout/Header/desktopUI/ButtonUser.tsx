@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import useDropdown from "@/hooks/useDropdown";
 import * as LINK from "@/lib/link";
 import DropdownUser from "./DropdownUser";
+import { UIProps } from "../ResponsiveUI";
 
-const ButtonUser = () => {
+const ButtonUser = ({ status }: UIProps) => {
   const { showDropdown, buttonRef, toggleState } = useDropdown();
-  const { status } = useSession();
   const UserStatusButton: Record<typeof status, JSX.Element> = {
     authenticated: (
       <>

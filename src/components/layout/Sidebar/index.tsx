@@ -24,7 +24,7 @@ const Sidebar = () => {
               <span className='flex-1 ml-3 whitespace-nowrap'>예약관리</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               href='/admin'
               className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group'
@@ -32,7 +32,7 @@ const Sidebar = () => {
               <SVG.Chart className='w-5 h-5' />
               <span className='flex-1 ml-3 whitespace-nowrap'>통계보기</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </aside>

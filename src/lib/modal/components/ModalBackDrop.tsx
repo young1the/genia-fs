@@ -3,7 +3,7 @@ import ModalPortal from "./ModalPotal";
 import style from "./ModalBackDrop.module.css";
 
 interface ModalBackDropProps {
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   state: boolean;
   off?: VoidFunction;
   opacity?: number;

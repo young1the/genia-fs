@@ -1,11 +1,13 @@
 import { UserData } from "@/types/common";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 interface Props {
-  userData: Pick<UserData, "email" | "username">;
+  on: () => void;
+  setUserSelected: Dispatch<SetStateAction<UserData | undefined>>;
+  userData: UserData;
 }
 
-const UserRow = ({ userData }: Props) => {
+const UserRow = ({ userData, setUserSelected, on }: Props) => {
   return (
     <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'>
       <td className='w-4 p-4'>
@@ -20,7 +22,7 @@ const UserRow = ({ userData }: Props) => {
       <th className='flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white'>
         <span className='w-10 h-10 bg-yellow-200 rounded-full' />
         <div className='pl-3'>
-          <div className='text-base font-semibold'>{userData.username}</div>
+          <div className='text-base font-semibold'>{userData.nickName}</div>
           <div className='font-normal text-gray-500'>{userData.email}</div>
         </div>
       </th>
@@ -32,12 +34,15 @@ const UserRow = ({ userData }: Props) => {
         <div className='font-normal text-gray-500'>.</div>
       </td>
       <td className='px-6 py-4'>
-        <a
-          href='#'
+        <div
+          onClick={() => {
+            setUserSelected({ ...userData });
+            on();
+          }}
           className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
         >
-          상세정보
-        </a>
+          수정하기
+        </div>
       </td>
     </tr>
   );

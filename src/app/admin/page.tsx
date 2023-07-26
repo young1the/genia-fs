@@ -1,7 +1,12 @@
+import Statistic from "@/components/admin/Statistic";
 import React from "react";
 
 const Page = () => {
-  return <div>Page</div>;
+  return (
+    <div>
+      <Statistic />
+    </div>
+  );
 };
 
 export default Page;

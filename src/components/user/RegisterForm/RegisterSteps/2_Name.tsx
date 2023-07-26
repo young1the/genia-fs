@@ -14,7 +14,7 @@ const Name = () => {
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isActive) return;
-    setUserInput("userName", nameInput);
+    setUserInput("nickName", nameInput);
     nextStep();
   };
 

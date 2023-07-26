@@ -1,6 +1,6 @@
 type User = {
   email: string;
-  username: string;
+  nickName: string;
   password: string;
   empNumber: string;
 };
@@ -45,7 +45,6 @@ class UserDB {
   }
   userLogin(newUser: UserLog): boolean {
     const { email, password } = newUser;
-    console.log(email, password);
     for (const user of this.db) {
       if (user.email == email && user.password == password) {
         return true;
@@ -75,7 +74,6 @@ class UserDB {
     for (const user of this.db) {
       if (user.email == email) {
         const randomPassword = Math.floor(Math.random() * 1000);
-        console.log(randomPassword);
         user.password = randomPassword + "";
         result = randomPassword;
         return result;

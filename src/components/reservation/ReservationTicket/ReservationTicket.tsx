@@ -57,7 +57,7 @@ const ReservationTicket = ({ id, isInModal = false }: Props) => {
         if (isInModal) router.push(`/reservation/${data?.reservationId}`);
       }}
       className={`shadow relative w-[300px] flex flex-col ${
-        isInModal ? "mt-[400px] mb-10 md:m-0" : ""
+        isInModal ? "cursor-pointer mt-[400px] mb-10 md:m-0" : ""
       } md:flex-row md:w-full md:h-[300px] rounded-t-lg`}
     >
       <div
