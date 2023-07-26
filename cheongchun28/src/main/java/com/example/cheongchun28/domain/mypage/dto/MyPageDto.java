@@ -1,9 +1,9 @@
 package com.example.cheongchun28.domain.mypage.dto;
 
-import com.example.cheongchun28.domain.user.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-public class MypageDto {
+public class MyPageDto {
 
     /*
     * 회원 정보 변경 put /api/mypage
@@ -16,15 +16,28 @@ public class MypageDto {
         ”newPassword”: “newExamplePassword”
     * 예약 기록 조회 get /api/mypage/reservation*/
     @Getter
-    public class ChangeMyInfoRequestDto {
-        private String userName;
+    public static class ChangeMyInfoRequestDto {
+        private String nickName;
         private String profileImage;
         private boolean notificationAgreement;
-        }
+    }
 
     @Getter
-    public class ChangeMyPasswordRequestDto {
+    public static class ChangeMyPasswordRequestDto {
         private String password;
         private String newPassword;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class getMyInfoResponseDto {
+        private String email;
+        private String nickName;
+        private String profileImage;
+        private String empNumber;
+    }
+
+
+    public static class getMyReservationResponseDto {
     }
 }

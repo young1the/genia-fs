@@ -43,8 +43,8 @@ public class User implements UserDetails {
     @Column(name = "PASSWORD", nullable = false)
     private String encodedPassword;
 
-    @Column(name = "USERNAME", nullable = false, unique = true)
-    private String userName;
+    @Column(name = "NICK_NAME", nullable = false, unique = true)
+    private String nickName;
 
     @Column(name = "PROFILE_IMAGE", nullable = false)
     private String profileImage;
@@ -62,7 +62,7 @@ public class User implements UserDetails {
         this.role = Role.USER;
         this.userEmail = userEmail;
         this.encodedPassword = password;
-        this.userName = userName;
+        this.nickName = userName;
         this.profileImage = profileImage;
         this.userDeleted = 1;
         this.empNumber = empNumber;
