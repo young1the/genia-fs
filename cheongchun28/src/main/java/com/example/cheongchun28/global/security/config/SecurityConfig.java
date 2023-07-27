@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -41,11 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
+        /*CorsConfiguration configuration = new CorsConfiguration();
 
         //addAllowedOrigin(): 허용할 도메인을 설정
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("http://10.41.0.162:3000");
+        configuration.addAllowedOrigin("http://10.41.0.161:3000");
 
         //addExposeHeader(): 메서드를 사용하여 클라이언트로 특정 키값을 노출시킬 헤더를 설정.
         configuration.addExposedHeader(JwtUtil.AUTHORIZATION_HEADER);
@@ -61,6 +63,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
+        return source;*/
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        //addExposeHeader(): 메서드를 사용하여 클라이언트로 특정 키값을 노출시킬 헤더를 설정.
+        configuration.addExposedHeader(JwtUtil.AUTHORIZATION_HEADER);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
