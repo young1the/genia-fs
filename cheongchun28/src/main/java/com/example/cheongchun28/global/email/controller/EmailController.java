@@ -13,8 +13,8 @@ public class EmailController {
     private final EmailService emailService;
 
     //이메일 인증 코드 발급 및 전송
-    @PostMapping("/email/send")
-    public CustomResponseDto sendEmailConfirmMail(@RequestParam String recipient) throws Exception {
+    @PostMapping("/email/send/{recipient}")
+    public CustomResponseDto sendEmailConfirmMail(@PathVariable String recipient) {
         emailService.sendEmailConfirmMail(recipient);
         return new CustomResponseDto(200);
     }

@@ -17,10 +17,10 @@ class EmailScheduleService {
 
     private final EmailRepository emailRepository;
 
-    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "0 0 12 1/1 * ? *")
     @Transactional
-    public void emailconfirmcodeDelete() {
-        log.info("스케줄러 실행됨");
+    public void emailConfirmCodeDelete() {
+        log.info("스케줄러 실행1됨");
         LocalDateTime afterLimitTime = LocalDateTime.now().minusMinutes(3);
 
         emailRepository.deleteOlderThanlimitTime(afterLimitTime);
