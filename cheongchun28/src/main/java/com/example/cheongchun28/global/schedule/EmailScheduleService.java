@@ -17,7 +17,7 @@ class EmailScheduleService {
 
     private final EmailRepository emailRepository;
 
-    @Scheduled(cron = "0 0 12 1/1 * ? *")
+    @Scheduled(cron = "0 0 12 * * *")
     @Transactional
     public void emailConfirmCodeDelete() {
         log.info("스케줄러 실행1됨");

@@ -72,7 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowCredentials(true);
         //addExposeHeader(): 메서드를 사용하여 클라이언트로 특정 키값을 노출시킬 헤더를 설정.
         configuration.addExposedHeader(JwtUtil.AUTHORIZATION_HEADER);
-
+//        configuration.addExposedHeader("access-control-allow-origin");
+//        configuration.addExposedHeader("access-control-allow-methods");
+//        configuration.addExposedHeader("access-control-allow-headers");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
