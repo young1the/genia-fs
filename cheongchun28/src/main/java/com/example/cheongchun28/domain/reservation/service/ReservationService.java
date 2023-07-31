@@ -1,6 +1,7 @@
 package com.example.cheongchun28.domain.reservation.service;
 
 import com.example.cheongchun28.domain.reservation.dto.ReservationRequestDto;
+import com.example.cheongchun28.domain.reservation.dto.ReservationResponseDto;
 import com.example.cheongchun28.domain.reservation.entity.*;
 import com.example.cheongchun28.domain.reservation.repository.ReservationMemberRepository;
 import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
@@ -102,7 +103,6 @@ public class ReservationService {
                 .anyMatch(reservation -> reservation.getStatus() != ReservationStatus.CANCELLED && reservation.getStatus() != ReservationStatus.COMPLETED);
     }
 
-
     // 예약 조회 서비스 (전체)
     public ReservationResponseDto.ReservationGetResponseDto getReservation(User auth) {
         User user = userRepository.findByUserEmail(auth.getUsername())
@@ -112,5 +112,23 @@ public class ReservationService {
         return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
     }
 
+    // 예약 삭제
+    @Transactional
+    public CustomResponseDto deleteReservation(User auth, String code) {
+        userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        Reservation reservation = reservationRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
+        reservation.deleteReservation();
+        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(ReservationMemberStatus.CONFIRMED, reservation.getId());
+        if (reservationMember != null) {
+            for (ReservationMember member : reservationMember) {
+                member.cancelReservationMember();
+                reservationMemberRepository.save(member);
+            }
+        }
+        reservationRepository.save(reservation);
+        return new CustomResponseDto(200);
+    }
 
 }

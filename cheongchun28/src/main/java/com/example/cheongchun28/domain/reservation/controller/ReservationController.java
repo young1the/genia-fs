@@ -2,6 +2,7 @@ package com.example.cheongchun28.domain.reservation.controller;
 
 
 import com.example.cheongchun28.domain.reservation.dto.ReservationRequestDto;
+import com.example.cheongchun28.domain.reservation.dto.ReservationResponseDto;
 import com.example.cheongchun28.domain.reservation.service.ReservationService;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
@@ -33,6 +34,14 @@ public class ReservationController {
     public ResponseEntity<ReservationResponseDto.ReservationGetResponseDto> getedReservation(@AuthenticationPrincipal User auth) {
         log.info("reservation read, auth: {}", auth.getUsername());
         return ResponseEntity.ok(reservationService.getReservation(auth));
+    }
+
+    // 예약 삭제
+    @DeleteMapping("/{reservationCode}")
+    public ResponseEntity<CustomResponseDto> deleteReservation(@AuthenticationPrincipal User auth,
+                                                               @PathVariable("reservationCode") String code) {
+        log.info("reservation delete, auth: {}, reservationCode: {}", auth.getUsername(), code);
+        return ResponseEntity.ok(reservationService.deleteReservation(auth, code));
     }
 
 }
