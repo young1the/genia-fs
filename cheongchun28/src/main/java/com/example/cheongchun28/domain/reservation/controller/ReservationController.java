@@ -35,4 +35,10 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservation(auth));
     }
 
+    @GetMapping("/{reservationCode}")
+    //예약 건당 조회하기(Read/Get) - (하나에 대한)
+    public ReservationResponseDto.ReservationGetOneResponseDto getedReservation(@PathVariable("reservationCode") String code) {
+        log.info("reservation get, reservationCode: {}", code);
+        return reservationService.getReservation(code);
+    }
 }
