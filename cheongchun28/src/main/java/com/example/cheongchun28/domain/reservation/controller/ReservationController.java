@@ -28,6 +28,11 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.createReservation(auth, createReservationDto));
     }
 
-
+    @GetMapping()
+    //조회하기(Read/Get) - (전체)
+    public ResponseEntity<ReservationResponseDto.ReservationGetResponseDto> getedReservation(@AuthenticationPrincipal User auth) {
+        log.info("reservation read, auth: {}", auth.getUsername());
+        return ResponseEntity.ok(reservationService.getReservation(auth));
+    }
 
 }

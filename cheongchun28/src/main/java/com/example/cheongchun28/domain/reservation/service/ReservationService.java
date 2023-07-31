@@ -103,7 +103,14 @@ public class ReservationService {
     }
 
 
-
+    // 예약 조회 서비스 (전체)
+    public ReservationResponseDto.ReservationGetResponseDto getReservation(User auth) {
+        User user = userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        Reservation reservation = reservationRepository.findWaitingReservationByEmail(user.getUserEmail());
+        //아이디를 가지고 예약 번호를 찾는다.
+        return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
+    }
 
 
 }
