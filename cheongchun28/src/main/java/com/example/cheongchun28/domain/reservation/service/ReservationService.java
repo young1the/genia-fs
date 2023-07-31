@@ -147,4 +147,31 @@ public class ReservationService {
 
     }
 
+        // 예약 수정
+        @Transactional
+        public CustomResponseDto updateReservation(User auth, String code, ReservationRequestDto.UpdateReservationDto updateReservationDto) {
+            try {
+                Reservation reservation = reservationRepository.findByCode(code)
+                        .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
+                if (isRoomAlreadyReserved(reservation.getRoom(), updateReservationDto.getStartDate(), updateReservationDto.getEndDate())) {
+                    log.error("동일한 방 예약 중복");
+                    return new CustomResponseDto(400);
+                }
+                if (updateReservationDto.isValid()) {
+                    reservation.updateReservation(updateReservationDto);
+                    reservationRepository.save(reservation);
+                    return new CustomResponseDto(200);
+                } else {
+                    log.error("예약 시간 간격이 1시간 이상 차이나지 않습니다.");
+                    return new CustomResponseDto(400);
+                }
+            } catch (IllegalArgumentException e) {
+                log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
+                return new CustomResponseDto(400);
+            } catch (Exception e) {
+                log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
+                return new CustomResponseDto(500);
+            }
+        }
+
 }

@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/reservation")
@@ -51,5 +53,14 @@ public class ReservationController {
         log.info("reservation get, reservationCode: {}", code);
         return reservationService.getReservation(code);
     }
-}
 
+    // 예약 수정
+    @PutMapping("/{reservationCode}")
+    public ResponseEntity<CustomResponseDto> updateReservation(@Valid @AuthenticationPrincipal User auth,
+                                                               @PathVariable("reservationCode") String code,
+                                                               @RequestBody ReservationRequestDto.UpdateReservationDto updateReservationDto) {
+        log.info("reservation update,  auth: {},  updateReservation: {}, reservationCode: {}", auth, updateReservationDto, code);
+        return ResponseEntity.ok(reservationService.updateReservation(auth, code, updateReservationDto));
+    }
+
+}
