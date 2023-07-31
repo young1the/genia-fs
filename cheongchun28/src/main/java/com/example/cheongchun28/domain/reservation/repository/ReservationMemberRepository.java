@@ -17,7 +17,7 @@ public interface ReservationMemberRepository extends JpaRepository<ReservationMe
 
 //    List<ReservationMember> findByUserAndStatus(User user, ReservationMemberStatus status);
 
-//    ReservationMember findByReservationAndUser(Reservation reservation, User user);
+    ReservationMember findByReservationAndUser(Reservation reservation, User user);
 
     /*
     @Query(value = "SELECT * FROM t_reservation_member r WHERE r.reservation_Code = :reservationCode AND r.status In ('예약중')" , nativeQuery = true)
@@ -27,8 +27,8 @@ public interface ReservationMemberRepository extends JpaRepository<ReservationMe
 //    @Query(value = " select * from t_reservation_member r where r.status = '참여중' group by r.user_sequence_Id", nativeQuery = true)
 //    List<ReservationMember> findByReservation(Reservation reservation);
 
-//    @Query(value = "SELECT * FROM t_reservation_member r WHERE r.status = :status AND r.reservation_sequence_id = :reservationId", nativeQuery = true)
-//    List<ReservationMember> findByReservation(@Param("status") ReservationMemberStatus status, @Param("reservationId") Long reservationId);
+    @Query(value = "SELECT * FROM t_reservation_member r WHERE r.status = :status AND r.reservation_sequence_id = :reservationId", nativeQuery = true)
+    List<ReservationMember> findByReservation(@Param("status") ReservationMemberStatus status, @Param("reservationId") Long reservationId);
 
  /*
 //예약 참가 API 생성 후에 예약 조회할 때 쓰자.

@@ -112,6 +112,49 @@ public class ReservationService {
         return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
     }
 
+    // 예약 조회 서비스 (하나씩)
+    public ReservationResponseDto.ReservationGetOneResponseDto getReservation(String code) {
+        Reservation reservation = reservationRepository.findByReservationCode(code);
+        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(ReservationMemberStatus.CONFIRMED, reservation.getId());
+//        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(reservation);
+        ArrayList<String> memberUser = new ArrayList<>();
+        for (ReservationMember rm : reservationMember) {
+            memberUser.add(rm.getUser().getNickName());
+        }
+        // 예약번호에 해당하는 값들을 찾는다.
+        return new ReservationResponseDto.ReservationGetOneResponseDto(reservation.getRoom().getClassName(),
+                reservation.getTopic(), reservation.getUser().getNickName(), reservation.getStatus(),
+                reservation.getStartDate(), reservation.getEndDate(), memberUser);
+
+    }
+
+    // 예약 수정
+    @Transactional
+    public CustomResponseDto updateReservation(User auth, String code, ReservationRequestDto.UpdateReservationDto
+            updateReservationDto) {
+        try {
+            Reservation reservation = reservationRepository.findByCode(code)
+                    .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
+            if (isRoomAlreadyReserved(reservation.getRoom(), updateReservationDto.getStartDate(), updateReservationDto.getEndDate())) {
+                log.error("동일한 방 예약 중복");
+                return new CustomResponseDto(400);
+            }
+            if (updateReservationDto.isValid()) {
+                reservation.updateReservation(updateReservationDto);
+                reservationRepository.save(reservation);
+                return new CustomResponseDto(200);
+            } else {
+                log.error("예약 시간 간격이 1시간 이상 차이나지 않습니다.");
+                return new CustomResponseDto(400);
+            }
+        } catch (IllegalArgumentException e) {
+            log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
+            return new CustomResponseDto(400);
+        } catch (Exception e) {
+            log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
+            return new CustomResponseDto(500);
+        }
+    }
 
     // 예약 삭제
     @Transactional
@@ -130,48 +173,33 @@ public class ReservationService {
         }
         reservationRepository.save(reservation);
         return new CustomResponseDto(200);
-
-    // 예약 조회 서비스 (하나씩)
-    public ReservationResponseDto.ReservationGetOneResponseDto getReservation(String code) {
-        Reservation reservation = reservationRepository.findByReservationCode(code);
-        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(ReservationMemberStatus.CONFIRMED, reservation.getId());
-//        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(reservation);
-        ArrayList<String> memberUser = new ArrayList<>();
-        for (ReservationMember rm : reservationMember) {
-            memberUser.add(rm.getUser().getNickName());
-        }
-        // 예약번호에 해당하는 값들을 찾는다.
-        return new ReservationResponseDto.ReservationGetOneResponseDto(reservation.getRoom().getClassName(),
-                reservation.getTopic(), reservation.getUser().getNickName(), reservation.getStatus(),
-                reservation.getStartDate(), reservation.getEndDate(), memberUser);
-
     }
 
-        // 예약 수정
-        @Transactional
-        public CustomResponseDto updateReservation(User auth, String code, ReservationRequestDto.UpdateReservationDto updateReservationDto) {
-            try {
-                Reservation reservation = reservationRepository.findByCode(code)
-                        .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
-                if (isRoomAlreadyReserved(reservation.getRoom(), updateReservationDto.getStartDate(), updateReservationDto.getEndDate())) {
-                    log.error("동일한 방 예약 중복");
-                    return new CustomResponseDto(400);
-                }
-                if (updateReservationDto.isValid()) {
-                    reservation.updateReservation(updateReservationDto);
-                    reservationRepository.save(reservation);
-                    return new CustomResponseDto(200);
-                } else {
-                    log.error("예약 시간 간격이 1시간 이상 차이나지 않습니다.");
-                    return new CustomResponseDto(400);
-                }
-            } catch (IllegalArgumentException e) {
-                log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
-                return new CustomResponseDto(400);
-            } catch (Exception e) {
-                log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
-                return new CustomResponseDto(500);
-            }
+    // 예약 참가
+    @Transactional
+    public CustomResponseDto joinReservation(User auth, String code) {
+        User user = userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        Reservation reservation = reservationRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
+        // 유저 예약 생성 체크
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
+            log.error("기존 예약이 있습니다.");
+            return new CustomResponseDto(400);
         }
+
+        ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
+        if (existingReservationMember != null && existingReservationMember.getStatus() == ReservationMemberStatus.CONFIRMED) {
+            log.error("이미 참여중인 회원입니다.");
+            return new CustomResponseDto(400);
+        }
+        reservationMemberRepository.save(
+                ReservationMember.builder()
+                        .reservation(reservation)
+                        .user(auth)
+                        .build()
+        );
+        return new CustomResponseDto(200);
+    }
 
 }

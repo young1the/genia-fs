@@ -38,15 +38,6 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservation(auth));
     }
 
-    // 예약 삭제
-    @DeleteMapping("/{reservationCode}")
-    public ResponseEntity<CustomResponseDto> deleteReservation(@AuthenticationPrincipal User auth,
-                                                               @PathVariable("reservationCode") String code) {
-        log.info("reservation delete, auth: {}, reservationCode: {}", auth.getUsername(), code);
-        return ResponseEntity.ok(reservationService.deleteReservation(auth, code));
-    }
-
-}
     @GetMapping("/{reservationCode}")
     //예약 건당 조회하기(Read/Get) - (하나에 대한)
     public ReservationResponseDto.ReservationGetOneResponseDto getedReservation(@PathVariable("reservationCode") String code) {
@@ -63,4 +54,20 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.updateReservation(auth, code, updateReservationDto));
     }
 
+    // 예약 삭제
+    @DeleteMapping("/{reservationCode}")
+    public ResponseEntity<CustomResponseDto> deleteReservation(@AuthenticationPrincipal User auth,
+                                                               @PathVariable("reservationCode") String code) {
+        log.info("reservation delete, auth: {}, reservationCode: {}", auth.getUsername(), code);
+        return ResponseEntity.ok(reservationService.deleteReservation(auth, code));
+    }
+
+    // 예약 참가
+    @PostMapping("/entrant/{reservationCode}")
+    public ResponseEntity<CustomResponseDto> joinReservation(@AuthenticationPrincipal User auth,
+                                                             @PathVariable("reservationCode") String code) {
+        log.info("reservation join,  auth: {}, reservationCode: {}", auth.getUsername(), code);
+        return ResponseEntity.ok(reservationService.joinReservation(auth, code));
+
+    }
 }
