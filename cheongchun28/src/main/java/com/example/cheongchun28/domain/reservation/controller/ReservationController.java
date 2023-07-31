@@ -70,4 +70,12 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.joinReservation(auth, code));
 
     }
+
+    // 예약 참가 취소
+    @DeleteMapping("/entrant/{reservationCode}")
+    public ResponseEntity<CustomResponseDto> joinCancelReservation(@AuthenticationPrincipal User auth,
+                                                                   @PathVariable("reservationCode") String code) {
+        log.info("reservation joinCancel,  auth: {}, reservationCode: {}", auth.getUsername(), code);
+        return ResponseEntity.ok(reservationService.joinCancelReservation(auth, code));
+    }
 }
