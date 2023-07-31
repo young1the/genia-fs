@@ -112,6 +112,7 @@ public class ReservationService {
         return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
     }
 
+
     // 예약 삭제
     @Transactional
     public CustomResponseDto deleteReservation(User auth, String code) {
@@ -129,6 +130,21 @@ public class ReservationService {
         }
         reservationRepository.save(reservation);
         return new CustomResponseDto(200);
+
+    // 예약 조회 서비스 (하나씩)
+    public ReservationResponseDto.ReservationGetOneResponseDto getReservation(String code) {
+        Reservation reservation = reservationRepository.findByReservationCode(code);
+        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(ReservationMemberStatus.CONFIRMED, reservation.getId());
+//        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(reservation);
+        ArrayList<String> memberUser = new ArrayList<>();
+        for (ReservationMember rm : reservationMember) {
+            memberUser.add(rm.getUser().getNickName());
+        }
+        // 예약번호에 해당하는 값들을 찾는다.
+        return new ReservationResponseDto.ReservationGetOneResponseDto(reservation.getRoom().getClassName(),
+                reservation.getTopic(), reservation.getUser().getNickName(), reservation.getStatus(),
+                reservation.getStartDate(), reservation.getEndDate(), memberUser);
+
     }
 
 }
