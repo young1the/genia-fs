@@ -8,13 +8,17 @@ import com.example.cheongchun28.domain.reservation.repository.ReservationReposit
 import com.example.cheongchun28.domain.reservation.repository.RoomRepository;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.domain.user.repository.UserRepository;
+import com.example.cheongchun28.domain.user.service.CustomUserDetailService;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +70,7 @@ public class ReservationService {
                 return new CustomResponseDto(400);
             }
             // 예약 시간간격 체크
-            if (createReservationDto.isValid()) {
+            if (isValid(createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
                 reservationRepository.save(createReservationDto.toEntity(room, user));
                 return new CustomResponseDto(200);
             } else {
@@ -103,25 +107,32 @@ public class ReservationService {
                 .anyMatch(reservation -> reservation.getStatus() != ReservationStatus.CANCELLED && reservation.getStatus() != ReservationStatus.COMPLETED);
     }
 
+    public boolean isValid(LocalDateTime startDate, LocalDateTime endDate) {
+        return isMinimumHourInterval(startDate, endDate);
+    }
+
+    public boolean isMinimumHourInterval(LocalDateTime startTime, LocalDateTime endTime) {
+        Duration duration = Duration.between(startTime, endTime);
+        return duration.toHours() >= 1;
+    }
+
     // 예약 조회 서비스 (전체)
     public ReservationResponseDto.ReservationGetResponseDto getReservation(User auth) {
         User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
         Reservation reservation = reservationRepository.findWaitingReservationByEmail(user.getUserEmail());
-        //아이디를 가지고 예약 번호를 찾는다.
         return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
     }
 
     // 예약 조회 서비스 (하나씩)
     public ReservationResponseDto.ReservationGetOneResponseDto getReservation(String code) {
         Reservation reservation = reservationRepository.findByReservationCode(code);
-        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(ReservationMemberStatus.CONFIRMED, reservation.getId());
-//        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(reservation);
+        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(false, reservation.getId());
         ArrayList<String> memberUser = new ArrayList<>();
         for (ReservationMember rm : reservationMember) {
             memberUser.add(rm.getUser().getNickName());
         }
-        // 예약번호에 해당하는 값들을 찾는다.
+
         return new ReservationResponseDto.ReservationGetOneResponseDto(reservation.getRoom().getClassName(),
                 reservation.getTopic(), reservation.getUser().getNickName(), reservation.getStatus(),
                 reservation.getStartDate(), reservation.getEndDate(), memberUser);
@@ -139,7 +150,7 @@ public class ReservationService {
                 log.error("동일한 방 예약 중복");
                 return new CustomResponseDto(400);
             }
-            if (updateReservationDto.isValid()) {
+            if (isValid(updateReservationDto.getStartDate(), updateReservationDto.getEndDate())) {
                 reservation.updateReservation(updateReservationDto);
                 reservationRepository.save(reservation);
                 return new CustomResponseDto(200);
@@ -164,7 +175,7 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
         reservation.deleteReservation();
-        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(ReservationMemberStatus.CONFIRMED, reservation.getId());
+        List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(false, reservation.getId());
         if (reservationMember != null) {
             for (ReservationMember member : reservationMember) {
                 member.cancelReservationMember();
@@ -182,14 +193,14 @@ public class ReservationService {
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
         Reservation reservation = reservationRepository.findByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
-        // 유저 예약 생성 체크
+
         if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
             log.error("기존 예약이 있습니다.");
             return new CustomResponseDto(400);
         }
 
         ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
-        if (existingReservationMember != null && existingReservationMember.getStatus() == ReservationMemberStatus.CONFIRMED) {
+        if (existingReservationMember != null && !existingReservationMember.isStatus()) {
             log.error("이미 참여중인 회원입니다.");
             return new CustomResponseDto(400);
         }
@@ -211,7 +222,7 @@ public class ReservationService {
 
         ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
 
-        if (reservationMember.getStatus() == ReservationMemberStatus.CANCELLED) {
+        if (reservationMember.isStatus()) {
             log.error("이미 취소된 예약입니다.");
             return new CustomResponseDto(400);
         }

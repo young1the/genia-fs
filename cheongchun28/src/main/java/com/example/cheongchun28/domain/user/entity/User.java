@@ -63,10 +63,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Reservation> reservations = new ArrayList<>();
 
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
 
     public User(String userEmail, String password, String userName, String profileImage, String empNumber) {
         this.role = Role.USER;
@@ -86,9 +82,6 @@ public class User implements UserDetails {
         authorities.add(simpleGrantedAuthority);
 
         return authorities;
-    }
-    public String getNickName() {
-        return this.nickName;
     }
 
 

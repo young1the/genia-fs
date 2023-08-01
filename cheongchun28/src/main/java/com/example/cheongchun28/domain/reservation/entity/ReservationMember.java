@@ -33,12 +33,12 @@ public class ReservationMember {
 
 
     @Column(name = "STATUS")
-    @Enumerated(EnumType.ORDINAL)
-    private ReservationMemberStatus status;
+//    @Enumerated(EnumType.ORDINAL)
+    private boolean status;
 
 
     @Column(name = "IS_INVITOR")
-    private String isInvitor; // 방장인지 아닌지
+    private boolean isInvitor; // 방장인지 아닌지
 
 
 
@@ -46,10 +46,10 @@ public class ReservationMember {
     public ReservationMember(Reservation reservation, User user) {
         this.reservation = reservation;
         this.user = user;
-        this.status = ReservationMemberStatus.CONFIRMED;
+        this.status = false;
     }
 
     public void cancelReservationMember(){
-        this.status = ReservationMemberStatus.CANCELLED;
+        this.status = true;
     }
 }

@@ -26,30 +26,30 @@ public class ReservationController {
     // 예약 등록
     @PostMapping()
     public ResponseEntity<CustomResponseDto> createReservation(@AuthenticationPrincipal User auth,
-                                                               @RequestBody ReservationRequestDto.CreateReservationDto createReservationDto) {
+                                                               @Valid @RequestBody ReservationRequestDto.CreateReservationDto createReservationDto) {
         log.info("reservation create, className: {}, auth: {}", createReservationDto.getClassName(), auth.getUsername());
         return ResponseEntity.ok(reservationService.createReservation(auth, createReservationDto));
     }
 
-    @GetMapping()
     //조회하기(Read/Get) - (전체)
+    @GetMapping()
     public ResponseEntity<ReservationResponseDto.ReservationGetResponseDto> getedReservation(@AuthenticationPrincipal User auth) {
         log.info("reservation read, auth: {}", auth.getUsername());
         return ResponseEntity.ok(reservationService.getReservation(auth));
     }
 
-    @GetMapping("/{reservationCode}")
     //예약 건당 조회하기(Read/Get) - (하나에 대한)
-    public ReservationResponseDto.ReservationGetOneResponseDto getedReservation(@PathVariable("reservationCode") String code) {
+    @GetMapping("/{reservationCode}")
+    public ResponseEntity<ReservationResponseDto.ReservationGetOneResponseDto> getedReservation(@PathVariable("reservationCode") String code) {
         log.info("reservation get, reservationCode: {}", code);
-        return reservationService.getReservation(code);
+        return ResponseEntity.ok( reservationService.getReservation(code));
     }
 
     // 예약 수정
     @PutMapping("/{reservationCode}")
     public ResponseEntity<CustomResponseDto> updateReservation(@Valid @AuthenticationPrincipal User auth,
                                                                @PathVariable("reservationCode") String code,
-                                                               @RequestBody ReservationRequestDto.UpdateReservationDto updateReservationDto) {
+                                                               @Valid @RequestBody ReservationRequestDto.UpdateReservationDto updateReservationDto) {
         log.info("reservation update,  auth: {},  updateReservation: {}, reservationCode: {}", auth, updateReservationDto, code);
         return ResponseEntity.ok(reservationService.updateReservation(auth, code, updateReservationDto));
     }

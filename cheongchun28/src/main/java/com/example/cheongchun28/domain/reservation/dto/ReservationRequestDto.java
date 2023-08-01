@@ -11,22 +11,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 
 @NoArgsConstructor
 public class ReservationRequestDto {
 
-    public static boolean isMinimumHourInterval(LocalDateTime startTime, LocalDateTime endTime) {
-        Duration duration = Duration.between(startTime, endTime);
-        return duration.toHours() >= 1;
-    }
-
     @Getter
     @Setter
     @NoArgsConstructor
     public static class CreateReservationDto {
+
 
         private String className;
 
@@ -38,6 +33,7 @@ public class ReservationRequestDto {
 
         private ReservationStatus status;
 
+        @NotNull(message = "예약 사유를 입력해주세요.")
         private String topic;
 
         @Builder
@@ -60,9 +56,6 @@ public class ReservationRequestDto {
                     .build();
         }
 
-        public boolean isValid() {
-            return ReservationRequestDto.isMinimumHourInterval(startDate, endDate);
-        }
     }
 
 
@@ -84,10 +77,6 @@ public class ReservationRequestDto {
             this.startDate = startDate;
             this.endDate = endDate;
             this.topic = topic;
-        }
-
-        public boolean isValid() {
-            return ReservationRequestDto.isMinimumHourInterval(startDate, endDate);
         }
 
     }
