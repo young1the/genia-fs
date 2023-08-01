@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "MODIFIED_AT")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "ROLE_SEQUENCE_ID", nullable = false)
+    @Column(name = "ROLE", nullable = false)
     private Role role;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
@@ -50,7 +50,7 @@ public class User implements UserDetails {
     private String profileImage;
 
     @Column(name = "DELETED", nullable = false)
-    private short userDeleted;
+    private boolean deleted;
 
     @Column(name = "EMP_NUMBER", unique = true)
     private String empNumber;
@@ -64,7 +64,7 @@ public class User implements UserDetails {
         this.encodedPassword = password;
         this.nickName = userName;
         this.profileImage = profileImage;
-        this.userDeleted = 1;
+        this.deleted = false;
         this.empNumber = empNumber;
     }
 
