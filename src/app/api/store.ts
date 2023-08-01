@@ -1,6 +1,6 @@
 type User = {
   email: string;
-  username: string;
+  nickName: string;
   password: string;
   empNumber: string;
 };
@@ -74,14 +74,12 @@ class UserDB {
     for (const user of this.db) {
       if (user.email == email) {
         const randomPassword = Math.floor(Math.random() * 1000);
-        console.log(randomPassword);      
-        user.password = randomPassword + '';  
+        user.password = randomPassword + "";
         result = randomPassword;
         return result;
-  
       }
     }
-      return result;
+    return result;
   }
 
   emailVerification(newEmailVerify: UserVerification): boolean {

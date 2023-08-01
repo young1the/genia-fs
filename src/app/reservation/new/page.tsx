@@ -1,5 +1,5 @@
-import AuthenticatedOnly from "@/components/HOC/AuthenticatedOnly";
-import NewReservationForm from "@/components/NewReservationForm";
+import AuthenticatedOnly from "@/components/hoc/AuthenticatedOnly";
+import NewReservationForm from "@/components/reservation/NewReservationForm";
 
 const page = () => {
   return (

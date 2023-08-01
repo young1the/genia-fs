@@ -26,13 +26,6 @@ export const GET = async (
 ) => {
   try {
     const reservationId = params.reservationId;
-    const auth = await request.headers.get("Authorization");
-    const token = auth?.split(" ")[1];
-    if (!token) {
-      return new Response(JSON.stringify({ message: "로그인을 안했네요" }), {
-        status: 401,
-      });
-    }
     return new Response(
       JSON.stringify({
         ...dummyData,

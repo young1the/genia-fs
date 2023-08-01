@@ -5,7 +5,7 @@ export type LinkKey =
   | "LOGIN"
   | "LOGOUT"
   | "MYPAGE"
-  | "SUPER"
+  | "ADMIN"
   | "FINDPWD"
   | "REGISTER";
 export type UserStatus = "authenticated" | "loading" | "unauthenticated";

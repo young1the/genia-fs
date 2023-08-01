@@ -1,12 +1,9 @@
-import UnauthenticatedOnly from "@/components/HOC/UnauthenticatedOnly";
-import RegisterForm from "@/components/RegisterForm/RegisterForm";
+import RegisterForm from "@/components/user/RegisterForm/RegisterForm";
 
 const page = () => {
   return (
     <section className='cc-page-wrapper'>
-      <UnauthenticatedOnly>
-        <RegisterForm />
-      </UnauthenticatedOnly>
+      <RegisterForm />
     </section>
   );
 };

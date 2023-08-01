@@ -1,6 +1,7 @@
-export const URL: Record<string, string> = {
-  REGISTER: `/api/user/signup`,
+type APImethod = "SIGNUP" | "LOGIN" | "EMAIL_SEND" | "EMAIL_CONFIRM";
+export const URL: Record<APImethod, string> = {
+  SIGNUP: `/api/user/signup`,
   LOGIN: `/api/user/login`,
-  CODE_SEND: `/api/email/`,
-  CODE_VERIFY: `/api/email/verification/`,
+  EMAIL_SEND: `/api/email/send`,
+  EMAIL_CONFIRM: `/api/email/confirm/`,
 } as const;

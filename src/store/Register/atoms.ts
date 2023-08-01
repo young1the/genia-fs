@@ -2,16 +2,17 @@ import { atom, selector } from "recoil";
 import {
   RegisterSteps,
   widthArray,
-} from "@/components/RegisterForm/RegisterSteps";
+} from "@/components/user/RegisterForm/RegisterSteps";
 import { UserData } from "@/types/common";
 
 export const registerUserInput = atom<UserData>({
   key: "registerUserInput",
   default: {
     email: "",
-    code: "",
+    notificationAgreement: "",
+    confirmCode: "",
     password: "",
-    username: "",
+    nickName: "",
     empNumber: "",
   },
 });

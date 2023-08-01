@@ -1,18 +1,26 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// TODO : 정리하기
+// import GoogleProvider from "next-auth/providers/google";
+import * as API from "@/lib/api";
+
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
   providers: [
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    // }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "email", type: "text", placeholder: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("authorize callback");
         const res = await fetch(
-          (process.env.BASE_URL as string) + "/api/user/login",
+          (process.env.NEXT_PUBLIC_API_SERVER as string) +
+            API.constants.URL["LOGIN"],
           {
             method: "POST",
             headers: {
@@ -24,30 +32,41 @@ const authOptions = {
             }),
           }
         );
-        if (!res.ok) return null;
         const user = await res.json();
-        return user;
+        if (res.ok && user) {
+          return {
+            ...user,
+            ["email"]: credentials?.email,
+            ["accessToken"]: res.headers.get("Authorization"),
+          };
+        }
+        return null;
       },
     }),
   ],
   pages: {
     signIn: "/user/login",
+    error: "/error",
   },
   callbacks: {
-    async jwt({ token, account, profile }: any) {
-      account;
-      profile;
-      //   if (account) {
-      // token.accessToken = account.access_token;
-      // token.id = profile.id;
-      //   }
+    async jwt(params: any) {
+      console.log("jwt callback");
+      const { token, user } = params;
+      if (user) {
+        token.email = user.email;
+        token.accessToken = user.accessToken;
+        token.nickName = user.nickName;
+        token.profileImage = user.profileImage;
+      }
       return token;
     },
-    async session({ session, token, user }: any) {
-      //   session.accessToken = token.accessToken;
-      //   session.user.id = token.id;
-      token;
-      user;
+    async session(params: any) {
+      console.log("session callback");
+      const { session, token } = params;
+      session.user.email = token.email;
+      session.user.nickName = token.nickName;
+      session.user.profileImage = token.profileImage;
+      session.user.accessToken = token.accessToken;
       return session;
     },
   },

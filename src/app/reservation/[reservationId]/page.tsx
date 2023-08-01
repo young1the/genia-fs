@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import Spinner from "@/components/commons/loader/Spinner";
-import ReservationTicket from "@/components/ReservationTicket/ReservationTicket";
+import Spinner from "@/components/common/loader/Spinner";
+import ReservationTicket from "@/components/reservation/ReservationTicket/ReservationTicket";
 import { ReservationData } from "@/types/common";
-import { ReservationControlPanel } from "@/components/ReservationTicket/ReservationControlPanel";
+import ReservationControlPanel from "@/components/reservation/ReservationTicket/ReservationControlPanel";
 
 const page = async ({
   params,
@@ -12,7 +12,7 @@ const page = async ({
   return (
     <div className='cc-page-wrapper max-w-5xl'>
       <Suspense fallback={<Spinner />}>
-        <ReservationControlPanel id={params.reservationId}/>
+        <ReservationControlPanel id={params.reservationId} />
         <ReservationTicket id={params.reservationId} />
       </Suspense>
     </div>
