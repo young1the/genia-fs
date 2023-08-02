@@ -35,6 +35,7 @@ public class User implements UserDetails {
     private LocalDateTime modifiedAt;
 
     @Column(name = "ROLE", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(name = "EMAIL", nullable = false, unique = true)

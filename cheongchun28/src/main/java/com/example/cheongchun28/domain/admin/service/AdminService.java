@@ -25,6 +25,7 @@ public class AdminService {
         );
 
         user.setRole(requestDto.getRole());
+        userRepository.save(user);
         return new CustomResponseDto(200);
     }
 

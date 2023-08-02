@@ -14,7 +14,6 @@ public class AdminDto{
         @Email
         private String email;
         private Role role;
-        private boolean setAdmin;
     }
 
     @Getter

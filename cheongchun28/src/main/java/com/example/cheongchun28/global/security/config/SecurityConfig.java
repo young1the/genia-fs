@@ -33,8 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //                .antMatchers("/user").authenticated()   //인증이 필요함(로그인이 필요함)
                 //admin
-                .antMatchers("/api/admin/user").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/api/admin/permission").hasAnyRole("ADMIN", "MANAGER")
+                .antMatchers("/api/admin/user").hasAnyRole("ADMIN", "MANAGER")
+//                .antMatchers("/api/admin/permission").hasRole("ADMIN")
+//                .antMatchers("/api/admin/permission").permitAll()
+
                 .antMatchers("/api/admin/reservation").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
                 .antMatchers("/api/admin/dashboard").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
 
@@ -47,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //email
                 .antMatchers("/api/email/**").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE", "USER")
 
-                .antMatchers("/api/user/**").permitAll() // 제한이 없음 (로그인을 하지 않아도 사용 가능)
+//                .antMatchers("/api/user/**").permitAll() // 제한이 없음 (로그인을 하지 않아도 사용 가능)
 
                 .and()
                 .addFilterBefore(
