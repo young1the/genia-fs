@@ -2,21 +2,21 @@ package com.example.cheongchun28.domain.reservation.service;
 
 import com.example.cheongchun28.domain.reservation.dto.ReservationRequestDto;
 import com.example.cheongchun28.domain.reservation.dto.ReservationResponseDto;
-import com.example.cheongchun28.domain.reservation.entity.*;
+import com.example.cheongchun28.domain.reservation.entity.Reservation;
+import com.example.cheongchun28.domain.reservation.entity.ReservationMember;
+import com.example.cheongchun28.domain.reservation.entity.ReservationStatus;
+import com.example.cheongchun28.domain.reservation.entity.Room;
 import com.example.cheongchun28.domain.reservation.repository.ReservationMemberRepository;
 import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
 import com.example.cheongchun28.domain.reservation.repository.RoomRepository;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.domain.user.repository.UserRepository;
-import com.example.cheongchun28.domain.user.service.CustomUserDetailService;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.time.Duration;
 import java.time.LocalDateTime;

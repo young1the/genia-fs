@@ -33,7 +33,6 @@ public class ReservationMember {
 
 
     @Column(name = "STATUS")
-//    @Enumerated(EnumType.ORDINAL)
     private boolean status;
 
 

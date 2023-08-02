@@ -36,14 +36,6 @@ public class ReservationRequestDto {
         @NotNull(message = "예약 사유를 입력해주세요.")
         private String topic;
 
-        @Builder
-        public CreateReservationDto(String className, LocalDateTime startDate, LocalDateTime endDate, String topic) {
-            this.className = className;
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.topic = topic;
-        }
-
         public Reservation toEntity(Room room, User user) {
             return Reservation
                     .builder()

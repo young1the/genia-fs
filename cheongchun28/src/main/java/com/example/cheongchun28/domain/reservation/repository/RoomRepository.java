@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-
     Optional<Room> findByClassName(String className);
 }

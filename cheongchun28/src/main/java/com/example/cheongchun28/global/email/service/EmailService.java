@@ -32,7 +32,6 @@ public class EmailService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private static final int CONFIRM_CODE_lENGTH = 6;
-    //    private static final int CONFIRM_CODE_VALID_MINUS = 3;
     private static final String CONFIRM_EMAIL_SUBJECT = "천재교육 이메일 인증";
     private static final String CONFIRM_EMAIL_CONTENT_TEMPLATE = "<div style='margin:20px;'>\n" +
             "<h1> 천재교육 </h1>\n" +
@@ -111,9 +110,9 @@ public class EmailService {
         log.info(password);
         return password;
     }
+
     //upsert = update + inset = 없으면 생성 있으면 업데이트
     //인증기간 만료 전 다시 보내면 update
-
     private void upsertConfirmCode(EmailEntity emailEntity, String confirmCode) {
         EmailEntity lastConfirmCode = emailRepository.findByEmail(emailEntity.getEmail()).orElse(null);
 
@@ -124,10 +123,9 @@ public class EmailService {
             emailRepository.save(lastConfirmCode);
         }
     }
+
     //recipient: 받는 이 (이메일 받는 사람의 이메일)
-
     //인증 코드 발송 메세지 생성
-
     private MimeMessage sendConfirmationEmail(String recipient, String confirmCode) {
         MimeMessage message = emailSender.createMimeMessage();
 
@@ -165,8 +163,8 @@ public class EmailService {
 
         return message;
     }
-    // 인증번호 생성
 
+    // 인증번호 생성
     private String createConfirmCode() {
         StringBuilder confirmCode = new StringBuilder();
         Random random = new Random();

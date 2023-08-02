@@ -12,12 +12,4 @@ public enum ReservationStatus {
         this.code = code;
         this.description = description;
     }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }

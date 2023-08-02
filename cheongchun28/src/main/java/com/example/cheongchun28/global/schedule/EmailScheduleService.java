@@ -23,7 +23,7 @@ class EmailScheduleService {
         log.info("스케줄러 실행1됨");
         LocalDateTime afterLimitTime = LocalDateTime.now().minusMinutes(3);
 
-        emailRepository.deleteOlderThanlimitTime(afterLimitTime);
+        emailRepository.deleteOlderThanLimitTime(afterLimitTime);
         log.info("현재 시간 기준 3분전보다 지난 데이터를 삭제함");
     }
 }

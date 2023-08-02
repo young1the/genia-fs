@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface EmailRepository extends JpaRepository<EmailEntity, Long> {
-
     Optional<EmailEntity> findByEmail(String email);
 
     @Modifying
     @Query("DELETE FROM EmailEntity e WHERE e.modifiedAt <= :limitTime")
-    void deleteOlderThanlimitTime(@Param("limitTime")LocalDateTime limitTime);
+    void deleteOlderThanLimitTime(@Param("limitTime")LocalDateTime limitTime);
+
 }

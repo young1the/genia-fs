@@ -15,18 +15,6 @@ import java.sql.SQLException;
 @Slf4j
 @RequestMapping("/api/mypage")
 public class MyPageController {
-    /*
-    * 회원 정보 변경 put /api/mypage
-        "username": "changeExampleUsername"
-        “profileImage”: “exampleImageURL.com”,
-        ”notificationAgreement”: true(false)
-    * 회원 정보 조회 get /api/mypage
-    * 비밀번호 변경 put /api/mypage/password
-        ”password”: “examplePassword”,
-        ”newPassword”: “newExamplePassword”
-    * 예약 기록 조회 get /api/mypage/reservation - 예약 완성되면 받아서 만들기
-    * */
-
     private final MyPageService mypageService;
 
     @PutMapping
