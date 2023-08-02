@@ -5,7 +5,6 @@ import com.example.cheongchun28.domain.reservation.entity.Reservation;
 import com.example.cheongchun28.domain.reservation.entity.ReservationStatus;
 import com.example.cheongchun28.domain.reservation.entity.Room;
 import com.example.cheongchun28.domain.user.entity.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,7 @@ public class ReservationRequestDto {
     public static class CreateReservationDto {
 
 
-        private String className;
+        private String roomName;
 
         @NotNull(message = "예약 시작 시간은 필수 입력 값입니다.")
         private LocalDateTime startDate;
@@ -31,7 +30,7 @@ public class ReservationRequestDto {
         @NotNull(message = "예약 종료 시간은 필수 입력 값입니다.")
         private LocalDateTime endDate;
 
-        private ReservationStatus status;
+//        private ReservationStatus status;
 
         @NotNull(message = "예약 사유를 입력해주세요.")
         private String topic;
@@ -65,11 +64,11 @@ public class ReservationRequestDto {
         @NotNull(message = "예약 사유를 입력해주세요.")
         private String topic;
 
-        public UpdateReservationDto(LocalDateTime startDate, LocalDateTime endDate, String topic) {
+     /*   public UpdateReservationDto(LocalDateTime startDate, LocalDateTime endDate, String topic) {
             this.startDate = startDate;
             this.endDate = endDate;
             this.topic = topic;
-        }
+        }*/
 
     }
 }

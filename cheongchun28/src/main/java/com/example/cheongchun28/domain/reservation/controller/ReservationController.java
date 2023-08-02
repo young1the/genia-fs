@@ -27,7 +27,7 @@ public class ReservationController {
     @PostMapping()
     public ResponseEntity<CustomResponseDto> createReservation(@AuthenticationPrincipal User auth,
                                                                @Valid @RequestBody ReservationRequestDto.CreateReservationDto createReservationDto) {
-        log.info("reservation create, className: {}, auth: {}", createReservationDto.getClassName(), auth.getUsername());
+        log.info("reservation create, className: {}, auth: {}", createReservationDto.getRoomName(), auth.getUsername());
         return ResponseEntity.ok(reservationService.createReservation(auth, createReservationDto));
     }
 

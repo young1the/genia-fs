@@ -31,7 +31,7 @@ public class Reservation {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLASS_SEQUENCE_ID", nullable = false)
+    @JoinColumn(name = "ROOM_SEQUENCE_ID", nullable = false)
     private Room room;
 
     @JsonIgnore

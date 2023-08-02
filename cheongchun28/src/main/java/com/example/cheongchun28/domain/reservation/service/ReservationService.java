@@ -41,8 +41,8 @@ public class ReservationService {
             User user = userRepository.findByUserEmail(auth.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
             log.info("user: {}", user);
-            Room room = roomRepository.findByClassName(createReservationDto.getClassName())
-                    .orElseThrow(() -> new IllegalArgumentException(createReservationDto.getClassName() + "를 찾을 수 없습니다."));
+            Room room = roomRepository.findByRoomName(createReservationDto.getRoomName())
+                    .orElseThrow(() -> new IllegalArgumentException(createReservationDto.getRoomName() + "를 찾을 수 없습니다."));
             // 방 예약 및 다른 예약 존재 체크
             if (hasOverlappingReservation(room, user, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
                 log.error("예약 중복");
@@ -64,7 +64,7 @@ public class ReservationService {
                 return new CustomResponseDto(400);
             }
             // 예약 시간 중복 체크
-            List<Reservation> overlappingReservations = reservationRepository.findOverlappingReservations(createReservationDto.getClassName(), createReservationDto.getStartDate(), createReservationDto.getEndDate());
+            List<Reservation> overlappingReservations = reservationRepository.findOverlappingReservations(createReservationDto.getRoomName(), createReservationDto.getStartDate(), createReservationDto.getEndDate());
             if (!overlappingReservations.isEmpty()) {
                 log.error("예약 시간 중복입니다.");
                 return new CustomResponseDto(400);
@@ -133,7 +133,7 @@ public class ReservationService {
             memberUser.add(rm.getUser().getNickName());
         }
 
-        return new ReservationResponseDto.ReservationGetOneResponseDto(reservation.getRoom().getClassName(),
+        return new ReservationResponseDto.ReservationGetOneResponseDto(reservation.getRoom().getRoomName(),
                 reservation.getTopic(), reservation.getUser().getNickName(), reservation.getStatus(),
                 reservation.getStartDate(), reservation.getEndDate(), memberUser);
 

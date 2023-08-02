@@ -15,11 +15,11 @@ import java.util.Optional;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    @Query("SELECT r FROM Reservation r WHERE r.room.className = :className AND r.status = 'CONFIRMED' AND (" +
+    @Query("SELECT r FROM Reservation r WHERE r.room.roomName = :className AND r.status = 'CONFIRMED' AND (" +
             "(:startDate BETWEEN r.startDate AND r.endDate) OR " +
             "(:endDate BETWEEN r.startDate AND r.endDate) OR " +
             "(r.startDate BETWEEN :startDate AND :endDate))")
-    List<Reservation> findOverlappingReservations(String className, LocalDateTime startDate, LocalDateTime endDate);
+    List<Reservation> findOverlappingReservations(@Param("className") String className, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     List<Reservation> findByUserAndStartDateBetweenAndEndDateBetween(User user, LocalDateTime startDate1, LocalDateTime endDate1, LocalDateTime startDate2, LocalDateTime endDate2);
 

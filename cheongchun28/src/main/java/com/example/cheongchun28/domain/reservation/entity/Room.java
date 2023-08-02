@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "T_CLASS")
+@Table(name = "T_ROOM")
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,13 +19,13 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CLASS_SEQUENCE_ID")
+    @Column(name = "ROOM_SEQUENCE_ID")
     private Long id;
 
-    @Column(name = "CLASSNAME")
-    private String className;
+    @Column(name = "ROOM_NAME")
+    private String roomName;
 
-    @Column(name = "BIMPROJECT")
+    @Column(name = "BEAM_PROJECTOR")
     private boolean bimProject;
 
     @Column(name = "COMPUTER")
