@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -121,6 +122,17 @@ public class ReservationService {
         User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
         Reservation reservation = reservationRepository.findWaitingReservationByEmail(user.getUserEmail());
+
+        //참가자인 경우
+        List<ReservationMember> members = reservationMemberRepository.findReservationMemberByUser(user);
+        for (ReservationMember rm : members) {
+            if (rm.isStatus() == false) {
+                Reservation rsv = reservationRepository.findById(rm.getReservation().getId()).orElseThrow();
+
+                return new ReservationResponseDto.ReservationGetResponseDto(200, rsv.getCode());
+            }
+        }
+        log.info("members: {}", members.size(), "rsv");
         return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
     }
 
@@ -128,6 +140,7 @@ public class ReservationService {
     public ReservationResponseDto.ReservationGetOneResponseDto getReservation(String code) {
         Reservation reservation = reservationRepository.findByReservationCode(code);
         List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(false, reservation.getId());
+
         ArrayList<String> memberUser = new ArrayList<>();
         for (ReservationMember rm : reservationMember) {
             memberUser.add(rm.getUser().getNickName());

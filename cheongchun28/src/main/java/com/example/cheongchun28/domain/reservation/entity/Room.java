@@ -25,7 +25,7 @@ public class Room {
     @Column(name = "ROOM_NAME")
     private String roomName;
 
-    @Column(name = "BEAM_PROJECTOR")
+    @Column(name = "BEAM_PROJECT")
     private boolean bimProject;
 
     @Column(name = "COMPUTER")
