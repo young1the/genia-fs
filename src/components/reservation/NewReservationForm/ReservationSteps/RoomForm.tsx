@@ -8,12 +8,17 @@ import {
   RoomType,
   RoomTypeWrapper,
   RoomWrapper,
-  mockRooms,
-} from "@/components/reservation/Room";
+  getRoomType,
+} from "@/components/room/Room";
+import { useQuery } from "@tanstack/react-query";
+import { getAllRooms } from "@/lib/api/room/method";
 
 const RoomForm = () => {
   const [optionSeleted, setOptionSeleted] = useState<number>(0);
   const [roomInput, setRoomInput] = useRecoilState(reservationInput("ROOM"));
+  const { data } = useQuery(["room"], {
+    queryFn: getAllRooms,
+  });
   return (
     <div className='flex flex-col space-y-8'>
       <KeywordHighlight
@@ -46,26 +51,29 @@ const RoomForm = () => {
           </div>
         </div>
         <div className='w-full grid grid-cols-2 gap-4 place-items-center'>
-          {mockRooms.map((ele) => {
-            const { id, type, name } = ele;
-            return (
-              <RoomWrapper
-                show={
-                  optionSeleted == 0
-                    ? true
-                    : (optionSeleted & type) == optionSeleted
-                }
-                onClick={() => {
-                  if (roomInput == id) setRoomInput("");
-                  else setRoomInput(id);
-                }}
-                selected={roomInput === id}
-                key={id}
-              >
-                <p>{name}</p>
-              </RoomWrapper>
-            );
-          })}
+          {data
+            ? Object.keys(data).map((ele) => {
+                const { id, roomName } = data[ele];
+                const type = getRoomType(data[ele]);
+                return (
+                  <RoomWrapper
+                    show={
+                      optionSeleted == 0
+                        ? true
+                        : (optionSeleted & type) == optionSeleted
+                    }
+                    onClick={() => {
+                      if (roomInput == roomName) setRoomInput("");
+                      else setRoomInput(roomName);
+                    }}
+                    selected={roomInput === roomName}
+                    key={"room" + id}
+                  >
+                    <p>{roomName}</p>
+                  </RoomWrapper>
+                );
+              })
+            : null}
         </div>
       </div>
     </div>

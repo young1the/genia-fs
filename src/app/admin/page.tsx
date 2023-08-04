@@ -1,12 +1,7 @@
-import Statistic from "@/components/admin/Statistic";
 import React from "react";
 
 const Page = () => {
-  return (
-    <div>
-      <Statistic />
-    </div>
-  );
+  return <div>어드민</div>;
 };
 
 export default Page;

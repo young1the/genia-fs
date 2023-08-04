@@ -1,12 +1,12 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
+import { Inter } from "next/font/google";
 import AuthSessionProvider from "@/components/hoc/AuthSessionProvider";
 import RecoilProvider from "@/components/hoc/RecoilProvider";
 import ReactQueryProvider from "@/components/hoc/ReactQueryProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Suspense } from "react";
 import GoogleAnalytics from "@/components/hoc/GoogleAnalytics";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,12 +22,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <Suspense>
-        <GoogleAnalytics />
-      </Suspense>
+      <GoogleAnalytics />
       <body
         className={`${inter.className} bg-gray-200 dark:bg-gray-900 scrollbar-none md:scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100`}
       >
+        <Toaster />
         <AuthSessionProvider>
           <RecoilProvider>
             <ReactQueryProvider>

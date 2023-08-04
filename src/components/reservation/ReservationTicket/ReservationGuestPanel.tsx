@@ -1,18 +1,30 @@
 "use client";
 import * as SVG from "@/components/common/svg";
-import { PanelProps } from "./ReservationControlPanel";
+import LoginModal from "@/components/common/modal/LoginModal";
+import { useState } from "react";
 
-const ReservationGuestPanel = ({ setModalType, on }: PanelProps) => {
+type ModalState = "OPEN" | "CLOSE" | "READY";
+
+const ReservationGuestPanel = () => {
+  const [loginModal, setLoginModal] = useState<ModalState>("READY");
   return (
     <>
       <button
         onClick={() => {
-          setModalType("apply");
-          on();
+          setLoginModal("OPEN");
         }}
       >
         <SVG.Plus className={`w-8 h-8`} />
       </button>
+      {loginModal === "OPEN" ? (
+        <div
+          onClick={() => {
+            setLoginModal("CLOSE");
+          }}
+        >
+          <LoginModal keepOpen={false} />
+        </div>
+      ) : null}
     </>
   );
 };

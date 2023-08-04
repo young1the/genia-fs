@@ -5,9 +5,9 @@ import {
   newReservationOrder,
 } from "@/store/Reservation/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { ReservationType } from ".";
+import { ReservationStepType } from ".";
 
-const Icons: Record<ReservationType, JSX.Element> = {
+const Icons: Record<ReservationStepType, JSX.Element> = {
   DATE: <SVG.Calendar className='w-8 h-8' />,
   ROOM: <SVG.Location className='w-8 h-8' />,
   TIME: <SVG.Clock className='w-8 h-8' />,

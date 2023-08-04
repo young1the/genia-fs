@@ -1,18 +1,17 @@
 "use client";
+import { useQuery } from "@tanstack/react-query";
 import GreenButton from "../common/button/GreenButton";
 import ReservationRow from "./ReservationRow";
-
-const dummyData = {
-  reservationId: "F2P8",
-  roomNumber: "강의실3",
-  topic: "TEST API를 만드는 주도적인 학습",
-  name: "안지현",
-  startDate: "2023-07-31T22:00:00",
-  endDate: "2023-07-31T23:00:00",
-  reservationState: 1,
-};
+import { getAdminReservations } from "@/lib/api/admin/method";
+import { Reservation } from "@/lib/api/reservation/type";
+import { useState } from "react";
 
 const ReservationTable = () => {
+  const { data } = useQuery<Reservation[]>(["admin", "reservation"], {
+    queryFn: getAdminReservations,
+  });
+  const [selected, setSelected] = useState<string[]>([]);
+  selected;
   return (
     <div className='relative overflow-x-auto shadow-md sm:rounded-lg p-4'>
       <div className='w-full flex justify-end items-center mb-4'>
@@ -33,24 +32,17 @@ const ReservationTable = () => {
           </tr>
         </thead>
         <tbody>
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
-          <ReservationRow reservationData={dummyData} />
+          {data
+            ? data.map((ele) => {
+                return (
+                  <ReservationRow
+                    key={ele.reservationCode}
+                    reservationData={ele}
+                    setSelected={setSelected}
+                  />
+                );
+              })
+            : null}
         </tbody>
       </table>
     </div>

@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import useFocus from "@/hooks/useFocus";
-import * as API from "@/lib/api";
 import Input from "@/components/common/input/Input";
 import GreenButton from "@/components/common/button/GreenButton";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 import Link from "next/link";
 import * as LINK from "@/lib/link";
+import { findUserpassword } from "@/lib/api/user/method";
 
 const FindPasswordForm = () => {
   const [emailInput, setEmailInput] = useState("");
@@ -20,7 +20,7 @@ const FindPasswordForm = () => {
     e.preventDefault();
     if (!isActive) return;
     try {
-      await API.methods.sendCodeToEmail({ email: emailInput });
+      await findUserpassword({ email: emailInput });
       setPwdSent(true);
     } catch (e) {
       setIsError(true);

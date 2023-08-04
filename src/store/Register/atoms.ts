@@ -3,9 +3,9 @@ import {
   RegisterSteps,
   widthArray,
 } from "@/components/user/RegisterForm/RegisterSteps";
-import { UserData } from "@/types/common";
+import { SignUp } from "@/lib/api/user/type";
 
-export const registerUserInput = atom<UserData>({
+export const registerUserInput = atom<SignUp>({
   key: "registerUserInput",
   default: {
     email: "",

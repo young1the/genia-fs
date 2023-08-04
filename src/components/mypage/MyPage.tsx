@@ -3,15 +3,18 @@ import * as SVG from "@/components/common/svg";
 import Setting from "./Setting";
 import { useState } from "react";
 import ReservationHistory from "./ReservationHistory";
+import { useSession } from "next-auth/react";
 
 type ModeKeyType = "setting" | "history";
 
 const MyPage = () => {
+  const { status } = useSession();
   const [currentMode, setCurrentMode] = useState<ModeKeyType>("setting");
   const mods: Record<ModeKeyType, JSX.Element> = {
     setting: <Setting />,
     history: <ReservationHistory />,
   };
+  if (status == "unauthenticated") return null;
   return (
     <div className='w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 space-y-10 md:space-y-12 sm:p-8'>
       <div className='w-full flex justify-evenly'>

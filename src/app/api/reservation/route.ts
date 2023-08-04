@@ -1,88 +1,87 @@
-// <<<<<<< Updated upstream
-// // import { ReservationData } from "@/types/common";
-// =======
-// >>>>>>> Stashed changes
-
-// // class reservationDTO {
-// //   public reservationId: string;
-// //   public roomNumber: string;
-// //   public topic: string;
-// //   public name: string;
-// //   public startDate: string;
-// //   public endDate: string;
-// //   public reservationState: number; // 0:예약종료 1:진행중 2:예약취소
-
-// //   constructor(
-// //     reservationId: string,
-// //     roomNumber: string,
-// //     topic: string,
-// //     name: string,
-// //     startDate: string,
-// //     endDate: string,
-// //     reservationState: number
-// //   ) {
-// //     this.reservationId = reservationId;
-// //     this.roomNumber = roomNumber;
-// //     this.topic = topic;
-// //     this.name = name;
-// //     this.startDate = startDate;
-// //     this.endDate = endDate;
-// //     this.reservationState = reservationState;
-// //   }
-// // }
-
-// <<<<<<< Updated upstream
-// // const dummyData: ReservationData = {
-// //   reservationId: "F2P8",
-// //   roomNumber: "강의실3",
-// //   topic: "TEST API를 만드는 주도적인 학습",
-// //   name: "안지현",
-// //   startDate: "2023-07-18T22:00:00",
-// //   endDate: "2023-07-18T23:00:00",
-// //   reservationState: 1,
-// // };
-// =======
-
-// >>>>>>> Stashed changes
-
-// // const mock: ReservationData = {
-// //   reservationId: "F2P8F1P7",
-// //   roomNumber: "강의실 9",
-// //   topic: "실무에 바로 적용하는 효율적인 업무관리 전략",
-// //   name: "박건예 팀장님",
-// //   startDate: "2023-07-19T09:00:00",
-// //   endDate: "2023-07-19T16:00:00",
-// //   reservationState: 1,
-// // };
-// export const POST = async (request: Request) => {
-//   try {
-//     const { reservationId, roomNumber, topic, name, startDate, endDate, reservationState } = await request.json();
-//     const result = ReservationData.makeReservation({ reservationId, roomNumber, topic, name, startDate, endDate, reservationState});
-//     // console.log(userDB.db);
-//     if (result == true) {
-//       return new Response(JSON.stringify({ message: "예약 성공입니다." }), {
-//         status: 201,
-//       });
-//     }
-//     return new Response(
-//       JSON.stringify({ message: "이미 가입한 이메일입니다." }),
-//       { status: 401 }
-//     );
-//   } catch (error) {
-//     // console.log(error);
-//     return new Response("Failed to create a new prompt", { status: 500 });
-//   }
-// };
-
-export const GET = async () => {
+export const GET = async (request: Request) => {
   try {
-    // const JWT = 1;
-    // const auth = await request.headers.get("Authorization");
-    // const token = auth?.split(" ")[JWT];
-    return new Response(JSON.stringify({ reservationId: "boyboy" }), {
+    let accessToken = request?.headers?.get("Authorization");
+    if (accessToken && accessToken !== "") {
+      accessToken = accessToken.split(" ")[1];
+    } else throw new Error("must logged in");
+    const serverUsers = await fetch(
+      `${process.env.NEXT_PUBLIC_TEST_URL}/api/user.json`
+    );
+    const users = await serverUsers.json();
+    const user = users[accessToken];
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_TEST_URL}/api/reservation.json`
+    );
+    const reservations = await response.json();
+    let findID = "";
+    if (reservations) {
+      for (const key of Object.keys(reservations)) {
+        const reservation = reservations[key];
+        if (reservation.accessToken == accessToken && reservation.reservationState == 1) {
+          findID = key;
+          break;
+        }
+        if (reservation.particName) {
+          for (const pkey of Object.keys(reservation.particName)) {
+            if (user.nickName == reservation.particName[pkey]) {
+              findID = key;
+              break;
+            }
+          }
+        }
+      }
+      return new Response(
+        JSON.stringify({
+          reservationCode: findID,
+        }),
+        {
+          status: 201,
+        }
+      );
+    }
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        reservationCode: "",
+      }),
+      {
+        status: 201,
+      }
+    );
+  }
+};
+
+export const POST = async (request: Request) => {
+  try {
+    const requestBody = await request.json();
+    const serverUsers = await fetch(
+      `${process.env.NEXT_PUBLIC_TEST_URL}/api/user.json`
+    );
+    const users = await serverUsers.json();
+    let accessToken = request?.headers?.get("Authorization") ?? "";
+    if (accessToken !== "") {
+      accessToken = accessToken.split(" ")[1];
+    }
+    const user = users[accessToken];
+    const reservationState =
+      +new Date(requestBody.startDate) - +new Date() > 0 ? 1 : 0;
+    await fetch(`${process.env.NEXT_PUBLIC_TEST_URL}/api/reservation.json`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...requestBody,
+        ["nickName"]: user.nickName,
+        ["accessToken"]: accessToken,
+        ["particName"]: "",
+        reservationState,
+      }),
+    });
+    return new Response(JSON.stringify({ message: "성공입니다." }), {
       status: 201,
     });
   } catch (error) {
-    return new Response("Failed to create a new prompt", { status: 500 });
+    return new Response("Failed to create a new prompt", { status: 400 });
   }
 };
