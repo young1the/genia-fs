@@ -12,7 +12,7 @@ const EmployeeNumber = () => {
   const { focusElement } = useFocus<HTMLInputElement>();
   const { nextStep, userInput, setUserInput } = useRegisterStep({
     api: async () => {
-      return API.methods.register(userInput);
+      return API.methods.register({ ...userInput, ["profileImage"]: "" });
     },
     errorCallback: () => {
       focus();

@@ -1,4 +1,4 @@
-import { LinkKey, NavigationType, UserStatus } from "./types";
+import { LinkKey, LinkUserStatus, NavigationType } from "./types";
 
 export const URLS: Record<LinkKey, string> = {
   HOME: "/",
@@ -36,14 +36,16 @@ export const LINKS: Record<LinkKey, NavigationType> = {
   FINDPWD: { title: TITLES["FINDPWD"], href: URLS["FINDPWD"] },
 } as const;
 
-export const NAVIGATIONS: Record<UserStatus, NavigationType[]> = {
+export const NAVIGATIONS: Record<LinkUserStatus, NavigationType[]> = {
   authenticated: [LINKS["HOME"], LINKS["INFO"], LINKS["RESERVATION"]],
+  admin: [LINKS["HOME"], LINKS["INFO"], LINKS["RESERVATION"], LINKS["ADMIN"]],
   unauthenticated: [LINKS["HOME"], LINKS["INFO"], LINKS["RESERVATION"]],
   loading: [],
 };
 
-export const USERMENUS: Record<UserStatus, NavigationType[]> = {
+export const USERMENUS: Record<LinkUserStatus, NavigationType[]> = {
   authenticated: [LINKS["MYPAGE"], LINKS["LOGOUT"]],
+  admin: [LINKS["MYPAGE"], LINKS["LOGOUT"]],
   unauthenticated: [LINKS["LOGIN"]],
   loading: [],
 };

@@ -3,7 +3,7 @@ import { userDB } from "../store";
 export const POST = async (request: Request) => {
   try {
     const { email } = await request.json();
-    console.log(email);
+    // console.log(email);
     const result = userDB.emailExist({ email });
     if (result == true) {
       return new Response(

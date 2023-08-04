@@ -5,11 +5,47 @@ import NewPasswordInput from "../common/input/NewPasswordInput";
 import RepeatPassword from "../common/input/RepeatPassword";
 import GreenButton from "../common/button/GreenButton";
 import { useState } from "react";
+import { changePassword } from "@/lib/api/mypage/method";
+import toast from "react-hot-toast";
 
 const SettingPassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const isActive = () => {
+    const passwordRegex =
+      /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!@#$%^&*()\-=+_{}\[\];':"\\|,.<>\/?])/;
+    if (passwordRegex.test(newPassword) && newPassword === repeatPassword) {
+      return true;
+    }
+    return false;
+  };
+
+  const buttonOnclickHandler = async () => {
+    if (!isActive) return;
+    toast.promise(
+      new Promise(async (resolve, reject) => {
+        try {
+          await changePassword({
+            password: currentPassword,
+            newPassword,
+          });
+          resolve(true);
+        } catch (e) {
+          reject(e);
+        }
+      }),
+      {
+        loading: "기다려주세요...",
+        success: "완료",
+        error: "Error",
+      }
+    );
+    setCurrentPassword("");
+    setNewPassword("");
+    setRepeatPassword("");
+  };
+
   return (
     <>
       <div className='inline-flex items-center justify-center w-full'>
@@ -34,7 +70,11 @@ const SettingPassword = () => {
             newPassword={newPassword}
           />
         </label>
-        <GreenButton title={"비밀번호 변경하기"} />
+        <GreenButton
+          title={"비밀번호 변경하기"}
+          isActive={isActive()}
+          onClickHandler={buttonOnclickHandler}
+        />
       </div>
     </>
   );

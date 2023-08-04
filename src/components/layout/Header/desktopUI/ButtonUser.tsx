@@ -28,6 +28,24 @@ const ButtonUser = ({ status }: UIProps) => {
         </button>
       </>
     ),
+    admin: (
+      <>
+        {showDropdown ? <DropdownUser /> : null}
+        <button
+          onClick={toggleState}
+          ref={buttonRef}
+          className='w-10 h-10 hidden md:flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600'
+        >
+          <Image
+            width={40}
+            height={40}
+            className='w-10 h-10 rounded-full'
+            src='/next.svg'
+            alt='User Profile'
+          />
+        </button>
+      </>
+    ),
     loading: <></>,
     unauthenticated: (
       <Link

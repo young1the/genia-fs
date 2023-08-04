@@ -4,10 +4,39 @@ import { ModalProps } from "./ReservationModal";
 import Input from "@/components/common/input/Input";
 import { useState } from "react";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { modifyReservationData } from "@/lib/api/reservation/method";
+import toast from "react-hot-toast";
 
 const ModifyModal = ({ reservationData, off }: ModalProps) => {
-  const [newTopic, setNewTopic] = useState("");
-  reservationData;
+  const [newTopic, setNewTopic] = useState(reservationData.topic);
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(
+    async () => {
+      return toast.promise(
+        modifyReservationData({
+          reservationCode: reservationData.reservationCode,
+          topic: newTopic,
+          roomName: reservationData.roomName,
+          startDate: reservationData.startDate,
+          endDate: reservationData.endDate,
+        }),
+        {
+          loading: "기다려주세요...",
+          success: "완료",
+          error: "Error",
+        }
+      );
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([
+          "reservation",
+          reservationData.reservationCode,
+        ]);
+      },
+    }
+  );
   return (
     <div className='relative w-full max-w-md max-h-full'>
       <div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
@@ -26,18 +55,14 @@ const ModifyModal = ({ reservationData, off }: ModalProps) => {
             state={[newTopic, setNewTopic]}
           />
           <button
-            onClick={off}
+            onClick={() => {
+              mutate();
+              off();
+            }}
             type='button'
             className='text-white bg-primary hover:bg-primary-hover font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2'
           >
-            네
-          </button>
-          <button
-            onClick={off}
-            type='button'
-            className='text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600'
-          >
-            아니오
+            확인
           </button>
         </div>
       </div>

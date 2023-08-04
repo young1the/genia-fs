@@ -17,7 +17,6 @@ const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("authorize callback");
         const res = await fetch(
           (process.env.NEXT_PUBLIC_API_SERVER as string) +
             API.constants.URL["LOGIN"],
@@ -37,7 +36,7 @@ const authOptions = {
           return {
             ...user,
             ["email"]: credentials?.email,
-            ["accessToken"]: res.headers.get("Authorization"),
+            ["accessToken"]: res.headers?.get("Authorization"),
           };
         }
         return null;
@@ -50,23 +49,23 @@ const authOptions = {
   },
   callbacks: {
     async jwt(params: any) {
-      console.log("jwt callback");
       const { token, user } = params;
       if (user) {
         token.email = user.email;
         token.accessToken = user.accessToken;
         token.nickName = user.nickName;
         token.profileImage = user.profileImage;
+        token.role = user.role;
       }
       return token;
     },
     async session(params: any) {
-      console.log("session callback");
       const { session, token } = params;
       session.user.email = token.email;
       session.user.nickName = token.nickName;
       session.user.profileImage = token.profileImage;
       session.user.accessToken = token.accessToken;
+      session.user.role = token.role;
       return session;
     },
   },

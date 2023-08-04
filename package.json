@@ -25,6 +25,7 @@
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-qr-code": "^2.0.11",
     "recoil": "^0.7.7",
     "tailwind-datepicker-react": "^1.4.0",

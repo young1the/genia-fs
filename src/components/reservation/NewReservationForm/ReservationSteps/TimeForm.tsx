@@ -57,7 +57,7 @@ const TimeForm = () => {
   );
   useEffect(() => {
     if (startTime >= 0 && endTime >= 0) {
-      setTimeSelected(times[startTime] + " " + times[endTime + 1]);
+      setTimeSelected(`${times[startTime]}:00:00 ${times[endTime + 1]}:00:00`);
     }
   }, [setTimeSelected, startTime, endTime]);
   return (

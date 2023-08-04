@@ -1,20 +1,21 @@
 "use client";
-import { getReservationData } from "@/lib/api/methods";
-import { ReservationData } from "@/types/common";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import * as SVG from "@/components/common/svg";
 import QRCode from "react-qr-code";
+import { getReservationData } from "@/lib/api/reservation/method";
+import { ReservationCode, ReservationGet } from "@/lib/api/reservation/type";
+import ReservationPartics from "./ReservationPartics";
 
 const week = ["일", "월", "화", "수", "목", "금", "토"];
 
 interface Props {
-  id: Pick<ReservationData, "reservationId">;
+  id: ReservationCode;
   isInModal?: boolean;
 }
 
 const ReservationTicket = ({ id, isInModal = false }: Props) => {
-  const { data } = useQuery({
+  const { data } = useQuery<ReservationGet>({
     suspense: true,
     queryKey: ["reservation", id],
     queryFn: () => {
@@ -54,7 +55,7 @@ const ReservationTicket = ({ id, isInModal = false }: Props) => {
   return (
     <div
       onClick={() => {
-        if (isInModal) router.push(`/reservation/${data?.reservationId}`);
+        if (isInModal) router.push(`/reservation/${id}`);
       }}
       className={`shadow relative w-[300px] flex flex-col ${
         isInModal ? "cursor-pointer mt-[400px] mb-10 md:m-0" : ""
@@ -75,55 +76,35 @@ const ReservationTicket = ({ id, isInModal = false }: Props) => {
       md:rounded-none md:rounded-tl-lg md:rounded-bl-lg md:border-r md:border-b-0'
       >
         <div className='flex flex-col font-bold'>
-          <span className={"md:[writing-mode:vertical-lr]"}>
-            {data?.reservationId}
-          </span>
+          <span className={"md:[writing-mode:vertical-lr]"}>{id + ""}</span>
         </div>
       </div>
       <div className='relative p-8 border-b md:border-r border-dashed border-gray-200 flex justify-center items-center bg-white'>
         <QRCode
-          value={`${process.env.NEXT_PUBLIC_BASE_URL}/reservation/${data?.reservationId}`}
+          value={`${process.env.NEXT_PUBLIC_BASE_URL}/reservation/${id}`}
           size={200}
         />
         {/* <div className='absolute bg-black h-[16px] w-[16px] rounded-full -bottom-[10px] -left-[10px] md:hidden'></div>
         <div className='absolute bg-black h-[16px] w-[16px] rounded-full -bottom-[10px] -right-[10px] md:hidden'></div> */}
       </div>
-      <div className='bg-white p-8 border-b border-dashed border-tbd flex flex-col gap-4 md:border-r md:border-b-0 md:justify-evenly '>
+      <div className='bg-white flex-1 p-8 border-b border-dashed border-tbd flex flex-col gap-4 md:border-r md:border-b-0 md:justify-between '>
         <div className='flex flex-col font-bold'>
           <span className='font-light'>주제</span>
           {data?.topic}
         </div>
         <div className='flex flex-col font-bold'>
           <span className='font-light'>예약자</span>
-          {data?.name}
+          {data?.nickName}
         </div>
         <div className='flex flex-col font-bold'>
           <span className='font-light'>참가자</span>
-          <div className='flex -space-x-4'>
-            <div className='flex items-center justify-center w-10 h-10 border-2 border-white rounded-full dark:border-gray-800 bg-amber-100'>
-              우
-            </div>
-            <div className='flex items-center justify-center w-10 h-10 border-2 border-white rounded-full dark:border-gray-800 bg-blue-200'>
-              조
-            </div>
-            <div className='flex items-center justify-center w-10 h-10 border-2 border-white rounded-full dark:border-gray-800 bg-green-200'>
-              최
-            </div>
-            {/*<div className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"*/}
-            {/*     src="/docs/images/people/profile-picture-3.jpg" alt="">*/}
-            <a
-              className='flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800'
-              href='#'
-            >
-              +99
-            </a>
-          </div>
+          <ReservationPartics partics={data?.user} />
         </div>
       </div>
-      <div className='bg-white p-8 flex flex-col gap-4 md:justify-between'>
+      <div className='bg-white flex-1 p-8 flex flex-col gap-4 md:justify-between'>
         <div className='text-left flex flex-col font-bold'>
           <span className='font-light'>장소</span>
-          {data?.roomNumber}
+          {data?.roomName}
         </div>
         <div className='flex justify-between'>
           <div className='flex flex-col font-bold'>
