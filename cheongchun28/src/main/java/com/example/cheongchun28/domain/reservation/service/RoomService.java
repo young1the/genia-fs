@@ -22,7 +22,7 @@ public class RoomService {
         List<RoomResponseDto.RoomGetResponseDto> RoomDto = new ArrayList<>();
 
         for (Room room : rooms) {
-            RoomDto.add(new RoomResponseDto.RoomGetResponseDto(room.getId(), room.getRoomName(), room.isBeamProject(), room.isComputer(), room.isBlackBoard(), room.getCapacity()));
+            RoomDto.add(new RoomResponseDto.RoomGetResponseDto(room.getId(), room.getRoomName(), room.isBeamProjector(), room.isComputer(), room.isBlackBoard(), room.getCapacity()));
         }
         return RoomDto;
     }
