@@ -4,10 +4,7 @@ package com.example.cheongchun28.domain.reservation.entity;
 import com.example.cheongchun28.domain.reservation.dto.ReservationRequestDto;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 
 @Table(name = "T_RESERVATION")
 @Getter
+@ToString
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -47,10 +45,10 @@ public class Reservation {
     @Column(name = "MODIFIED_AT")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "START_TIME", nullable = false)
+    @Column(name = "START_DATE", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "END_TIME", nullable = false)
+    @Column(name = "END_DATE", nullable = false)
     private LocalDateTime endDate;
 
     @Column(name = "STATUS", nullable = false)
