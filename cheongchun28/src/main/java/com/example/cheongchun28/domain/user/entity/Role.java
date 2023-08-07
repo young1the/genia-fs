@@ -12,9 +12,5 @@ public enum Role {
     EMPLOYEE("EMPLOYEE"),
     USER("USER");
 
-    private final String role;
-
-    public String value() {
-        return role;
-    }
+    private final String value;
 }
