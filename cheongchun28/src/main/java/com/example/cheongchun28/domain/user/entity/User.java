@@ -36,8 +36,8 @@ public class User implements UserDetails {
     @Column(name = "MODIFIED_AT")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "ROLE_SEQUENCE_ID", nullable = false)
-    private Role role;
+    @Column(name = "ROLE", nullable = false)
+    private String role;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String userEmail;
@@ -52,7 +52,7 @@ public class User implements UserDetails {
     private String profileImage;
 
     @Column(name = "DELETED", nullable = false)
-    private short userDeleted;
+    private boolean deleted;
 
     @Column(name = "EMP_NUMBER", unique = true)
     private String empNumber;
@@ -65,18 +65,18 @@ public class User implements UserDetails {
 
 
     public User(String userEmail, String password, String userName, String profileImage, String empNumber) {
-        this.role = Role.USER;
+        this.role = "USER";
         this.userEmail = userEmail;
         this.encodedPassword = password;
         this.nickName = userName;
         this.profileImage = profileImage;
-        this.userDeleted = 1;
+        this.deleted = false;
         this.empNumber = empNumber;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String authority = this.role.getRole();
+        String authority = this.getRole();
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);

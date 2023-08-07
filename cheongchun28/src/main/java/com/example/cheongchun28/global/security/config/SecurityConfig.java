@@ -45,9 +45,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 http
                 .authorizeRequests()
                 //                .antMatchers("/user").authenticated()   //인증이 필요함(로그인이 필요함)
-                //                .antMatchers("/admin/**").hasRole("ADMIN") //ADMIN이라는 권한이 필요함
-                .antMatchers("/**")
-                .permitAll() // 제한이 없음 (로그인을 하지 않아도 사용 가능)
+                //admin
+                .antMatchers("/api/admin/permission").hasAnyAuthority("ADMIN", "MANAGER")
+                .antMatchers("/api/admin/user").hasAnyAuthority("ADMIN", "MANAGER")
+
+                .antMatchers("/api/admin/reservation").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE")
+
+                //reservation
+                .antMatchers("/api/reservation/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
+
+                //mypage
+                .antMatchers("/api/mypage/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
+
+                //email
+                .antMatchers("/api/email/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
+
+//                .antMatchers("/api/user/**").permitAll() // 제한이 없음 (로그인을 하지 않아도 사용 가능)
+
                 .and()
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
