@@ -244,4 +244,50 @@ public class ReservationService {
         reservationMemberRepository.save(reservationMember);
         return new CustomResponseDto(200);
     }
+
+    // 강의실 체크인
+    @Transactional
+    public CustomResponseDto checkInReservation(User auth, String code) {
+        User user = userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        Reservation reservation = reservationRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
+
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
+            log.error("기존 예약이 있습니다.");
+            return new CustomResponseDto(400);
+        }
+
+        ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
+        if (existingReservationMember != null && !existingReservationMember.isStatus()) {
+            log.error("이미 참여중인 회원입니다.");
+            return new CustomResponseDto(400);
+        }
+        reservationMemberRepository.save(
+                ReservationMember.builder()
+                        .reservation(reservation)
+                        .user(auth)
+                        .build()
+        );
+        return new CustomResponseDto(200);
+    }
+
+    // 강의실 체크아웃
+    public CustomResponseDto checkOutReservation(User auth, String code) {
+        User user = userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        Reservation reservation = reservationRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
+
+        ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
+
+        if (reservationMember.isStatus()) {
+            log.error("이미 취소된 예약입니다.");
+            return new CustomResponseDto(400);
+        }
+
+        reservationMember.checkOutReservationMember();
+        reservationMemberRepository.save(reservationMember);
+        return new CustomResponseDto(200);
+    }
 }
