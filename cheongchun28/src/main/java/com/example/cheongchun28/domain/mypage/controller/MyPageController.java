@@ -2,13 +2,16 @@ package com.example.cheongchun28.domain.mypage.controller;
 
 import com.example.cheongchun28.domain.mypage.dto.MyPageDto;
 import com.example.cheongchun28.domain.mypage.service.MyPageService;
+import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +36,7 @@ public class MyPageController {
     }
 
     @GetMapping("/reservation")
-    public MyPageDto.getMyReservationResponseDto getMyReservation(HttpServletRequest httpServletRequest) {
-        return mypageService.getMyReservation(httpServletRequest);
+    public List<MyPageDto.getMyReservationResponseDto> getMyReservation(@AuthenticationPrincipal User auth) {
+        return mypageService.getMyReservation(auth);
     }
 }

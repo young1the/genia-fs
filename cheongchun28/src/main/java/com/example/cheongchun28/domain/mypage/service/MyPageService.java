@@ -1,6 +1,8 @@
 package com.example.cheongchun28.domain.mypage.service;
 
 import com.example.cheongchun28.domain.mypage.dto.MyPageDto;
+import com.example.cheongchun28.domain.reservation.entity.Reservation;
+import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.domain.user.repository.UserRepository;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ import java.sql.SQLException;
 public class MyPageService {
 
     private final UserRepository userRepository;
+    private final ReservationRepository reservationRepository;
     private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -64,7 +69,26 @@ public class MyPageService {
         return new CustomResponseDto(200);
     }
 
-    public MyPageDto.getMyReservationResponseDto getMyReservation(HttpServletRequest httpServletRequest) {
-        return null;
+    public List<MyPageDto.getMyReservationResponseDto> getMyReservation(User auth) {
+        List<Reservation> reservations = reservationRepository.findAllByUser(auth);
+        List<MyPageDto.getMyReservationResponseDto> responseDtos = new ArrayList<>();
+
+        if (reservations != null) {
+            for (Reservation reservation : reservations) {
+                MyPageDto.getMyReservationResponseDto responseDto = new MyPageDto.getMyReservationResponseDto();
+                responseDto.setRoomName(reservation.getRoom().getRoomName());
+                responseDto.setNickName(reservation.getUser().getNickName());
+                responseDto.setStartDate(reservation.getStartDate());
+                responseDto.setEndDate(reservation.getEndDate());
+                responseDto.setStatus(reservation.getStatus());
+                responseDto.setCode(reservation.getCode());
+
+                responseDtos.add(responseDto);
+            }
+        } else {
+            return null;
+        }
+
+        return responseDtos;
     }
 }

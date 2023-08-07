@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 @Slf4j
@@ -42,5 +41,10 @@ public class AdminController {
     @PutMapping("/user")
     public CustomResponseDto setUser(@RequestBody AdminDto.setUserRequestDto requestDto) throws SQLException {
         return adminService.setUser(requestDto);
+    }
+
+    @DeleteMapping("/reservation")
+    public CustomResponseDto canselReservation(@RequestBody AdminDto.canselRequestDto requestDto) throws SQLException{
+        return adminService.canselReservation(requestDto);
     }
 }

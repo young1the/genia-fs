@@ -34,4 +34,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT * FROM t_reservation r WHERE r.reservation_Code = :code AND r.status In ('예약중')" , nativeQuery = true)
     Reservation findByReservationCode(@Param("code") String code);
 
+    List<Reservation> findAllByUser(User user);
 }
