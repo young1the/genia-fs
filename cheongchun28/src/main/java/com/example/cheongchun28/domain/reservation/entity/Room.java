@@ -26,7 +26,7 @@ public class Room {
     private String roomName;
 
     @Column(name = "BEAM_PROJECTOR")
-    private boolean beamProjector;
+    private boolean bimProjector;
 
     @Column(name = "COMPUTER")
     private boolean computer;

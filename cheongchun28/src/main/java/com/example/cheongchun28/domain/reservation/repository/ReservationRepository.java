@@ -28,10 +28,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByRoomAndStartDateBetweenAndEndDateBetween(Room room, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime startDate1, LocalDateTime endDate1);
 
     // 상태가 예약중인 것과 이메일이 일치하는 것만 가져온다.
-    @Query("SELECT r FROM Reservation r WHERE r.status = '예약중' AND r.user.userEmail = :email")
+    @Query("SELECT r FROM Reservation r WHERE r.status = '0' AND r.user.userEmail = :email")
     Reservation findWaitingReservationByEmail(@Param("email") String email);
 
-    @Query(value = "SELECT * FROM t_reservation r WHERE r.reservation_Code = :code AND r.status In ('예약중')" , nativeQuery = true)
+    @Query(value = "SELECT * FROM t_reservation r WHERE r.reservation_Code = :code AND r.status In ('0')" , nativeQuery = true)
     Reservation findByReservationCode(@Param("code") String code);
 
     @Query(value = "SELECT * FROM t_reservation r WHERE r.status != 'CANCELLED' AND (" +

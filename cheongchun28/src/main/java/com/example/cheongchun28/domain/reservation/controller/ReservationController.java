@@ -68,7 +68,6 @@ public class ReservationController {
                                                              @PathVariable("reservationCode") String code) {
         log.info("reservation join,  auth: {}, reservationCode: {}", auth.getUsername(), code);
         return ResponseEntity.ok(reservationService.joinReservation(auth, code));
-
     }
 
     // 예약 참가 취소
@@ -77,5 +76,21 @@ public class ReservationController {
                                                                    @PathVariable("reservationCode") String code) {
         log.info("reservation joinCancel,  auth: {}, reservationCode: {}", auth.getUsername(), code);
         return ResponseEntity.ok(reservationService.joinCancelReservation(auth, code));
+    }
+
+    // 강의실 체크인
+    @PostMapping("/check/{reservationCode}")
+    public ResponseEntity<CustomResponseDto> checkInReservation(@AuthenticationPrincipal User auth,
+                                                             @PathVariable("reservationCode") String code) {
+        log.info("reservation checkIn,  auth: {}, reservationCode: {}", auth.getUsername(), code);
+        return ResponseEntity.ok(reservationService.checkInReservation(auth, code));
+    }
+
+    // 강의실 체크아웃
+    @DeleteMapping("/check/{reservationCode}")
+    public ResponseEntity<CustomResponseDto> checkOutReservation(@AuthenticationPrincipal User auth,
+                                                                   @PathVariable("reservationCode") String code) {
+        log.info("reservation checkOut,  auth: {}, reservationCode: {}", auth.getUsername(), code);
+        return ResponseEntity.ok(reservationService.checkOutReservation(auth, code));
     }
 }
