@@ -13,7 +13,7 @@ public class AdminDto{
     public static class setPermissionRequestDto {
         @Email
         private String email;
-        private Role role;
+        private String role;
     }
 
     @Getter

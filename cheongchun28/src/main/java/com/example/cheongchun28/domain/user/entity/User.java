@@ -35,8 +35,7 @@ public class User implements UserDetails {
     private LocalDateTime modifiedAt;
 
     @Column(name = "ROLE", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String role;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String userEmail;
@@ -60,7 +59,7 @@ public class User implements UserDetails {
     private boolean notificationAgreement;
 
     public User(String userEmail, String password, String userName, String profileImage, String empNumber) {
-        this.role = Role.USER;
+        this.role = "USER";
         this.userEmail = userEmail;
         this.encodedPassword = password;
         this.nickName = userName;
@@ -71,7 +70,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String authority = this.role.getRole();
+        String authority = this.getRole();
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);

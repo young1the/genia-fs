@@ -31,19 +31,16 @@ public class AdminController {
 
     @PostMapping("/permission")
     public CustomResponseDto setPermission(@RequestBody AdminDto.setPermissionRequestDto requestDto) throws SQLException {
-        log.info("권한 설정 기능 실행됨.");
         return adminService.setPermission(requestDto);
     }
 
     @DeleteMapping("/user")
     public CustomResponseDto deleteUser(@RequestBody AdminDto.deleteUserRequestDto requestDto) throws SQLException {
-        log.info("권한 설정 기능 실행됨.");
         return adminService.deleteUser(requestDto);
     }
 
     @PutMapping("/user")
     public CustomResponseDto setUser(@RequestBody AdminDto.setUserRequestDto requestDto) throws SQLException {
-        log.info("권한 설정 기능 실행됨.");
         return adminService.setUser(requestDto);
     }
 }
