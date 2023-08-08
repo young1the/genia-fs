@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,11 +28,18 @@ public class RoomController {
 
     }
 
+    // 강의실 예약현황 조회
+    @GetMapping("/{roomId}")
+    public ResponseEntity<RoomResponseDto.RoomGetOneDto> getOneRooms(@PathVariable(value = "roomId") Long roomId) {
+        log.info("getOneRooms, roomId:{}", roomId);
+        return ResponseEntity.ok(roomService.getRoomById(roomId));
+    }
+
     //예약 가능한 강의실 조회
     @GetMapping("/available")
     public ResponseEntity<List<RoomResponseDto.RoomGetResponseDto>> getAvailableRooms(@AuthenticationPrincipal User auth,
                                                                                       @RequestParam(value = "startDate") String startDate,
-                                                                                      @RequestParam(value = "endDate" ) String endDate) {
+                                                                                      @RequestParam(value = "endDate") String endDate) {
         log.info("getAvailableRooms, auth:{}, startDate:{}, endDate:{}", auth.getUsername(), startDate, endDate);
         return ResponseEntity.ok(roomService.findAvailableRooms(auth, startDate, endDate));
     }
