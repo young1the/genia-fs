@@ -208,7 +208,7 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
 
         if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
-            log.error("기존 예약이 있습니다.");
+            log.error("예약가능한 상태가 아닙니다.");
             return new CustomResponseDto(400);
         }
 
@@ -235,13 +235,7 @@ public class ReservationService {
 
         ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
 
-        if (reservationMember.isStatus()) {
-            log.error("이미 취소된 예약입니다.");
-            return new CustomResponseDto(400);
-        }
-
-        reservationMember.cancelReservationMember();
-        reservationMemberRepository.save(reservationMember);
+        reservationMemberRepository.delete(reservationMember);
         return new CustomResponseDto(200);
     }
 
