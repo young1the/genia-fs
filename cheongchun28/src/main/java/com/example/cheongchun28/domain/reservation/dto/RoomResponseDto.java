@@ -2,6 +2,7 @@ package com.example.cheongchun28.domain.reservation.dto;
 
 import com.example.cheongchun28.domain.reservation.entity.Reservation;
 import com.example.cheongchun28.domain.reservation.entity.ReservationStatus;
+import com.example.cheongchun28.domain.reservation.entity.Room;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,16 +45,24 @@ public class RoomResponseDto {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class RoomGetOneDto {
 
-        private List<Long> reservationIds;
+        private Long roomId;
+        private String roomName;
+        private boolean beamProjector;
+        private boolean blackBoard;
+        private boolean computer;
+        private String reservationCode;
 
-        public RoomGetOneDto(List<Reservation> reservations) {
-
-            this.reservationIds = reservations.stream()
-                    .filter(RoomGetOneDto::isReservationConfirmed)
-                    .map(Reservation::getId)
-                    .collect(Collectors.toList());
+        @Builder
+        public RoomGetOneDto(Long roomId, String roomName, boolean beamProjector, boolean blackBoard, boolean computer, String reservationCode) {
+          this.roomId = roomId;
+          this.roomName = roomName;
+          this.beamProjector = beamProjector;
+          this.blackBoard = blackBoard;
+          this.computer = computer;
+          this.reservationCode = reservationCode;
         }
 
         private static boolean isReservationConfirmed(Reservation reservation) {
