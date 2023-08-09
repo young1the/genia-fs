@@ -2,13 +2,17 @@ package com.example.cheongchun28.domain.admin.controller;
 
 import com.example.cheongchun28.domain.admin.dto.AdminDto;
 import com.example.cheongchun28.domain.admin.service.AdminService;
+import com.example.cheongchun28.domain.reservation.dto.ReservationResponseDto;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -42,5 +46,10 @@ public class AdminController {
     @PutMapping("/user")
     public CustomResponseDto setUser(@RequestBody AdminDto.setUserRequestDto requestDto) throws SQLException {
         return adminService.setUser(requestDto);
+    }
+
+    @GetMapping("/reservation")
+    public List<ReservationResponseDto.ReservationAllResponseDto> getAllReservations() {
+        return adminService.getAllReservations();
     }
 }
