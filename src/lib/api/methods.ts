@@ -1,30 +1,15 @@
 import { http } from "./axios";
 import { URL } from "./constants";
-import { ReservationData, UserData } from "@/types/common";
+import { ConfirmCode, SendEmail, SignUpBody } from "./user/type";
 
-export const sendCodeToEmail = async (body: Pick<UserData, "email">) => {
-  return http.post<Pick<UserData, "email">>(URL["EMAIL_SEND"], body);
+export const sendCodeToEmail = async (body: SendEmail) => {
+  return http.post(`${URL["EMAIL_SEND"]}/${body.email}`);
 };
 
-export const verifyCode = async (
-  body: Pick<UserData, "email" | "confirmCode">
-) => {
-  return http.post<Pick<UserData, "email" | "confirmCode">>(
-    URL["EMAIL_CONFIRM"],
-    body
-  );
+export const verifyCode = async (body: ConfirmCode) => {
+  return http.post<ConfirmCode>(URL["EMAIL_CONFIRM"], body);
 };
 
-export const register = async (body: UserData) => {
-  return http.post<UserData>(URL["SIGNUP"], body);
-};
-
-export const getMyReservationId = async () => {
-  return http.get<Record<"reservationId", string>>(`/api/reservation/`);
-};
-
-export const getReservationData = async (
-  id: Pick<ReservationData, "reservationId">
-) => {
-  return http.get<ReservationData>(`/api/reservation/${id}`);
+export const register = async (body: SignUpBody) => {
+  return http.post<SignUpBody>(URL["SIGNUP"], body);
 };

@@ -1,10 +1,12 @@
+import AuthenticatedOnly from "@/components/hoc/AuthenticatedOnly";
 import MyPage from "@/components/mypage/MyPage";
-import React from "react";
 
-const page = () => {
+const page = async () => {
   return (
     <div className='cc-page-wrapper'>
-      <MyPage />
+      <AuthenticatedOnly>
+        <MyPage />
+      </AuthenticatedOnly>
     </div>
   );
 };

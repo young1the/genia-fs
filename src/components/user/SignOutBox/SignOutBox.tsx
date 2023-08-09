@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import GreenButton from "@/components/common/button/GreenButton";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
+import { unsetAccessTokenAttachedToAxiosDefaults } from "@/lib/api/axios";
 
 const SignOutBox = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const SignOutBox = () => {
       <GreenButton
         title={"로그아웃"}
         onClickHandler={() => {
+          unsetAccessTokenAttachedToAxiosDefaults();
           signOut({ redirect: false });
           router.push("/");
         }}

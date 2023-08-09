@@ -1,23 +1,13 @@
 "use client";
 import * as SVG from "@/components/common/svg";
-import { useQuery } from "@tanstack/react-query";
-import { getReservationData } from "@/lib/api/methods";
-import { ReservationData } from "@/types/common";
+import { Reservation } from "@/lib/api/reservation/type";
 
 interface Props {
-  id: Pick<ReservationData, "reservationId">;
+  reservationData: Reservation | undefined
   onClickHandler: () => void;
 }
 
-const ReservationInfoButton = ({ id, onClickHandler }: Props) => {
-  const { data } = useQuery({
-    queryKey: ["reservation", id],
-    queryFn: () => {
-      return getReservationData(id as any);
-    },
-    suspense: true,
-  });
-
+const ReservationInfoButton = ({ reservationData, onClickHandler }: Props) => {
   return (
     <>
       <div
@@ -26,8 +16,8 @@ const ReservationInfoButton = ({ id, onClickHandler }: Props) => {
       >
         <SVG.QRScan className='w-16 h-16' />
         <div className='w-full ml-4 overflow-hidden whitespace-nowrap text-ellipsis'>
-          {data?.topic}
-          <div>{data ? new Date(data.startDate).toUTCString() : ""}</div>
+          {reservationData?.topic}
+          <div>{reservationData ? new Date(reservationData.startDate).toUTCString() : ""}</div>
         </div>
       </div>
     </>

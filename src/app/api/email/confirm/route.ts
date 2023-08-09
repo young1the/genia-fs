@@ -8,7 +8,7 @@ export const POST = async (request: Request) => {
       method: "POST",
       body: JSON.stringify(requestBody),
     });
-    console.log(requestBody);
+    // console.log(requestBody);
     if (result.ok) return new Response(null, { status: 200 });
     else throw new Error();
   } catch (error) {

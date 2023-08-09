@@ -1,9 +1,12 @@
+import UnauthenticatedOnly from "@/components/hoc/UnauthenticatedOnly";
 import LoginForm from "@/components/user/LoginForm/LoginForm";
 
 const page = () => {
   return (
     <section className='cc-page-wrapper'>
-      <LoginForm />
+      <UnauthenticatedOnly>
+        <LoginForm />
+      </UnauthenticatedOnly>
     </section>
   );
 };

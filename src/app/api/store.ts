@@ -23,7 +23,7 @@ class UserDB {
       email: "dummy@mail.com",
       password: "2345",
       empNumber: "124",
-      username: "qweqwe",
+      nickName: "qweqwe",
     },
   ];
   vfdb: UserVerification[] = [
@@ -92,16 +92,17 @@ class UserDB {
     }
     return false;
   }
-  // passwordUpdate(newEmailVerify: passwordUpdate): boolean {
-  //   const { password, newPassword } = newEmailVerify;
-  //   // console.log(email,code);
-  //   for (const user of this.vfdb) {
-  //     if (user.email == email && user.code == code) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
+  passwordUpdate(params: any): boolean {
+    params;
+    // const { password, newPassword } = newEmailVerify;
+    // console.log(email,code);
+    // for (const user of this.vfdb) {
+    //   if (user.email == email && user.code == code) {
+    //     return true;
+    //   }
+    // }
+    return false;
+  }
 }
 
 export const userDB = new UserDB();

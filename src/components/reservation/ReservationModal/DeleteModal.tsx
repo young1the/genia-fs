@@ -2,9 +2,36 @@
 import * as SVG from "@/components/common/svg";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 import { ModalProps } from "./ReservationModal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteReservationData } from "@/lib/api/reservation/method";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const DeleteModal = ({ reservationData, off }: ModalProps) => {
-  reservationData;
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { mutate } = useMutation(
+    async () => {
+      return toast.promise(
+        deleteReservationData(reservationData.reservationCode as any),
+        {
+          loading: "기다려주세요...",
+          success: "완료",
+          error: "Error",
+        }
+      );
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([
+          "reservation",
+          reservationData.reservationCode,
+        ]);
+        queryClient.invalidateQueries(["myReservationCode"]);
+        router.replace("/reservation");
+      },
+    }
+  );
   return (
     <div className='relative w-full max-w-md max-h-full'>
       <div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
@@ -21,7 +48,10 @@ const DeleteModal = ({ reservationData, off }: ModalProps) => {
             />
           </div>
           <button
-            onClick={off}
+            onClick={() => {
+              mutate();
+              off();
+            }}
             type='button'
             className='text-white bg-red-500 hover:bg-red-500 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2'
           >

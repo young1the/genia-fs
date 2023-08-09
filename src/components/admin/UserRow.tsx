@@ -1,10 +1,10 @@
-import { UserData } from "@/types/common";
+import { User } from "@/lib/api/user/type";
 import React, { Dispatch, SetStateAction } from "react";
 
 interface Props {
   on: () => void;
-  setUserSelected: Dispatch<SetStateAction<UserData | undefined>>;
-  userData: UserData;
+  setUserSelected: Dispatch<SetStateAction<User | undefined>>;
+  userData: User;
 }
 
 const UserRow = ({ userData, setUserSelected, on }: Props) => {
@@ -26,12 +26,16 @@ const UserRow = ({ userData, setUserSelected, on }: Props) => {
           <div className='font-normal text-gray-500'>{userData.email}</div>
         </div>
       </th>
-      <td className='px-6 py-4'>일반유저</td>
+      <td className='px-6 py-4'>{userData.role}</td>
       <td className='px-6 py-4'>
-        <div className='font-normal text-gray-500'>2023년 7월 25일</div>
+        <div className='font-normal text-gray-500'>
+          {userData.notificationAgreement}
+        </div>
       </td>
       <td className='px-6 py-4'>
-        <div className='font-normal text-gray-500'>.</div>
+        <div className='font-normal text-gray-500'>{`${
+          userData.empNumber === "" ? "." : userData.empNumber
+        }`}</div>
       </td>
       <td className='px-6 py-4'>
         <div
