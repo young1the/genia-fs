@@ -1,5 +1,7 @@
 "use client";
 
+import { permissionUser } from "@/lib/api/admin/method";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 const BOARD = 4;
 const DESKTOP = 2;
@@ -9,6 +11,7 @@ const Test = () => {
   const [userEmail, setUserEmail] = useState("");
   const [roomName, setRoomName] = useState("");
   const [roomType, setRoomType] = useState("");
+  const { data } = useSession();
   const signUpTest = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_TEST_URL}/api/user.json`, {
       method: "POST",
@@ -81,6 +84,16 @@ const Test = () => {
           MakeRoom
         </button>
       </div>
+
+      <button
+        onClick={async () => {
+          console.log(process.env.NEXT_PUBLIC_API_SERVER);
+          const email = data?.user.email ?? "";
+          await permissionUser({ email, role: "ADMIN" });
+        }}
+      >
+        이 유저 어드민 부여
+      </button>
     </div>
   );
 };

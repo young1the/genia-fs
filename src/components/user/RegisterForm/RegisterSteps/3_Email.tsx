@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import useFocus from "@/hooks/useFocus";
-import * as API from "@/lib/api";
 import Input from "@/components/common/input/Input";
 import GreenButton from "@/components/common/button/GreenButton";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 import { useRegisterStep } from "@/store/Register/hooks";
+import { sendCodeToEmail } from "@/lib/api/user/method";
 
 const Email = () => {
   const [emailInput, setEmailInput] = useState("");
   const { focusElement, focus } = useFocus<HTMLInputElement>();
   const { nextStep, isError, setUserInput } = useRegisterStep({
     api: async () => {
-      return API.methods.sendCodeToEmail({ email: emailInput });
+      return sendCodeToEmail({ email: emailInput });
     },
     errorCallback: () => {
       focus();

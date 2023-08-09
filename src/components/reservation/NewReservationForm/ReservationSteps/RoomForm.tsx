@@ -2,8 +2,11 @@
 import { useState } from "react";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 import * as SVG from "@/components/common/svg";
-import { useRecoilState } from "recoil";
-import { reservationInput } from "@/store/Reservation/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  reservationInput,
+  reservationInputsSelector,
+} from "@/store/Reservation/atoms";
 import {
   RoomType,
   RoomTypeWrapper,
@@ -11,13 +14,24 @@ import {
   getRoomType,
 } from "@/components/room/Room";
 import { useQuery } from "@tanstack/react-query";
-import { getAllRooms } from "@/lib/api/room/method";
+import { getAvailableRoom } from "@/lib/api/room/method";
 
 const RoomForm = () => {
+  const reservationInputs = useRecoilValue(reservationInputsSelector);
   const [optionSeleted, setOptionSeleted] = useState<number>(0);
   const [roomInput, setRoomInput] = useRecoilState(reservationInput("ROOM"));
   const { data } = useQuery(["room"], {
-    queryFn: getAllRooms,
+    queryFn: async () => {
+      const date = reservationInputs.DATE;
+      let getRoomBody = null;
+      if (!!reservationInputs.TIME) {
+        const times = reservationInputs.TIME.split(" ");
+        const startDate = `${date}T${times[0]}`;
+        const endDate = `${date}T${times[1]}`;
+        getRoomBody = { startDate, endDate };
+      }
+      return getAvailableRoom(getRoomBody);
+    },
   });
   return (
     <div className='flex flex-col space-y-8'>

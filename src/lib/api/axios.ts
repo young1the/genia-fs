@@ -56,7 +56,7 @@ export const http = {
   put: <Request = any, Response = any>(url: string, body?: Request) => {
     return axiosInstance.put<Response>(url, body).then((res) => res.data);
   },
-  delete: <Response = any>(url: string) => {
-    return axiosInstance.delete<Response>(url).then((res) => res);
+  delete: (url: string, body?: any) => {
+    return axiosInstance.delete(url, body).then((res) => res);
   },
 };

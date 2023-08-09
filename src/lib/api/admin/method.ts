@@ -1,4 +1,5 @@
-import { http } from "../axios";
+import { axiosInstance, http } from "../axios";
+import { Reservation } from "../reservation/type";
 import { PermissionUser, PutUser } from "./type";
 
 export const getAdminReservations = async () => {
@@ -12,4 +13,9 @@ export const putUser = async (body: PutUser) => {
 };
 export const permissionUser = async (body: PermissionUser) => {
   return http.post(`/api/admin/permission`, body);
+};
+export const cancelReservation = async (
+  body: Pick<Reservation, "nickName">
+) => {
+  return axiosInstance.delete(`/api/admin/reservation`, { data: body });
 };

@@ -89,7 +89,6 @@ const TermAndConditions = () => {
       </Checkbox>
       <GreenButton
         title='다음'
-        type='submit'
         isActive={isActive}
         onClickHandler={formOnSubmitHandler}
       />

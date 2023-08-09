@@ -13,7 +13,11 @@ export interface User {
 export interface SignUp extends Omit<User, "role"> {
   confirmCode: string;
 }
-export interface SignUpBody extends Omit<User, "confirmCode"> {}
+export interface SignUpBody extends Omit<User, "confirmCode" | "role"> {
+  profileImage: string;
+}
+
+export interface CheckNickName extends Pick<User, "nickName"> {}
 
 export interface SendEmail extends Pick<User, "email"> {}
 export interface SendEmailBody extends OmitId<SendEmail> {}

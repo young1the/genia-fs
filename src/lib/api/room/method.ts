@@ -16,3 +16,12 @@ export const checkInRoom = async (code: ReservationCode) => {
 export const checkOutRoom = async (code: ReservationCode) => {
   return http.delete(`/api/reservation/check/${code}`);
 };
+
+// /api/room/available
+export const getAvailableRoom = async (body: any) => {
+  if (body === null) return getAllRooms();
+  // const searchParams = new URLSearchParams(body);
+  return http.get(
+    `/api/room/available/?startDate=${body.startDate}&endDate=${body.endDate}`
+  );
+};

@@ -3,11 +3,15 @@ import * as SVG from "@/components/common/svg";
 import { Reservation } from "@/lib/api/reservation/type";
 
 interface Props {
-  reservationData: Reservation | undefined
+  reservationData: Reservation | undefined;
   onClickHandler: () => void;
 }
 
 const ReservationInfoButton = ({ reservationData, onClickHandler }: Props) => {
+  const start = new Date(reservationData?.startDate ?? 0);
+  const koDate = `${start.getFullYear()}년 ${
+    start.getMonth() + 1
+  }월 ${start.getDate()}일`;
   return (
     <>
       <div
@@ -17,7 +21,7 @@ const ReservationInfoButton = ({ reservationData, onClickHandler }: Props) => {
         <SVG.QRScan className='w-16 h-16' />
         <div className='w-full ml-4 overflow-hidden whitespace-nowrap text-ellipsis'>
           {reservationData?.topic}
-          <div>{reservationData ? new Date(reservationData.startDate).toUTCString() : ""}</div>
+          <div>{koDate}</div>
         </div>
       </div>
     </>

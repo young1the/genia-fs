@@ -1,35 +1,33 @@
+import { cancelReservation } from "@/lib/api/admin/method";
 import { Reservation } from "@/lib/api/reservation/type";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   reservationData: Reservation;
-  setSelected: Dispatch<SetStateAction<string[]>>;
 }
 
-const ReservationRow = ({ reservationData, setSelected }: Props) => {
+const ReservationRow = ({ reservationData }: Props) => {
+  const onClickHandler = async () => {
+    toast.promise(
+      new Promise(async (resolve, reject) => {
+        try {
+          await cancelReservation({ nickName: reservationData.nickName });
+          resolve(true);
+        } catch (e) {
+          reject(e);
+        }
+      }),
+      {
+        loading: "기다려주세요...",
+        success: "완료",
+        error: "Error",
+      }
+    );
+  };
+
   return (
     <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'>
-      <td className='w-4 p-4'>
-        <div className='flex items-center'>
-          <input
-            id='checkbox-table-search-1'
-            type='checkbox'
-            className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-            onChange={(e) => {
-              if (e.target.checked) {
-                setSelected((prev) => [
-                  ...prev,
-                  reservationData.reservationCode,
-                ]);
-              } else {
-                setSelected((prev) =>
-                  prev.filter((ele) => ele !== reservationData.reservationCode)
-                );
-              }
-            }}
-          />
-        </div>
-      </td>
       <td className='px-6 py-4'>
         <div className='font-normal text-gray-500'>
           {reservationData.reservationCode}
@@ -51,14 +49,24 @@ const ReservationRow = ({ reservationData, setSelected }: Props) => {
       </td>
       <td className='px-6 py-4'>
         <div className='font-normal text-gray-500'>
-          {reservationData.reservationState == 1
+          {reservationData.status == "CONFIRMED"
             ? "진행중"
-            : reservationData.reservationState == 2
+            : reservationData.status == "CANCELLED"
             ? "예약취소"
-            : reservationData.reservationState == 0
+            : reservationData.status == "COMPLETED"
             ? "완료"
             : ""}
         </div>
+      </td>
+      <td className='px-6 py-4'>
+        {reservationData.status == "CONFIRMED" ? (
+          <div
+            onClick={onClickHandler}
+            className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+          >
+            취소하기
+          </div>
+        ) : null}
       </td>
     </tr>
   );

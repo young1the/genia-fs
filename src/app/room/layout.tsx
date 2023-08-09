@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "천재교육 강의실 예약서비스",
+  title: "천재교육 강의실 체크인",
   description: "",
 };
 

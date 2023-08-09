@@ -17,10 +17,7 @@ export interface Reservation {
 
 export type ReservationCode = Pick<Reservation, "reservationCode">;
 export interface ReservaionNew
-  extends Omit<
-    Reservation,
-    "reservationCode" | "particName" | "reservationState" | "nickName"
-  > {}
+  extends Pick<Reservation, "roomName" | "startDate" | "endDate" | "topic"> {}
 
 export interface ReservationPut
   extends Pick<

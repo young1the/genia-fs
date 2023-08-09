@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import GoogleProvider from "next-auth/providers/google";
-import * as API from "@/lib/api";
 
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
@@ -18,8 +17,7 @@ const authOptions = {
       },
       async authorize(credentials) {
         const res = await fetch(
-          (process.env.NEXT_PUBLIC_API_SERVER as string) +
-            API.constants.URL["LOGIN"],
+          process.env.NEXT_PUBLIC_API_SERVER + `/api/user/login`,
           {
             method: "POST",
             headers: {
@@ -31,6 +29,7 @@ const authOptions = {
             }),
           }
         );
+        console.log(credentials?.email, credentials?.password);
         const user = await res.json();
         if (res.ok && user) {
           return {

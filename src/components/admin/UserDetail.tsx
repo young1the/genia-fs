@@ -17,13 +17,22 @@ const UserDetail = ({ userData, off }: Props) => {
   const [empNumber, setEmpNumber] = useState(userData?.empNumber ?? "");
   const queryClient = useQueryClient();
   const onClickHandler = async () => {
-    toast.promise(
+    await toast.promise(
       new Promise(async (resolve, reject) => {
         try {
-          await putUser({ nickName, email: userData?.email ?? "", empNumber });
+          if (
+            (nickName != userData?.nickName ?? "") ||
+            (empNumber != userData?.empNumber ?? "")
+          )
+            await putUser({
+              nickName,
+              email: userData?.email ?? "",
+              empNumber,
+            });
           if (role != userData?.role) {
             await permissionUser({ email: userData?.email ?? "", role });
           }
+          queryClient.invalidateQueries(["admin", "users"]);
           resolve(true);
         } catch (e) {
           reject(e);
@@ -35,7 +44,6 @@ const UserDetail = ({ userData, off }: Props) => {
         error: "Error",
       }
     );
-    queryClient.invalidateQueries(["admin", "users"]);
     off();
   };
   return (

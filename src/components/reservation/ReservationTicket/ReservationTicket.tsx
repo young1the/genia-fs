@@ -98,7 +98,10 @@ const ReservationTicket = ({ id, isInModal = false }: Props) => {
         </div>
         <div className='flex flex-col font-bold'>
           <span className='font-light'>참가자</span>
-          <ReservationPartics partics={data?.user} />
+          <ReservationPartics
+            partics={data?.user}
+            owner={data?.nickName + ""}
+          />
         </div>
       </div>
       <div className='bg-white flex-1 p-8 flex flex-col gap-4 md:justify-between'>

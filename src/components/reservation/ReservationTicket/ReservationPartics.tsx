@@ -3,9 +3,10 @@ import React, { useMemo } from "react";
 
 interface Props {
   partics: any[] | undefined;
+  owner: string;
 }
 
-const ReservationPartics = ({ partics }: Props) => {
+const ReservationPartics = ({ partics, owner }: Props) => {
   const colors = [
     "bg-amber-100",
     "bg-blue-100",
@@ -23,7 +24,7 @@ const ReservationPartics = ({ partics }: Props) => {
     <div className='flex -space-x-4'>
       {particArray
         ? particArray
-            .filter((_, index) => index < 5)
+            .filter((user, index) => index < 5 && user != owner)
             .map((ele) => {
               const randomColor =
                 Math.floor(Math.random() * 100) % colors.length;
