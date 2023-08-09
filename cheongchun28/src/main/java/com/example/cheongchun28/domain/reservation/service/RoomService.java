@@ -38,10 +38,16 @@ public class RoomService {
         return RoomDto;
     }
 
+    public RoomResponseDto.RoomGetOneDto getRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("해당 Room이 없습니다. roomid: " + roomId));
+
+        return new RoomResponseDto.RoomGetOneDto(room.getReservations());
+    }
+
     @Transactional
     public List<RoomResponseDto.RoomGetResponseDto> findAvailableRooms(User auth, String startDate, String endDate) {
 
-       userRepository.findByUserEmail(auth.getUsername())
+        userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
         LocalDateTime sDate = LocalDateTime.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         LocalDateTime eDate = LocalDateTime.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
