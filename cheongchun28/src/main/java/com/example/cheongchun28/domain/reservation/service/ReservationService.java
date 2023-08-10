@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Null;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -117,10 +118,12 @@ public class ReservationService {
         return duration.toHours() >= 1;
     }
 
-    // 예약 조회 서비스 (전체)
+    // 예약 조회 서비스 (본인)
     public ReservationResponseDto.ReservationGetResponseDto getReservation(User auth) {
+
         User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+
         Reservation reservation = reservationRepository.findWaitingReservationByEmail(user.getUserEmail());
 
         //참가자인 경우
@@ -133,7 +136,14 @@ public class ReservationService {
             }
         }
         log.info("members: {}", members.size(), "rsv");
-        return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
+
+        String reservationCode;
+        try {
+            reservationCode = reservation.getCode();
+        } catch (NullPointerException e) {
+            return new ReservationResponseDto.ReservationGetResponseDto(204, "");
+        }
+        return new ReservationResponseDto.ReservationGetResponseDto(200, reservationCode);
     }
 
     // 예약 조회 서비스 (하나씩)
@@ -275,14 +285,13 @@ public class ReservationService {
     // 강의실 체크아웃
     public CustomResponseDto checkOutReservation(User auth, String code) {
         User user = userRepository.findByUserEmail(auth.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException(""));
         Reservation reservation = reservationRepository.findByCode(code)
-                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
+                .orElseThrow(() -> new IllegalArgumentException());
 
         ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
 
         if (reservationMember.isStatus()) {
-            log.error("이미 취소된 예약입니다.");
             return new CustomResponseDto(400);
         }
 

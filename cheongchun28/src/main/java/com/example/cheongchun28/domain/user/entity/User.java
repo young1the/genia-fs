@@ -44,7 +44,6 @@ public class User implements UserDetails {
 
     @Column(name = "PASSWORD", nullable = false)
     private String encodedPassword;
-
     @Column(name = "NICK_NAME", nullable = false, unique = true)
     private String nickName;
 
@@ -54,7 +53,7 @@ public class User implements UserDetails {
     @Column(name = "DELETED", nullable = false)
     private boolean deleted;
 
-    @Column(name = "EMP_NUMBER", unique = true)
+    @Column(name = "EMP_NUMBER")
     private String empNumber;
 
     @Column(name = "NOTIFICATION_AGREEMENT", nullable = false)
@@ -64,7 +63,7 @@ public class User implements UserDetails {
     private List<Reservation> reservations = new ArrayList<>();
 
 
-    public User(String userEmail, String password, String userName, String profileImage, String empNumber) {
+    public User(String userEmail, String password, String userName, String profileImage, String empNumber, boolean notificationAgreement) {
         this.role = "USER";
         this.userEmail = userEmail;
         this.encodedPassword = password;
@@ -72,6 +71,7 @@ public class User implements UserDetails {
         this.profileImage = profileImage;
         this.deleted = false;
         this.empNumber = empNumber;
+        this.notificationAgreement = notificationAgreement;
     }
 
     @Override

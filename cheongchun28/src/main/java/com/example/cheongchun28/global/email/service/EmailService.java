@@ -9,8 +9,8 @@ import com.example.cheongchun28.global.email.repository.EmailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,17 +72,18 @@ public class EmailService {
 
 
     //인증번호 비교 Service
-    public CustomResponseDto emailConfirm(EmailDto.EmailConfirmRequestDto emailDto) throws Exception {
+    public ResponseEntity<CustomResponseDto> emailConfirm(EmailDto.EmailConfirmRequestDto emailDto) throws Exception {
         EmailEntity emailEntity = emailRepository.findByEmail(emailDto.getEmail()).orElseThrow(
                 () -> new Exception(String.valueOf(HttpStatus.BAD_REQUEST.value()))
         );
 
         if (!emailEntity.getConfirmCode().equals(emailDto.getConfirmCode())) {  //인증번호 체크
-            return new CustomResponseDto(400);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } else if (LocalDateTime.now().isAfter(emailEntity.getModifiedAt().plusMinutes(1))) {   //시간 체크
-            return new CustomResponseDto(400);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return new CustomResponseDto(200);
+
+        return ResponseEntity.ok(new CustomResponseDto(200));
     }
 
     //메일 전송

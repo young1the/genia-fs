@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/mypage/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
 
                 //email
-                .antMatchers("/api/email/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
+                .antMatchers("/api/email/reset-passwrod/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
 
 //                .antMatchers("/api/user/**").permitAll() // 제한이 없음 (로그인을 하지 않아도 사용 가능)
 
