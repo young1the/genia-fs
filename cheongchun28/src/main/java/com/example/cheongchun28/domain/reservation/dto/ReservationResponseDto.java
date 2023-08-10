@@ -67,15 +67,15 @@ public class ReservationResponseDto {
         private String nickName;
         private String roomName;
         private List<String> resUser;
-        private LocalDateTime startTime;
-        private LocalDateTime endTime;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
 
-        public ReservationAllResponseDto(String nickName, String roomName, List<String> resUser, LocalDateTime startTime, LocalDateTime endTime) {
+        public ReservationAllResponseDto(String nickName, String roomName, List<String> resUser, LocalDateTime startDate, LocalDateTime endDate) {
             this.nickName = nickName;
             this.roomName = roomName;
             this.resUser = resUser;
-            this.startTime = startTime;
-            this.endTime = endTime;
+            this.startDate = startDate;
+            this.endDate = endDate;
         }
 
     }

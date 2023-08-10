@@ -42,11 +42,11 @@ public class Room {
     private final List<Reservation> reservations = new ArrayList<>();
 
 
-    public boolean isRoomReserved(LocalDateTime startTime, LocalDateTime endTime) {
+    public boolean isRoomReserved(LocalDateTime startDate, LocalDateTime endDate) {
         for (Reservation reservation : reservations) {
-            LocalDateTime reservationStartTime = reservation.getStartDate();
-            LocalDateTime reservationEndTime = reservation.getEndDate();
-            if (reservationStartTime.isBefore(endTime) && reservationEndTime.isAfter(startTime)) {
+            LocalDateTime reservationStartDate = reservation.getStartDate();
+            LocalDateTime reservationEndDate = reservation.getEndDate();
+            if (reservationStartDate.isBefore(endDate) && reservationEndDate.isAfter(startDate)) {
                 return true;
             }
         }

@@ -73,16 +73,9 @@ public class AdminService {
                     .nickName(reservation.getUser().getNickName())
                     .roomName(reservation.getRoom().getRoomName())
                     .resUser(resUser)
-                    .startTime(reservation.getStartDate())
-                    .endTime(reservation.getEndDate())
+                    .startDate(reservation.getStartDate())
+                    .endDate(reservation.getEndDate())
                     .build();
-//                    new ReservationResponseDto.ReservationAllResponseDto(
-//                    reservation.getUser().getNickName(),
-//                    reservation.getRoom().getRoomName(),
-//                    resUser,
-//                    reservation.getStartDate(),
-//                    reservation.getEndDate()
-//            );
            reservationAllResponseDto.add(response);
         }
         return reservationAllResponseDto;
