@@ -31,6 +31,7 @@ public class MyPageService {
         user.setNickName(requestDto.getNickName());
         user.setProfileImage(requestDto.getProfileImage());
         user.setNotificationAgreement(requestDto.isNotificationAgreement());
+        user.setEmpNumber(requestDto.getEmpNumber());
 
         userRepository.save(user);
 

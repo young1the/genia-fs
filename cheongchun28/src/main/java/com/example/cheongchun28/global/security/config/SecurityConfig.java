@@ -30,38 +30,34 @@ import java.util.Collections;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtUtil jwtUtil;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         log.info("Configuring HttpSecurity");
         http
+                .csrf().disable()
 
                 .addFilterBefore(new CustomCorsFilter(), ChannelProcessingFilter.class)
                 .httpBasic()
                 .disable()
 
-                .csrf().disable()
                 .headers()
                 .frameOptions().disable();
-                http
+
+        http
                 .authorizeRequests()
-                //                .antMatchers("/user").authenticated()   //인증이 필요함(로그인이 필요함)
                 //admin
                 .antMatchers("/api/admin/permission").hasAnyAuthority("ADMIN", "MANAGER")
                 .antMatchers("/api/admin/user").hasAnyAuthority("ADMIN", "MANAGER")
-
                 .antMatchers("/api/admin/reservation").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE")
-
                 //reservation
                 .antMatchers("/api/reservation/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
-
                 //mypage
                 .antMatchers("/api/mypage/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
-
                 //email
                 .antMatchers("/api/email/reset-passwrod/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
-
-//                .antMatchers("/api/user/**").permitAll() // 제한이 없음 (로그인을 하지 않아도 사용 가능)
-
+                //user
+                .antMatchers("/api/user/**").permitAll() // 제한이 없음 (로그인을 하지 않아도 사용 가능)
                 .and()
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
