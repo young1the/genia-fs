@@ -44,14 +44,26 @@ public class ReservationService {
             log.info("user: {}", user);
             Room room = roomRepository.findByRoomName(createReservationDto.getRoomName())
                     .orElseThrow(() -> new IllegalArgumentException(createReservationDto.getRoomName() + "를 찾을 수 없습니다."));
-            // 방 예약 및 다른 예약 존재 체크
-            if (hasOverlappingReservation(room, user, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
-                log.error("예약 중복");
-                return new CustomResponseDto(400);
-            }
+//             방 예약 및 다른 예약 존재 체크
+//            if (hasOverlappingReservation(room, user, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
+//                log.error("예약 중복");
+//                return new CustomResponseDto(400);
+//            }
             // 방 예약 존재 체크
             if (isRoomAlreadyReserved(room, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
                 log.error("동일한 방 예약 중복");
+                return new CustomResponseDto(400);
+            }
+            List<Reservation> completedOrCancelledReservations = reservationRepository.findByUserAndStatusIn(user.getUserSequenceId(), List.of(ReservationStatus.CANCELLED, ReservationStatus.COMPLETED));
+            if (doesOverlapWithReservations(completedOrCancelledReservations, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
+                log.error("예약하려는 회원님의 이전에 완료된 예약이 겹칩니다.");
+                return new CustomResponseDto(400);
+            }
+
+            // 참여 중인 회원의 중복 예약 확인
+            List<ReservationMember> overlappingReservationsByUser = reservationMemberRepository.findOverlappingReservationsByUser(user.getUserSequenceId(), createReservationDto.getStartDate(), createReservationDto.getEndDate());
+            if (!overlappingReservationsByUser.isEmpty()) {
+                log.error("회원님이 참여 중인 다른 예약이 겹칩니다.");
                 return new CustomResponseDto(400);
             }
             // 다른 예약 체크
@@ -70,9 +82,16 @@ public class ReservationService {
                 log.error("예약 시간 중복입니다.");
                 return new CustomResponseDto(400);
             }
+
             // 예약 시간간격 체크
             if (isValid(createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
-                reservationRepository.save(createReservationDto.toEntity(room, user));
+                Reservation reservation = reservationRepository.save(createReservationDto.toEntity(room, user));
+                ReservationMember reservationMember = ReservationMember.builder()
+                        .reservation(reservation)
+                        .user(user)
+                        .build();
+                reservationMember.setInvitor();
+                reservationMemberRepository.save(reservationMember);
                 return new CustomResponseDto(200);
             } else {
                 log.error("최소 예약 시간은 1시간 이상이어야 합니다.");
@@ -87,11 +106,21 @@ public class ReservationService {
         }
     }
 
-    public boolean hasOverlappingReservation(Room room, User user, LocalDateTime startDate, LocalDateTime endDate) {
-        List<Reservation> roomReservations = reservationRepository.findByRoomAndStartDateBetweenAndEndDateBetween(room, startDate, endDate, startDate, endDate);
-        List<Reservation> userReservations = reservationRepository.findByUserAndStartDateBetweenAndEndDateBetween(user, startDate, endDate, startDate, endDate);
+//    public boolean hasOverlappingReservation(Room room, User user, LocalDateTime startDate, LocalDateTime endDate) {
+//        List<Reservation> roomReservations = reservationRepository.findByRoomAndStartDateBetweenAndEndDateBetweenAndStatusNot(room, startDate, endDate, startDate, endDate, ReservationStatus.CANCELLED);
+//        List<Reservation> userReservations = reservationRepository.findByUserAndStartDateBetweenAndEndDateBetweenAndStatusNot(user, startDate, endDate, startDate, endDate, ReservationStatus.CANCELLED);
+//
+//        return !roomReservations.isEmpty() || !userReservations.isEmpty();
+//    }
 
-        return !roomReservations.isEmpty() || !userReservations.isEmpty();
+    private boolean doesOverlapWithReservations(List<Reservation> reservations, LocalDateTime startDate, LocalDateTime endDate) {
+        for (Reservation reservation : reservations) {
+            if ((startDate.isEqual(reservation.getStartDate()) || startDate.isAfter(reservation.getStartDate())) && startDate.isBefore(reservation.getEndDate()) ||
+                    (endDate.isEqual(reservation.getEndDate()) || endDate.isBefore(reservation.getEndDate())) && endDate.isAfter(reservation.getStartDate())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isRoomAlreadyReserved(Room room, LocalDateTime startDate, LocalDateTime endDate) {
@@ -112,8 +141,8 @@ public class ReservationService {
         return isMinimumHourInterval(startDate, endDate);
     }
 
-    public boolean isMinimumHourInterval(LocalDateTime startTime, LocalDateTime endTime) {
-        Duration duration = Duration.between(startTime, endTime);
+    public boolean isMinimumHourInterval(LocalDateTime startDate, LocalDateTime endDate) {
+        Duration duration = Duration.between(startDate, endDate);
         return duration.toHours() >= 1;
     }
 

@@ -50,6 +50,10 @@ public class ReservationMember {
         this.attendance = true;
     }
 
+    public void setInvitor(){
+        this.isInvitor = true;
+    }
+
     public void cancelReservationMember(){
         this.status = true;
     }

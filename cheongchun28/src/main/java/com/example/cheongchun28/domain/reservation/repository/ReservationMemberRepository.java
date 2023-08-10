@@ -8,11 +8,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 
 public interface ReservationMemberRepository extends JpaRepository<ReservationMember, Long> {
+
+    @Query("SELECT rm FROM ReservationMember rm WHERE rm.user.id = :userId AND (" +
+            "(:startDate BETWEEN rm.reservation.startDate AND rm.reservation.endDate) OR " +
+            "(:endDate BETWEEN rm.reservation.startDate AND rm.reservation.endDate) OR " +
+            "(rm.reservation.startDate BETWEEN :startDate AND :endDate))")
+    List<ReservationMember> findOverlappingReservationsByUser(@Param("userId") Long userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     ReservationMember findByReservationAndUser(Reservation reservation, User user);
     @Query(value ="select * from t_reservation_member where user_sequence_id=?", nativeQuery = true)
