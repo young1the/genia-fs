@@ -18,10 +18,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Null;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -116,18 +118,39 @@ public class ReservationService {
         return duration.toHours() >= 1;
     }
 
-    // 예약 조회 서비스 (전체)
+    // 예약 조회 서비스 (본인)
     public ReservationResponseDto.ReservationGetResponseDto getReservation(User auth) {
+
         User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+
         Reservation reservation = reservationRepository.findWaitingReservationByEmail(user.getUserEmail());
-        return new ReservationResponseDto.ReservationGetResponseDto(200, reservation.getCode());
+
+        //참가자인 경우
+        List<ReservationMember> members = reservationMemberRepository.findReservationMemberByUser(user);
+        for (ReservationMember rm : members) {
+            if (rm.isStatus() == false) {
+                Reservation rsv = reservationRepository.findById(rm.getReservation().getId()).orElseThrow();
+
+                return new ReservationResponseDto.ReservationGetResponseDto(200, rsv.getCode());
+            }
+        }
+        log.info("members: {}", members.size(), "rsv");
+
+        String reservationCode;
+        try {
+            reservationCode = reservation.getCode();
+        } catch (NullPointerException e) {
+            return new ReservationResponseDto.ReservationGetResponseDto(204, "");
+        }
+        return new ReservationResponseDto.ReservationGetResponseDto(200, reservationCode);
     }
 
     // 예약 조회 서비스 (하나씩)
     public ReservationResponseDto.ReservationGetOneResponseDto getReservation(String code) {
         Reservation reservation = reservationRepository.findByReservationCode(code);
         List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(false, reservation.getId());
+
         ArrayList<String> memberUser = new ArrayList<>();
         for (ReservationMember rm : reservationMember) {
             memberUser.add(rm.getUser().getNickName());
@@ -228,6 +251,51 @@ public class ReservationService {
         }
 
         reservationMember.cancelReservationMember();
+        reservationMemberRepository.save(reservationMember);
+        return new CustomResponseDto(200);
+    }
+
+    // 강의실 체크인
+    @Transactional
+    public CustomResponseDto checkInReservation(User auth, String code) {
+        User user = userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        Reservation reservation = reservationRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
+
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
+            log.error("기존 예약이 있습니다.");
+            return new CustomResponseDto(400);
+        }
+
+        ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
+        if (existingReservationMember != null && !existingReservationMember.isStatus()) {
+            log.error("이미 참여중인 회원입니다.");
+            return new CustomResponseDto(400);
+        }
+        reservationMemberRepository.save(
+                ReservationMember.builder()
+                        .reservation(reservation)
+                        .user(auth)
+                        .build()
+        );
+        return new CustomResponseDto(200);
+    }
+
+    // 강의실 체크아웃
+    public CustomResponseDto checkOutReservation(User auth, String code) {
+        User user = userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(""));
+        Reservation reservation = reservationRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException());
+
+        ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
+
+        if (reservationMember.isStatus()) {
+            return new CustomResponseDto(400);
+        }
+
+        reservationMember.checkOutReservationMember();
         reservationMemberRepository.save(reservationMember);
         return new CustomResponseDto(200);
     }

@@ -5,12 +5,10 @@ import com.example.cheongchun28.domain.user.service.UserService;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
 @Slf4j
 @RestController
@@ -29,8 +27,14 @@ public class UserController {
 
     //로그인
     @PostMapping("/login")
-    public CustomResponseDto login(@RequestBody UserDto.loginRequestDto requestDto, HttpServletResponse httpServletResponse) {
+    public UserDto.loginResponseDto login(@RequestBody UserDto.loginRequestDto requestDto, HttpServletResponse httpServletResponse) throws SQLException {
         log.info("로그인 시도됨");
         return userService.login(requestDto, httpServletResponse);
+    }
+
+    //닉네임 중복 확인
+    @PostMapping("/check-id/{nickName}")
+    public CustomResponseDto checkId(@PathVariable("nickName") String nickName) {
+        return userService.checkId(nickName);
     }
 }

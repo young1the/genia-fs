@@ -37,16 +37,20 @@ public class ReservationMember {
     @Column(name = "IS_INVITOR")
     private boolean isInvitor; // 방장인지 아닌지
 
-
+    @Column(name = "ATTENDANCE")
+    private boolean attendance; // 출결 상태
 
     @Builder
     public ReservationMember(Reservation reservation, User user) {
         this.reservation = reservation;
         this.user = user;
         this.status = false;
+        this.attendance = true;
     }
 
     public void cancelReservationMember(){
         this.status = true;
     }
+
+    public void checkOutReservationMember() { this.attendance = false; }
 }

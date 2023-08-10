@@ -63,12 +63,5 @@ public class ReservationRequestDto {
 
         @NotNull(message = "예약 사유를 입력해주세요.")
         private String topic;
-
-     /*   public UpdateReservationDto(LocalDateTime startDate, LocalDateTime endDate, String topic) {
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.topic = topic;
-        }*/
-
     }
 }

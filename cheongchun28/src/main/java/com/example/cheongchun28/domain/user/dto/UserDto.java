@@ -4,8 +4,11 @@ import com.example.cheongchun28.domain.user.entity.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 public class UserDto {
@@ -28,8 +31,9 @@ public class UserDto {
 
         private String empNumber;
 
+        private boolean notificationAgreement;
         public User toEntity(String encodePassword) {
-            return new User(this.email, this.password = encodePassword, this.nickName, this.profileImage, this.empNumber);
+            return new User(this.email, this.password = encodePassword, this.nickName, this.profileImage, this.empNumber, this.notificationAgreement);
         }
     }
 
@@ -37,5 +41,14 @@ public class UserDto {
     public static class loginRequestDto {
         private String email;
         private String password;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class loginResponseDto {
+        private String nickName;
+        private String profileImage;
+        private String role;
     }
 }

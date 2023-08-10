@@ -13,6 +13,7 @@ public class MyPageDto {
         private String nickName;
         private String profileImage;
         private boolean notificationAgreement;
+        private String empNumber;
     }
 
     @Getter
