@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 
@@ -26,5 +27,8 @@ public interface ReservationMemberRepository extends JpaRepository<ReservationMe
     List<ReservationMember> findReservationMemberByUser(User user);
     @Query(value = "SELECT * FROM t_reservation_member r WHERE r.status = :status AND r.reservation_sequence_id = :reservationId", nativeQuery = true)
     List<ReservationMember> findByReservation(@Param("status") boolean status, @Param("reservationId") Long reservationId);
+
+    @Query(value = "SELECT * FROM t_reservation_member r WHERE r.status = :status AND r.user_sequence_id = :user_sequence_id", nativeQuery = true)
+    Optional<ReservationMember> findByStatusAndUser(@Param("status") boolean status, @Param("user_sequence_id") Long user_sequence_id);
 
 }

@@ -2,6 +2,7 @@ package com.example.cheongchun28.domain.reservation.service;
 
 import com.example.cheongchun28.domain.reservation.dto.RoomResponseDto;
 import com.example.cheongchun28.domain.reservation.entity.Reservation;
+import com.example.cheongchun28.domain.reservation.entity.ReservationStatus;
 import com.example.cheongchun28.domain.reservation.entity.Room;
 import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
 import com.example.cheongchun28.domain.reservation.repository.RoomRepository;
@@ -40,8 +41,27 @@ public class RoomService {
 
     public RoomResponseDto.RoomGetOneDto getRoomById(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("해당 Room이 없습니다. roomid: " + roomId));
+        List<Reservation> reservations = room.getReservations();
+        String reservationCode = "";
+        log.info("reservations:{}", reservations.size());
 
-        return new RoomResponseDto.RoomGetOneDto(room.getReservations());
+        for (Reservation reservation : reservations) {
+            if (reservation.getStatus() == ReservationStatus.CONFIRMED
+                    && LocalDateTime.now().isAfter(reservation.getStartDate())
+                    && LocalDateTime.now().isBefore(reservation.getEndDate())) {
+                reservationCode = reservation.getCode();
+                break;
+            }
+        }
+
+        return RoomResponseDto.RoomGetOneDto.builder()
+                .roomId(room.getId())
+                .roomName(room.getRoomName())
+                .beamProjector(room.isBeamProjector())
+                .blackBoard(room.isBlackBoard())
+                .computer(room.isComputer())
+                .reservationCode(reservationCode)
+                .build();
     }
 
     @Transactional
