@@ -1,6 +1,7 @@
 package com.example.cheongchun28.domain.reservation.dto;
 
 import com.example.cheongchun28.domain.reservation.entity.ReservationStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,5 +59,26 @@ public class ReservationResponseDto {
         }
 
     }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class ReservationAllResponseDto {
+        private String nickName;
+        private String roomName;
+        private List<String> resUser;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+
+        public ReservationAllResponseDto(String nickName, String roomName, List<String> resUser, LocalDateTime startDate, LocalDateTime endDate) {
+            this.nickName = nickName;
+            this.roomName = roomName;
+            this.resUser = resUser;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+
+    }
+
 
 }

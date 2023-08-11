@@ -1,6 +1,9 @@
 package com.example.cheongchun28.domain.admin.service;
 
 import com.example.cheongchun28.domain.admin.dto.AdminDto;
+import com.example.cheongchun28.domain.reservation.dto.ReservationResponseDto;
+import com.example.cheongchun28.domain.reservation.entity.Reservation;
+import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
 import com.example.cheongchun28.domain.reservation.entity.ReservationMember;
 import com.example.cheongchun28.domain.reservation.repository.ReservationMemberRepository;
 import com.example.cheongchun28.domain.user.entity.User;
@@ -12,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +25,7 @@ import java.sql.SQLException;
 public class AdminService {
 
     private final UserRepository userRepository;
+    private final ReservationRepository reservationRepository;
     private final ReservationMemberRepository reservationMemberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -54,6 +61,31 @@ public class AdminService {
         return new CustomResponseDto(200);
     }
 
+
+    public List<ReservationResponseDto.ReservationAllResponseDto> getAllReservations() {
+        List<Reservation> reservations = reservationRepository.findAll();
+        List<ReservationResponseDto.ReservationAllResponseDto> reservationAllResponseDto = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            List<String> resUser = reservation.getRoom()
+                    .getReservations()
+                    .stream()
+                    .map(res -> res.getUser().getNickName())
+                    .collect(Collectors.toList());
+
+            ReservationResponseDto.ReservationAllResponseDto response = ReservationResponseDto.ReservationAllResponseDto
+                    .builder()
+                    .nickName(reservation.getUser().getNickName())
+                    .roomName(reservation.getRoom().getRoomName())
+                    .resUser(resUser)
+                    .startDate(reservation.getStartDate())
+                    .endDate(reservation.getEndDate())
+                    .build();
+           reservationAllResponseDto.add(response);
+        }
+        return reservationAllResponseDto;
+    }
+
+
     public CustomResponseDto canselReservation(AdminDto.canselRequestDto requestDto) throws SQLException{
         User user = userRepository.findByNickName(requestDto.getNickName());
 
@@ -64,4 +96,5 @@ public class AdminService {
         member.setStatus(false);
         return new CustomResponseDto(200);
     }
+
 }
