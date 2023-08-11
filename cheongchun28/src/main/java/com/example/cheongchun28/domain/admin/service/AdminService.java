@@ -76,7 +76,7 @@ public class AdminService {
                     .builder()
                     .nickName(reservation.getUser().getNickName())
                     .roomName(reservation.getRoom().getRoomName())
-                    .resUser(resUser)
+                    .user(resUser)
                     .startDate(reservation.getStartDate())
                     .endDate(reservation.getEndDate())
                     .build();
