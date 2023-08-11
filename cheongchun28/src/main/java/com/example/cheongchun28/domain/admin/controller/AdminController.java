@@ -50,10 +50,11 @@ public class AdminController {
     @GetMapping("/reservation")
     public List<ReservationResponseDto.ReservationAllResponseDto> getAllReservations() {
         return adminService.getAllReservations();
+    }
 
     @DeleteMapping("/reservation")
     public CustomResponseDto canselReservation(@RequestBody AdminDto.canselRequestDto requestDto) throws SQLException{
         return adminService.canselReservation(requestDto);
-
     }
+
 }

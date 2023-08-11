@@ -107,13 +107,6 @@ public class ReservationService {
         }
     }
 
-//    public boolean hasOverlappingReservation(Room room, User user, LocalDateTime startDate, LocalDateTime endDate) {
-//        List<Reservation> roomReservations = reservationRepository.findByRoomAndStartDateBetweenAndEndDateBetweenAndStatusNot(room, startDate, endDate, startDate, endDate, ReservationStatus.CANCELLED);
-//        List<Reservation> userReservations = reservationRepository.findByUserAndStartDateBetweenAndEndDateBetweenAndStatusNot(user, startDate, endDate, startDate, endDate, ReservationStatus.CANCELLED);
-//
-//        return !roomReservations.isEmpty() || !userReservations.isEmpty();
-//    }
-
     private boolean doesOverlapWithReservations(List<Reservation> reservations, LocalDateTime startDate, LocalDateTime endDate) {
         for (Reservation reservation : reservations) {
             if ((startDate.isEqual(reservation.getStartDate()) || startDate.isAfter(reservation.getStartDate())) && startDate.isBefore(reservation.getEndDate()) ||
@@ -198,6 +191,17 @@ public class ReservationService {
         try {
             Reservation reservation = reservationRepository.findByCode(code)
                     .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
+
+            if (!auth.getUserSequenceId().equals(reservation.getUser().getUserSequenceId())) {
+                log.info(String.valueOf(reservation.getId()));
+                log.info(String.valueOf(auth.getUserSequenceId()));
+                log.info("본인이 예약한 예약이 아님");
+                return new CustomResponseDto(400);
+            }
+            if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
+                log.info("삭제된 예약");
+                return new CustomResponseDto(400);
+            }
             if (isRoomAlreadyReserved(reservation.getRoom(), updateReservationDto.getStartDate(), updateReservationDto.getEndDate())) {
                 log.error("동일한 방 예약 중복");
                 return new CustomResponseDto(400);

@@ -89,11 +89,12 @@ public class AdminService {
     public CustomResponseDto canselReservation(AdminDto.canselRequestDto requestDto) throws SQLException{
         User user = userRepository.findByNickName(requestDto.getNickName());
 
-        ReservationMember member = reservationMemberRepository.findByStatusAndUser(true, user.getUserSequenceId()).orElseThrow(
+        ReservationMember member = reservationMemberRepository.findByStatusAndUser(false, user.getUserSequenceId()).orElseThrow(
                 () -> new SQLException("찾으시는 값이 없습니다.")
         );
 
-        member.setStatus(false);
+        reservationMemberRepository.delete(member);
+
         return new CustomResponseDto(200);
     }
 

@@ -58,10 +58,10 @@ public class MyPageService {
         User user = userRepository.findByUserEmail(email).orElseThrow(
                 () -> new SQLException("찾으시는 데이터가 없습니다.")
         );
-        String encodedPassword = user.getEncodedPassword();
+
         String newEncodedPassword = bCryptPasswordEncoder.encode(requestDto.getNewPassword());
 
-        if (user.getPassword().equals(encodedPassword)) {
+        if (bCryptPasswordEncoder.matches(requestDto.getPassword(), user.getEncodedPassword())) {
             user.setEncodedPassword(newEncodedPassword);
             userRepository.save(user);
         } else {

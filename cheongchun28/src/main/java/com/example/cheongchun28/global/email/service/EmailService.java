@@ -90,7 +90,7 @@ public class EmailService {
     public void sendEmailConfirmMail(String recipient) {
         String confirmCode = createConfirmCode();
         upsertConfirmCode(new EmailEntity(recipient, confirmCode), confirmCode);
-//        sendConfirmationEmail(recipient, confirmCode);
+        sendConfirmationEmail(recipient, confirmCode);
     }
 
     public void sendEmailResetPasswordMail(String recipient) throws Exception {
@@ -102,7 +102,7 @@ public class EmailService {
         log.info(encodedPassword);
         user.setEncodedPassword(encodedPassword);
         userRepository.save(user);
-//        sendResetPasswordEmail(recipient, password);
+        sendResetPasswordEmail(recipient, password);
     }
 
     private String createNewPassword() {

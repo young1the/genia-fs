@@ -26,7 +26,6 @@ public class Reservation {
     @Column(name = "RESERVATION_SEQUENCE_ID")
     private Long id;
 
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROOM_SEQUENCE_ID", nullable = false)
