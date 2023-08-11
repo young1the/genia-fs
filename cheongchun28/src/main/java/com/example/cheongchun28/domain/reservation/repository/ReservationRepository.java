@@ -34,8 +34,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT * FROM t_reservation r WHERE r.reservation_Code = :code AND r.status In ('0')" , nativeQuery = true)
     Reservation findByReservationCode(@Param("code") String code);
 
-    @Query(value = "SELECT * FROM t_reservation r WHERE r.status != 'CANCELLED' AND (" +
-            "r.start_date < ?2 AND " +
-            "r.end_date > ?1)", nativeQuery = true)
+    List<Reservation> findAllByUser(User user);
+
+    @Query(value = "SELECT * FROM t_reservation r WHERE r.status != 'CANCELLED' AND (r.start_date < ?2 AND r.end_date > ?1)", nativeQuery = true)
     List<Reservation> findOverlappingReservationsInDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

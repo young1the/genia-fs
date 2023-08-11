@@ -30,4 +30,10 @@ public class AdminDto{
         private String nickName;
         private String empNumber;
     }
+
+    @Getter
+    public static class canselRequestDto {
+        private String nickName;
+    }
+
 }

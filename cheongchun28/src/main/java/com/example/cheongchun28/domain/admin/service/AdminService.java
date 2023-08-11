@@ -1,6 +1,8 @@
 package com.example.cheongchun28.domain.admin.service;
 
 import com.example.cheongchun28.domain.admin.dto.AdminDto;
+import com.example.cheongchun28.domain.reservation.entity.ReservationMember;
+import com.example.cheongchun28.domain.reservation.repository.ReservationMemberRepository;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.domain.user.repository.UserRepository;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
@@ -17,6 +19,7 @@ import java.sql.SQLException;
 public class AdminService {
 
     private final UserRepository userRepository;
+    private final ReservationMemberRepository reservationMemberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public CustomResponseDto setPermission(AdminDto.setPermissionRequestDto requestDto) throws SQLException {
@@ -48,6 +51,17 @@ public class AdminService {
         user.setEmpNumber(requestDto.getEmpNumber());
 
         userRepository.save(user);
+        return new CustomResponseDto(200);
+    }
+
+    public CustomResponseDto canselReservation(AdminDto.canselRequestDto requestDto) throws SQLException{
+        User user = userRepository.findByNickName(requestDto.getNickName());
+
+        ReservationMember member = reservationMemberRepository.findByStatusAndUser(true, user.getUserSequenceId()).orElseThrow(
+                () -> new SQLException("찾으시는 값이 없습니다.")
+        );
+
+        member.setStatus(false);
         return new CustomResponseDto(200);
     }
 }

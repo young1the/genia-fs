@@ -3,16 +3,14 @@ package com.example.cheongchun28.domain.reservation.entity;
 
 import com.example.cheongchun28.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Table(name = "T_RESERVATION_MEMBER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class ReservationMember {
 
