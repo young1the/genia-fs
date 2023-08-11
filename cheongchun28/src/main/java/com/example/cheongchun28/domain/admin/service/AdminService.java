@@ -55,9 +55,7 @@ public class AdminService {
     }
 
     public CustomResponseDto canselReservation(AdminDto.canselRequestDto requestDto) throws SQLException{
-        User user = userRepository.findByUserEmail(requestDto.getEmail()).orElseThrow(
-                () -> new SQLException("찾으시는 값이 없습니다.")
-        );
+        User user = userRepository.findByNickName(requestDto.getNickName());
 
         ReservationMember member = reservationMemberRepository.findByStatusAndUser(true, user.getUserSequenceId()).orElseThrow(
                 () -> new SQLException("찾으시는 값이 없습니다.")

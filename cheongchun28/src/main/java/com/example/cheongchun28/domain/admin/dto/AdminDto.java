@@ -33,7 +33,7 @@ public class AdminDto{
 
     @Getter
     public static class canselRequestDto {
-        private String email;
+        private String nickName;
     }
 
 }
