@@ -64,13 +64,15 @@ public class ReservationResponseDto {
     @Setter
     @Builder
     public static class ReservationAllResponseDto {
+        private String reservationCode;
         private String nickName;
         private String roomName;
         private List<String> user;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
 
-        public ReservationAllResponseDto(String nickName, String roomName, List<String> user, LocalDateTime startDate, LocalDateTime endDate) {
+        public ReservationAllResponseDto(String reservationCode, String nickName, String roomName, List<String> user, LocalDateTime startDate, LocalDateTime endDate) {
+            this.reservationCode = reservationCode;
             this.nickName = nickName;
             this.roomName = roomName;
             this.user = user;
