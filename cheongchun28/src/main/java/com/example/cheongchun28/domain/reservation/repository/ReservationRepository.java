@@ -43,6 +43,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findAllByUser(User user);
 
+    List<Reservation> findAllByRoom(Room room);
     @Query(value = "SELECT * FROM t_reservation r WHERE r.status != 'CANCELLED' AND (r.start_date < ?2 AND r.end_date > ?1)", nativeQuery = true)
     List<Reservation> findOverlappingReservationsInDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
