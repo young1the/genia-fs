@@ -12,6 +12,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "T_RESERVATION")
 @Getter
@@ -35,6 +37,10 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_SEQUENCE_ID", nullable = false)
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "reservation")
+    private List<ReservationMember> reservationMembers = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "CREATED_AT", updatable = false)
@@ -90,5 +96,14 @@ public class Reservation {
 
     public void deleteReservation(){
         this.status = ReservationStatus.CANCELLED;
+    }
+
+    public void completeReservation() {
+        if (LocalDateTime.now().isAfter(getEndDate())) {
+            this.status = ReservationStatus.COMPLETED;
+
+        } else {
+            throw new IllegalStateException("예약 종료 시간이 아직 지나지 않았습니다.");
+        }
     }
 }

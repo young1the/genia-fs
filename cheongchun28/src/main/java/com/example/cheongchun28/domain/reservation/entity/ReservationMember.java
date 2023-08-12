@@ -56,5 +56,9 @@ public class ReservationMember {
         this.status = true;
     }
 
+    public void completeReservationMember() {
+        this.status = true;
+    }
+
     public void checkOutReservationMember() { this.attendance = false; }
 }
