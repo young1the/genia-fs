@@ -18,12 +18,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +33,7 @@ public class ReservationService {
     private final ReservationMemberRepository reservationMemberRepository;
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final RoomService roomService;
 
     // 예약 생성
     @Transactional
@@ -42,45 +41,18 @@ public class ReservationService {
         try {
             User user = userRepository.findByUserEmail(auth.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
-            log.info("user: {}", user);
+            log.info("user: {}", user.getUserEmail());
             Room room = roomRepository.findByRoomName(createReservationDto.getRoomName())
                     .orElseThrow(() -> new IllegalArgumentException(createReservationDto.getRoomName() + "를 찾을 수 없습니다."));
-//             방 예약 및 다른 예약 존재 체크
-//            if (hasOverlappingReservation(room, user, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
-//                log.error("예약 중복");
-//                return new CustomResponseDto(400);
-//            }
-            // 방 예약 존재 체크
-            if (isRoomAlreadyReserved(room, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
-                log.error("동일한 방 예약 중복");
-                return new CustomResponseDto(400);
-            }
-            List<Reservation> completedOrCancelledReservations = reservationRepository.findByUserAndStatusIn(user.getUserSequenceId(), List.of(ReservationStatus.CANCELLED, ReservationStatus.COMPLETED));
-            if (doesOverlapWithReservations(completedOrCancelledReservations, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
-                log.error("예약하려는 회원님의 이전에 완료된 예약이 겹칩니다.");
-                return new CustomResponseDto(400);
-            }
 
-            // 참여 중인 회원의 중복 예약 확인
-            List<ReservationMember> overlappingReservationsByUser = reservationMemberRepository.findOverlappingReservationsByUser(user.getUserSequenceId(), createReservationDto.getStartDate(), createReservationDto.getEndDate());
-            if (!overlappingReservationsByUser.isEmpty()) {
-                log.error("회원님이 참여 중인 다른 예약이 겹칩니다.");
+            // 방 예약 가능 체크
+            if (!roomService.isRoomAvailable(room, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
+                log.error("선택한 강의실 예약이 중복입니다.");
                 return new CustomResponseDto(400);
             }
-            // 다른 예약 체크
-            if (doesUserTimeOverlap(user, createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
-                log.error("사용자 예약 중복");
-                return new CustomResponseDto(400);
-            }
-            // 예약 체크
-            if (hasInProgressReservation(user)) {
-                log.error("이미 예약을 잡은 회원입니다.");
-                return new CustomResponseDto(400);
-            }
-            // 예약 시간 중복 체크
-            List<Reservation> overlappingReservations = reservationRepository.findOverlappingReservations(createReservationDto.getRoomName(), createReservationDto.getStartDate(), createReservationDto.getEndDate());
-            if (!overlappingReservations.isEmpty()) {
-                log.error("예약 시간 중복입니다.");
+            // 회원 예약 참여 체크
+            if (!checkUserReservation(user)){
+                log.error("이미 예약 참여중인 회원입니다");
                 return new CustomResponseDto(400);
             }
 
@@ -107,7 +79,7 @@ public class ReservationService {
         }
     }
 
-    private boolean doesOverlapWithReservations(List<Reservation> reservations, LocalDateTime startDate, LocalDateTime endDate) {
+    public  boolean doesOverlapWithReservations(List<Reservation> reservations, LocalDateTime startDate, LocalDateTime endDate) {
         for (Reservation reservation : reservations) {
             if ((startDate.isEqual(reservation.getStartDate()) || startDate.isAfter(reservation.getStartDate())) && startDate.isBefore(reservation.getEndDate()) ||
                     (endDate.isEqual(reservation.getEndDate()) || endDate.isBefore(reservation.getEndDate())) && endDate.isAfter(reservation.getStartDate())) {
@@ -115,6 +87,18 @@ public class ReservationService {
             }
         }
         return false;
+    }
+
+    public boolean checkUserReservation(User user){
+        List<ReservationMember> reservationMembers = reservationMemberRepository.findReservationMemberByUser(user);
+        if (reservationMembers != null){
+            for (ReservationMember reservationMember  : reservationMembers) {
+                if (reservationMember.isStatus() == false){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public boolean isRoomAlreadyReserved(Room room, LocalDateTime startDate, LocalDateTime endDate) {
@@ -234,10 +218,15 @@ public class ReservationService {
         List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(false, reservation.getId());
         if (reservationMember != null) {
             for (ReservationMember member : reservationMember) {
-                member.cancelReservationMember();
-                reservationMemberRepository.save(member);
+                reservationMemberRepository.delete(member);
             }
         }
+//        if (reservationMember != null) {
+//            for (ReservationMember member : reservationMember) {
+//                member.cancelReservationMember();
+//                reservationMemberRepository.save(member);
+//            }
+//        }
         reservationRepository.save(reservation);
         return new CustomResponseDto(200);
     }
@@ -249,7 +238,7 @@ public class ReservationService {
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
         Reservation reservation = reservationRepository.findByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
-
+        log.info("reservationMemberNum:{}", reservation.getReservationMembers().size());
         if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
             log.error("예약가능한 상태가 아닙니다.");
             return new CustomResponseDto(400);
@@ -260,13 +249,20 @@ public class ReservationService {
             log.error("이미 참여중인 회원입니다.");
             return new CustomResponseDto(400);
         }
-        reservationMemberRepository.save(
-                ReservationMember.builder()
-                        .reservation(reservation)
-                        .user(auth)
-                        .build()
-        );
-        return new CustomResponseDto(200);
+        if (reservation.getRoom().getCapacity() >= reservation.getReservationMembers().size()) {
+
+            reservationMemberRepository.save(
+                    ReservationMember.builder()
+                            .reservation(reservation)
+                            .user(auth)
+                            .build()
+            );
+            return new CustomResponseDto(200);
+        } else {
+            log.error("강의실 예약인원 초과입니다.");
+            return new CustomResponseDto(400);
+        }
+
     }
 
     // 예약 참가 취소

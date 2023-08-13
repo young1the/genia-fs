@@ -22,7 +22,7 @@ public class ReservationStatusUpdateService {
     private final ReservationRepository reservationRepository;
     private final ReservationMemberRepository reservationMemberRepository;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 10 * * * *")
     @Transactional
     public void checkAndCompleteExpiredReservations() {
         log.info("종료된 예약 상태 변경 작업 시작");
