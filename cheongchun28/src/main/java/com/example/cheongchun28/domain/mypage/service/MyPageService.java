@@ -84,7 +84,7 @@ public class MyPageService {
                 responseDto.setEndDate(reservation.getEndDate());
                 responseDto.setStatus(reservation.getStatus());
                 responseDto.setReservationCode(reservation.getCode());
-
+                responseDto.setTopic(reservation.getTopic());
                 responseDtos.add(responseDto);
             }
         } else {
