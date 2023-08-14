@@ -75,6 +75,8 @@ public class AdminService {
             ReservationResponseDto.ReservationAllResponseDto response = ReservationResponseDto.ReservationAllResponseDto
                     .builder()
                     .reservationCode(reservation.getCode())
+                    .topic(reservation.getTopic())
+                    .status(String.valueOf(reservation.getStatus()))
                     .nickName(reservation.getUser().getNickName())
                     .roomName(reservation.getRoom().getRoomName())
                     .user(resUser)

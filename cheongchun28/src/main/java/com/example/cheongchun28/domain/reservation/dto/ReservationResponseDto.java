@@ -65,14 +65,18 @@ public class ReservationResponseDto {
     @Builder
     public static class ReservationAllResponseDto {
         private String reservationCode;
+        private String topic;
+        private String status;
         private String nickName;
         private String roomName;
         private List<String> user;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
 
-        public ReservationAllResponseDto(String reservationCode, String nickName, String roomName, List<String> user, LocalDateTime startDate, LocalDateTime endDate) {
+        public ReservationAllResponseDto(String reservationCode, String topic, String status, String nickName, String roomName, List<String> user, LocalDateTime startDate, LocalDateTime endDate) {
             this.reservationCode = reservationCode;
+            this.topic = topic;
+            this.status = status;
             this.nickName = nickName;
             this.roomName = roomName;
             this.user = user;
