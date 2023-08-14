@@ -135,7 +135,7 @@ public class ReservationService {
         //참가자인 경우
         List<ReservationMember> members = reservationMemberRepository.findReservationMemberByUser(user);
         for (ReservationMember rm : members) {
-            if (rm.isStatus() == false) {
+            if (rm.isStatus() == false && rm.isInvitor() == false) {
                 Reservation rsv = reservationRepository.findById(rm.getReservation().getId()).orElseThrow();
 
                 return new ReservationResponseDto.ReservationGetResponseDto(200, rsv.getCode());

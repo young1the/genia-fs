@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/admin/user").hasAnyAuthority("ADMIN", "MANAGER")
                 .antMatchers("/api/admin/reservation").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE")
                 //reservation
+                .antMatchers(HttpMethod.GET,"/api/reservation/**").permitAll()
                 .antMatchers("/api/reservation/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
                 //mypage
                 .antMatchers("/api/mypage/**").hasAnyAuthority("ADMIN", "MANAGER", "EMPLOYEE", "USER")
