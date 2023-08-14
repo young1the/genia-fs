@@ -29,11 +29,6 @@ public class UserService {
     private final BCryptPasswordEncoder bcryptPasswordEncoder;
 
     public CustomResponseDto signup(UserDto.SignupRequestDto requestDto) {
-
-//        if (requestDto.getEmpNumber().equals("")) {
-//
-//        }
-
         userRepository.save(requestDto.toEntity(bcryptPasswordEncoder.encode(requestDto.getPassword())));
         return new CustomResponseDto(200);
     }

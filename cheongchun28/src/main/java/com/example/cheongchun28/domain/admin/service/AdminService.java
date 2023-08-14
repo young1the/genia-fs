@@ -99,4 +99,18 @@ public class AdminService {
         return new CustomResponseDto(200);
     }
 
+    public List<ReservationResponseDto.UserAllResponseDto> getAllUserInfo() {
+        List<User> users = userRepository.findAll();
+        List<ReservationResponseDto.UserAllResponseDto> responseDtos = new ArrayList<>();
+        for (User user : users) {
+            ReservationResponseDto.UserAllResponseDto dto = new ReservationResponseDto.UserAllResponseDto();
+            dto.setEmail(user.getUserEmail());
+            dto.setNickName(user.getNickName());
+            dto.setEmpNumber(user.getEmpNumber());
+            dto.setRole(user.getRole());
+            dto.setNotificationAgreement(user.isNotificationAgreement());
+            responseDtos.add(dto);
+        }
+        return responseDtos;
+    }
 }

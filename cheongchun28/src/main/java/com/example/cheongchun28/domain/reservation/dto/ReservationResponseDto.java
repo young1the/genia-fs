@@ -83,4 +83,13 @@ public class ReservationResponseDto {
     }
 
 
+    @Getter
+    @Setter
+    public static class UserAllResponseDto {
+        private String email;
+        private String nickName;
+        private String empNumber;
+        private String role;
+        private boolean notificationAgreement;
+    }
 }
