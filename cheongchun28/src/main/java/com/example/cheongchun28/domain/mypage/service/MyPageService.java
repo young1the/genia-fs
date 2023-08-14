@@ -9,8 +9,10 @@ import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import com.example.cheongchun28.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -27,20 +29,19 @@ public class MyPageService {
     private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public CustomResponseDto changeMyInfo(MyPageDto.ChangeMyInfoRequestDto requestDto, HttpServletRequest httpServletRequest) throws SQLException {
-        String email = jwtUtil.getEmailAtToken(jwtUtil.getToken(httpServletRequest));
-        User user = userRepository.findByUserEmail(email).orElseThrow(
-                () -> new SQLException("찾으시는 데이터가 없습니다.")
-        );
-
-        user.setNickName(requestDto.getNickName());
-        user.setProfileImage(requestDto.getProfileImage());
-        user.setNotificationAgreement(requestDto.isNotificationAgreement());
-        user.setEmpNumber(requestDto.getEmpNumber());
-
-        userRepository.save(user);
-
-        return new CustomResponseDto(200);
+    @Transactional
+    public CustomResponseDto changeMyInfo(User auth, MyPageDto.ChangeMyInfoRequestDto requestDto) throws SQLException {
+        User user = userRepository.findByUserEmail(auth.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        User duplicateNickName = userRepository.findByNickName(requestDto.getNickName());
+        if (duplicateNickName == null) {
+            user.updateUser(requestDto);
+            userRepository.save(user);
+            return new CustomResponseDto(200);
+        } else {
+            log.info("닉네임 중복입니다.");
+            return new CustomResponseDto(400);
+        }
     }
 
     public MyPageDto.getMyInfoResponseDto getMyInfo(HttpServletRequest httpServletRequest) throws SQLException {

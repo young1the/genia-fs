@@ -21,8 +21,10 @@ public class MyPageController {
     private final MyPageService mypageService;
 
     @PutMapping
-    public CustomResponseDto changeMyInfo(@RequestBody MyPageDto.ChangeMyInfoRequestDto requestDto, HttpServletRequest httpServletRequest) throws SQLException {
-        return mypageService.changeMyInfo(requestDto, httpServletRequest);
+    public CustomResponseDto changeMyInfo(@AuthenticationPrincipal User auth, @RequestBody MyPageDto.ChangeMyInfoRequestDto requestDto) throws SQLException {
+        log.info("auth:{}, requestDto:{}", auth.getUsername(), requestDto);
+
+        return  mypageService.changeMyInfo(auth, requestDto);
     }
 
     @GetMapping
