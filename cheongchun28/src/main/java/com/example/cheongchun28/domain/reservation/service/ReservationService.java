@@ -186,18 +186,10 @@ public class ReservationService {
                 log.info("삭제된 예약");
                 return new CustomResponseDto(400);
             }
-            if (isRoomAlreadyReserved(reservation.getRoom(), updateReservationDto.getStartDate(), updateReservationDto.getEndDate())) {
-                log.error("동일한 방 예약 중복");
-                return new CustomResponseDto(400);
-            }
-            if (isValid(updateReservationDto.getStartDate(), updateReservationDto.getEndDate())) {
+
                 reservation.updateReservation(updateReservationDto);
                 reservationRepository.save(reservation);
                 return new CustomResponseDto(200);
-            } else {
-                log.error("예약 시간 간격이 1시간 이상 차이나지 않습니다.");
-                return new CustomResponseDto(400);
-            }
         } catch (IllegalArgumentException e) {
             log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
             return new CustomResponseDto(400);

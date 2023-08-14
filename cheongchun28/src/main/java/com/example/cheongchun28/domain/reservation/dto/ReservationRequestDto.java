@@ -55,12 +55,6 @@ public class ReservationRequestDto {
     @NoArgsConstructor
     public static class UpdateReservationDto {
 
-        @NotNull(message = "예약 시작 시간은 필수 입력 값입니다.")
-        private LocalDateTime startDate;
-
-        @NotNull(message = "예약 종료 시간은 필수 입력 값입니다.")
-        private LocalDateTime endDate;
-
         @NotNull(message = "예약 사유를 입력해주세요.")
         private String topic;
     }
