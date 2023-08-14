@@ -28,7 +28,12 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> createReservation(@AuthenticationPrincipal User auth,
                                                                @Valid @RequestBody ReservationRequestDto.CreateReservationDto createReservationDto) {
         log.info("reservation create, className: {}, auth: {}", createReservationDto.getRoomName(), auth.getUsername());
-        return ResponseEntity.ok(reservationService.createReservation(auth, createReservationDto));
+        CustomResponseDto reservation = reservationService.createReservation(auth, createReservationDto);
+        if (reservation.getStatusCode() == 200) {
+            return ResponseEntity.ok(reservationService.createReservation(auth, createReservationDto));
+        } else {
+            return ResponseEntity.badRequest().body(reservation);
+        }
     }
 
     //조회하기(Read/Get) - (본인)
@@ -42,7 +47,7 @@ public class ReservationController {
     @GetMapping("/{reservationCode}")
     public ResponseEntity<ReservationResponseDto.ReservationGetOneResponseDto> getedReservation(@PathVariable("reservationCode") String code) {
         log.info("reservation get, reservationCode: {}", code);
-        return ResponseEntity.ok( reservationService.getReservation(code));
+        return ResponseEntity.ok(reservationService.getReservation(code));
     }
 
     // 예약 수정
@@ -51,7 +56,12 @@ public class ReservationController {
                                                                @PathVariable("reservationCode") String code,
                                                                @Valid @RequestBody ReservationRequestDto.UpdateReservationDto updateReservationDto) {
         log.info("reservation update,  auth: {},  updateReservation: {}, reservationCode: {}", auth, updateReservationDto, code);
-        return ResponseEntity.ok(reservationService.updateReservation(auth, code, updateReservationDto));
+        CustomResponseDto updateReservation = reservationService.updateReservation(auth, code, updateReservationDto);
+        if (updateReservation.getStatusCode() == 200) {
+            return ResponseEntity.ok(updateReservation);
+        } else {
+            return ResponseEntity.badRequest().body(updateReservation);
+        }
     }
 
     // 예약 삭제
@@ -67,7 +77,13 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> joinReservation(@AuthenticationPrincipal User auth,
                                                              @PathVariable("reservationCode") String code) {
         log.info("reservation join,  auth: {}, reservationCode: {}", auth.getUsername(), code);
-        return ResponseEntity.ok(reservationService.joinReservation(auth, code));
+        CustomResponseDto joinReservation = reservationService.joinReservation(auth, code);
+        log.info("joinReservation:{}", joinReservation.getStatusCode());
+        if (joinReservation.getStatusCode() == 200) {
+            return ResponseEntity.ok(joinReservation);
+        } else {
+            return ResponseEntity.badRequest().body(joinReservation);
+        }
     }
 
     // 예약 참가 취소
@@ -81,7 +97,7 @@ public class ReservationController {
     // 강의실 체크인
     @PostMapping("/check/{reservationCode}")
     public ResponseEntity<CustomResponseDto> checkInReservation(@AuthenticationPrincipal User auth,
-                                                             @PathVariable("reservationCode") String code) {
+                                                                @PathVariable("reservationCode") String code) {
         log.info("reservation checkIn,  auth: {}, reservationCode: {}", auth.getUsername(), code);
         return ResponseEntity.ok(reservationService.checkInReservation(auth, code));
     }
@@ -89,7 +105,7 @@ public class ReservationController {
     // 강의실 체크아웃
     @DeleteMapping("/check/{reservationCode}")
     public ResponseEntity<CustomResponseDto> checkOutReservation(@AuthenticationPrincipal User auth,
-                                                                   @PathVariable("reservationCode") String code) {
+                                                                 @PathVariable("reservationCode") String code) {
         log.info("reservation checkOut,  auth: {}, reservationCode: {}", auth.getUsername(), code);
         return ResponseEntity.ok(reservationService.checkOutReservation(auth, code));
     }

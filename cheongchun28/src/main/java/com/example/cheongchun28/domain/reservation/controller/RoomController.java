@@ -37,10 +37,9 @@ public class RoomController {
 
     //예약 가능한 강의실 조회
     @GetMapping("/available")
-    public ResponseEntity<List<RoomResponseDto.RoomGetResponseDto>> getAvailableRooms(@AuthenticationPrincipal User auth,
-                                                                                      @RequestParam(value = "startDate") String startDate,
+    public ResponseEntity<List<RoomResponseDto.RoomGetResponseDto>> getAvailableRooms(@RequestParam(value = "startDate") String startDate,
                                                                                       @RequestParam(value = "endDate") String endDate) {
-        log.info("getAvailableRooms, auth:{}, startDate:{}, endDate:{}", auth.getUsername(), startDate, endDate);
-        return ResponseEntity.ok(roomService.findAvailableRooms(auth, startDate, endDate));
+        log.info("getAvailableRooms, startDate:{}, endDate:{}", startDate, endDate);
+        return ResponseEntity.ok(roomService.findAvailableRooms( startDate, endDate));
     }
 }

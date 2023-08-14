@@ -6,11 +6,8 @@ import com.example.cheongchun28.domain.reservation.entity.ReservationStatus;
 import com.example.cheongchun28.domain.reservation.entity.Room;
 import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
 import com.example.cheongchun28.domain.reservation.repository.RoomRepository;
-import com.example.cheongchun28.domain.user.entity.User;
-import com.example.cheongchun28.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +24,7 @@ public class RoomService {
 
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
-    private final UserRepository userRepository;
+
 
     public List<RoomResponseDto.RoomGetResponseDto> getAllRooms() {
         List<Room> rooms = roomRepository.findAll();
@@ -65,33 +62,18 @@ public class RoomService {
     }
 
     @Transactional
-    public List<RoomResponseDto.RoomGetResponseDto> findAvailableRooms(User auth, String startDate, String endDate) {
+    public List<RoomResponseDto.RoomGetResponseDto> findAvailableRooms(String startDate, String endDate) {
 
-        userRepository.findByUserEmail(auth.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
         LocalDateTime sDate = LocalDateTime.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         LocalDateTime eDate = LocalDateTime.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         log.info("sDate:{}, eDate:{}", sDate, eDate);
 
         List<Room> allRooms = roomRepository.findAll();
-        List<Reservation> reservations = findAllReservationsInDateRange(sDate, eDate);
 
-        log.info("reservations:{}", reservations.size());
-
-        List<Room> availableRooms = new ArrayList<>();
-
-        for (Room room : allRooms) {
-            boolean isAvailable = true;
-            for (Reservation reservation : reservations) {
-                if (reservation.getRoom().getId().equals(room.getId())) {
-                    isAvailable = false;
-                    break;
-                }
-            }
-            if (isAvailable) {
-                availableRooms.add(room);
-            }
-        }
+        List<Room> availableRooms = allRooms.stream()
+                .filter(room -> isRoomAvailable(room, sDate, eDate))
+                .collect(Collectors.toList());
+        log.info("availableRooms:{}", availableRooms.size());
 
         return availableRooms.stream()
                 .map(room -> RoomResponseDto.RoomGetResponseDto.builder()
@@ -106,8 +88,18 @@ public class RoomService {
     }
 
 
-    // 설정시간내 예약내역 조회
-    public List<Reservation> findAllReservationsInDateRange(LocalDateTime startDate, LocalDateTime endDate) {
-        return reservationRepository.findOverlappingReservationsInDateRange(startDate, endDate);
+    public boolean isRoomAvailable(Room room, LocalDateTime startDate, LocalDateTime endDate) {
+        List<Reservation> reservations = reservationRepository.findAllByRoom(room);
+
+        for (Reservation reservation : reservations) {
+            if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+                continue;
+            }
+            if (!(endDate.isEqual(reservation.getStartDate()) || startDate.isEqual(reservation.getEndDate()) || endDate.isBefore(reservation.getStartDate()) || startDate.isAfter(reservation.getEndDate()))) {
+                return false;
+            }
+        }
+        return true;
     }
+
 }
