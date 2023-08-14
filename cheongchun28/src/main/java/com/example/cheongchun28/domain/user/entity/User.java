@@ -1,5 +1,6 @@
 package com.example.cheongchun28.domain.user.entity;
 
+import com.example.cheongchun28.domain.mypage.dto.MyPageDto;
 import com.example.cheongchun28.domain.reservation.entity.Reservation;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -74,6 +75,12 @@ public class User implements UserDetails {
         this.notificationAgreement = notificationAgreement;
     }
 
+    public void updateUser(MyPageDto.ChangeMyInfoRequestDto requestDto){
+        this.nickName = requestDto.getNickName();
+        this.profileImage = requestDto.getProfileImage();
+        this.notificationAgreement = requestDto.isNotificationAgreement();
+        this.empNumber = requestDto.getEmpNumber();
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String authority = this.getRole();

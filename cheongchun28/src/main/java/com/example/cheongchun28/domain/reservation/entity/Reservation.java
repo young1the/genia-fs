@@ -87,9 +87,6 @@ public class Reservation {
     }
 
     public void updateReservation(ReservationRequestDto.UpdateReservationDto updateReservationReqDto) {
-
-        this.startDate = updateReservationReqDto.getStartDate();
-        this.endDate = updateReservationReqDto.getEndDate();
         this.topic = updateReservationReqDto.getTopic();
     }
 
