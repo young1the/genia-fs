@@ -47,12 +47,7 @@ public class AdminController {
 
     @DeleteMapping("/reservation")
     public ResponseEntity<CustomResponseDto> cancelReservation(@RequestBody AdminDto.cancelRequestDto requestDto) {
-        CustomResponseDto cancelReservation = adminService.cancelReservation(requestDto);
-        if (cancelReservation.getStatusCode() == 200){
-            return ResponseEntity.ok(cancelReservation);
-        }else {
-            return ResponseEntity.badRequest().body(cancelReservation);
-        }
+        return responseHandler.responseEntity(adminService.cancelReservation(requestDto));
     }
 
 }

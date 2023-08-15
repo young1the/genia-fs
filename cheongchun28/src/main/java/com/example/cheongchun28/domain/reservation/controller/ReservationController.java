@@ -6,6 +6,7 @@ import com.example.cheongchun28.domain.reservation.dto.ReservationResponseDto;
 import com.example.cheongchun28.domain.reservation.service.ReservationService;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
+import com.example.cheongchun28.global.common.handler.ResponseHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 public class ReservationController {
 
     private final ReservationService reservationService;
+    private final ResponseHandler responseHandler;
 
 
     // 예약 등록
@@ -28,12 +30,7 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> createReservation(@AuthenticationPrincipal User auth,
                                                                @Valid @RequestBody ReservationRequestDto.CreateReservationDto createReservationDto) {
         log.info("reservation create, className: {}, auth: {}", createReservationDto.getRoomName(), auth.getUsername());
-        CustomResponseDto reservation = reservationService.createReservation(auth, createReservationDto);
-        if (reservation.getStatusCode() == 200) {
-            return ResponseEntity.ok(reservation);
-        } else {
-            return ResponseEntity.badRequest().body(reservation);
-        }
+        return responseHandler.responseEntity(reservationService.createReservation(auth, createReservationDto));
     }
 
     //조회하기(Read/Get) - (본인)
@@ -55,13 +52,8 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> updateReservation(@Valid @AuthenticationPrincipal User auth,
                                                                @PathVariable("reservationCode") String code,
                                                                @Valid @RequestBody ReservationRequestDto.UpdateReservationDto updateReservationDto) {
-        log.info("reservation update,  auth: {},  updateReservation: {}, reservationCode: {}", auth, updateReservationDto, code);
-        CustomResponseDto updateReservation = reservationService.updateReservation(auth, code, updateReservationDto);
-        if (updateReservation.getStatusCode() == 200) {
-            return ResponseEntity.ok(updateReservation);
-        } else {
-            return ResponseEntity.badRequest().body(updateReservation);
-        }
+        log.info("reservation update,  auth: {},  updateReservation: {}, reservationCode: {}", auth.getUsername(), updateReservationDto, code);
+        return responseHandler.responseEntity(reservationService.updateReservation(auth, code, updateReservationDto));
     }
 
     // 예약 삭제
@@ -69,7 +61,7 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> deleteReservation(@AuthenticationPrincipal User auth,
                                                                @PathVariable("reservationCode") String code) {
         log.info("reservation delete, auth: {}, reservationCode: {}", auth.getUsername(), code);
-        return ResponseEntity.ok(reservationService.deleteReservation(auth, code));
+        return responseHandler.responseEntity(reservationService.deleteReservation(auth, code));
     }
 
     // 예약 참가
@@ -77,13 +69,7 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> joinReservation(@AuthenticationPrincipal User auth,
                                                              @PathVariable("reservationCode") String code) {
         log.info("reservation join,  auth: {}, reservationCode: {}", auth.getUsername(), code);
-        CustomResponseDto joinReservation = reservationService.joinReservation(auth, code);
-        log.info("joinReservation:{}", joinReservation.getStatusCode());
-        if (joinReservation.getStatusCode() == 200) {
-            return ResponseEntity.ok(joinReservation);
-        } else {
-            return ResponseEntity.badRequest().body(joinReservation);
-        }
+        return responseHandler.responseEntity(reservationService.joinReservation(auth, code));
     }
 
     // 예약 참가 취소
@@ -91,7 +77,7 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> joinCancelReservation(@AuthenticationPrincipal User auth,
                                                                    @PathVariable("reservationCode") String code) {
         log.info("reservation joinCancel,  auth: {}, reservationCode: {}", auth.getUsername(), code);
-        return ResponseEntity.ok(reservationService.joinCancelReservation(auth, code));
+        return responseHandler.responseEntity(reservationService.joinCancelReservation(auth, code));
     }
 
     // 강의실 체크인

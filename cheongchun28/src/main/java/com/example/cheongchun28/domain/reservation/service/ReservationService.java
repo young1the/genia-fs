@@ -117,11 +117,6 @@ public class ReservationService {
         return !existingReservations.isEmpty();
     }
 
-    public boolean hasInProgressReservation(User user) {
-        return user.getReservations().stream()
-                .anyMatch(reservation -> reservation.getStatus() != ReservationStatus.CANCELLED && reservation.getStatus() != ReservationStatus.COMPLETED);
-    }
-
     public boolean isValid(LocalDateTime startDate, LocalDateTime endDate) {
         return isMinimumHourInterval(startDate, endDate);
     }
@@ -180,39 +175,55 @@ public class ReservationService {
     public CustomResponseDto updateReservation(User auth, String code, ReservationRequestDto.UpdateReservationDto
             updateReservationDto) {
         try {
+            User user = userRepository.findByUserEmail(auth.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
             Reservation reservation = reservationRepository.findByCode(code)
                     .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
-
-            if (!auth.getUserSequenceId().equals(reservation.getUser().getUserSequenceId())) {
-                log.info(String.valueOf(reservation.getId()));
-                log.info(String.valueOf(auth.getUserSequenceId()));
-                log.info("본인이 예약한 예약이 아님");
+            if (!isUserReservationCreatorCheck(user, reservation)){
+                log.error("예약 생성자가 아닙니다.");
                 return new CustomResponseDto(400);
             }
             if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
-                log.info("삭제된 예약");
+                log.error("예약이 수정가능한 상태가 아닙니다.");
                 return new CustomResponseDto(400);
             }
-
                 reservation.updateReservation(updateReservationDto);
                 reservationRepository.save(reservation);
                 return new CustomResponseDto(200);
-        } catch (IllegalArgumentException e) {
-            log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
-            return new CustomResponseDto(400);
         } catch (Exception e) {
             log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
-            return new CustomResponseDto(500);
+            return new CustomResponseDto(400);
         }
     }
 
     // 예약 삭제
     @Transactional
     public CustomResponseDto deleteReservation(User auth, String code) {
-        userRepository.findByUserEmail(auth.getUsername())
+        log.info("code:{}",code);
+        User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
+        log.info("code:{}",code);
         Reservation reservation = reservationRepository.findByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
+        log.info("code:{}",code);
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED){
+            log.error("예약 삭제가 불가능한 상태입니다.");
+            return new CustomResponseDto(400);
+        }
+        if (!isUserReservationCreatorCheck(user, reservation)){
+            log.error("예약 생성자가 아닙니다.");
+            return new CustomResponseDto(400);
+        }
+        deleteReservationAndMember(reservation);
+        return new CustomResponseDto(200);
+    }
+
+    public boolean  isUserReservationCreatorCheck(User user, Reservation reservation){
+        log.info("userId:{}, reservationId:{}", user.getUserSequenceId(), reservation.getUser().getUserSequenceId());
+        return user.getUserSequenceId().equals(reservation.getUser().getUserSequenceId());
+    }
+
+    public void deleteReservationAndMember(Reservation reservation) {
         reservation.deleteReservation();
         List<ReservationMember> reservationMember = reservationMemberRepository.findByReservation(false, reservation.getId());
         if (reservationMember != null) {
@@ -220,9 +231,7 @@ public class ReservationService {
                 reservationMemberRepository.delete(member);
             }
         }
-
         reservationRepository.save(reservation);
-        return new CustomResponseDto(200);
     }
 
     // 예약 참가
@@ -242,11 +251,6 @@ public class ReservationService {
            return new CustomResponseDto(400);
        }
 
-//        ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
-//        if (existingReservationMember != null && !existingReservationMember.isStatus()) {
-//            log.error("이미 참여중인 회원입니다.");
-//            return new CustomResponseDto(400);
-//        }
         if (reservation.getRoom().getCapacity() >= reservation.getReservationMembers().size()) {
 
             reservationMemberRepository.save(
@@ -271,11 +275,11 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
 
         ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
-        if (!reservationMember.isInvitor()){
+        if (!isUserReservationCreatorCheck(user,reservation )){
             reservationMemberRepository.delete(reservationMember);
             return new CustomResponseDto(200);
         }else {
-            log.info("예약 생성자는 참가 취소가 불가능합니다.");
+            log.error("예약 생성자는 참가 취소가 불가능합니다.");
             return new CustomResponseDto(400);
         }
     }

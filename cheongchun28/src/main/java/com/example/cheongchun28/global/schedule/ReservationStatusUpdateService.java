@@ -29,7 +29,7 @@ public class ReservationStatusUpdateService {
         LocalDateTime currentTime = LocalDateTime.now();
         log.info("currentTime:{}", currentTime);
         reservationRepository.findAll().stream()
-                .filter(reservation -> reservation.getStatus() != ReservationStatus.COMPLETED && currentTime.isAfter(reservation.getEndDate()))
+                .filter(reservation -> reservation.getStatus() == ReservationStatus.CONFIRMED && currentTime.isAfter(reservation.getEndDate()))
                 .forEach(reservation -> {
                     log.info("reservationCode:{}", reservation.getCode());
                     reservation.completeReservation();
