@@ -12,7 +12,7 @@ import {
   RoomTypeWrapper,
   RoomWrapper,
   getRoomType,
-} from "@/components/room/Room";
+} from "@/components/room/RoomUtil";
 import { useQuery } from "@tanstack/react-query";
 import { getAvailableRoom } from "@/lib/api/room/method";
 

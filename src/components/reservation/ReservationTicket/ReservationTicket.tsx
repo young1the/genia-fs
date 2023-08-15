@@ -35,6 +35,7 @@ const ReservationTicket = ({ id, isInModal = false }: Props) => {
     const now = new Date();
     const diff = start.getTime() - now.getTime();
     if (diff <= 0) {
+      if (end.getTime() - now.getTime() >= 0) return "예약진행중";
       return "예약종료";
     }
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));

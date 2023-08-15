@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import GreenButton from "../common/button/GreenButton";
 import TitleText from "../common/text/TitleText";
-import { RoomType, RoomTypeWrapper, getRoomType } from "./Room";
+import { RoomType, RoomTypeWrapper, getRoomType } from "./RoomUtil";
 import { checkInRoom, checkOutRoom, getRoomById } from "@/lib/api/room/method";
 import { Room, RoomId } from "@/lib/api/room/type";
 import LoginModal from "../common/modal/LoginModal";
@@ -62,12 +62,14 @@ const RoomInfo = ({ id }: Props) => {
         })}
       </div>
       <TitleText title={"현재 진행중인 예약"} />
-      <Suspense fallback={<ReservationButtonSkeleton />}>
-        <ReservationInfoButton
-          reservationData={reservationData}
-          onClickHandler={on}
-        />
-      </Suspense>
+      {data && data.reservationCode != ("" as any) ? (
+        <Suspense fallback={<ReservationButtonSkeleton />}>
+          <ReservationInfoButton
+            reservationData={reservationData}
+            onClickHandler={on}
+          />
+        </Suspense>
+      ) : null}
       <div className='w-full flex space-x-4 justify-end'>
         <GreenButton title='입실' onClickHandler={onCheckInHandler} />
         <GreenButton

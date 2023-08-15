@@ -1,4 +1,5 @@
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
+import RoomList from "@/components/room/RoomList";
 import React from "react";
 
 const page = () => {
@@ -12,6 +13,9 @@ const page = () => {
       <a href='https://www.genia.academy/' className='underline mt-10'>
         과정소개 바로가기
       </a>
+      <div className='w-full p-24'>
+        <RoomList />
+      </div>
     </div>
   );
 };

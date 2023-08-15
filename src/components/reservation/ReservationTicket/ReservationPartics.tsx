@@ -29,11 +29,17 @@ const ReservationPartics = ({ partics, owner }: Props) => {
               const randomColor =
                 Math.floor(Math.random() * 100) % colors.length;
               return (
-                <div
-                  key={`partic${ele}`}
-                  className={`flex items-center justify-center w-10 h-10 border-2 border-white dark:border-gray-800  rounded-full ${colors[randomColor]}`}
-                >
-                  {ele.charAt(0)}
+                <div className='group'>
+                  <div
+                    key={`partic${ele}`}
+                    className={`flex items-center justify-center w-10 h-10 border-2 border-white dark:border-gray-800
+                  rounded-full ${colors[randomColor]}`}
+                  >
+                    {ele.charAt(0)}
+                  </div>
+                  <p className='hidden absolute group-hover:inline-block'>
+                    {ele}
+                  </p>
                 </div>
               );
             })

@@ -1,7 +1,7 @@
 import { ReservationCode } from "../reservation/type";
 
 export type Room = {
-  roomId: string;
+  id: string;
   roomName: string;
   beamProject: number;
   blackboard: number;
@@ -9,4 +9,4 @@ export type Room = {
   reservationCode: ReservationCode;
 };
 
-export interface RoomId extends Pick<Room, "roomId"> {}
+export interface RoomId extends Pick<Room, "id"> {}
