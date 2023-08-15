@@ -85,7 +85,7 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> checkInReservation(@AuthenticationPrincipal User auth,
                                                                 @PathVariable("reservationCode") String code) {
         log.info("reservation checkIn,  auth: {}, reservationCode: {}", auth.getUsername(), code);
-        return ResponseEntity.ok(reservationService.checkInReservation(auth, code));
+        return responseHandler.responseEntity(reservationService.checkInReservation(auth, code));
     }
 
     // 강의실 체크아웃
@@ -93,6 +93,6 @@ public class ReservationController {
     public ResponseEntity<CustomResponseDto> checkOutReservation(@AuthenticationPrincipal User auth,
                                                                  @PathVariable("reservationCode") String code) {
         log.info("reservation checkOut,  auth: {}, reservationCode: {}", auth.getUsername(), code);
-        return ResponseEntity.ok(reservationService.checkOutReservation(auth, code));
+        return responseHandler.responseEntity(reservationService.checkOutReservation(auth, code));
     }
 }

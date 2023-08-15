@@ -189,6 +189,7 @@ public class ReservationService {
             }
                 reservation.updateReservation(updateReservationDto);
                 reservationRepository.save(reservation);
+                log.info("예약 수정이 완료되었습니다.");
                 return new CustomResponseDto(200);
         } catch (Exception e) {
             log.error("예약 수정 중 오류가 발생했습니다: {}", e.getMessage());
@@ -199,13 +200,10 @@ public class ReservationService {
     // 예약 삭제
     @Transactional
     public CustomResponseDto deleteReservation(User auth, String code) {
-        log.info("code:{}",code);
         User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
-        log.info("code:{}",code);
         Reservation reservation = reservationRepository.findByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException(code + "를 찾을 수 없습니다."));
-        log.info("code:{}",code);
         if (reservation.getStatus() != ReservationStatus.CONFIRMED){
             log.error("예약 삭제가 불가능한 상태입니다.");
             return new CustomResponseDto(400);
@@ -215,6 +213,7 @@ public class ReservationService {
             return new CustomResponseDto(400);
         }
         deleteReservationAndMember(reservation);
+        log.info("예약 삭제가 완료되었습니다.");
         return new CustomResponseDto(200);
     }
 
@@ -259,6 +258,7 @@ public class ReservationService {
                             .user(auth)
                             .build()
             );
+            log.info("예약 참가가 완료되었습니다.");
             return new CustomResponseDto(200);
         } else {
             log.error("강의실 예약인원 초과입니다.");
@@ -277,6 +277,7 @@ public class ReservationService {
         ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
         if (!isUserReservationCreatorCheck(user,reservation )){
             reservationMemberRepository.delete(reservationMember);
+            log.info("예약 참가취소가 완료되었습니다.");
             return new CustomResponseDto(200);
         }else {
             log.error("예약 생성자는 참가 취소가 불가능합니다.");
@@ -292,40 +293,31 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
 
-        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
-            log.error("기존 예약이 있습니다.");
+        ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
+        if (reservationMember != null && !reservationMember.isStatus()) {
+            log.error("체크인 가능한 예약이 아닙니다.");
             return new CustomResponseDto(400);
         }
-
-        ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
-        if (existingReservationMember != null && !existingReservationMember.isStatus()) {
-            log.error("이미 참여중인 회원입니다.");
-            return new CustomResponseDto(400);
-        }
-        reservationMemberRepository.save(
-                ReservationMember.builder()
-                        .reservation(reservation)
-                        .user(auth)
-                        .build()
-        );
+        log.info("체크인 완료");
         return new CustomResponseDto(200);
     }
 
     // 강의실 체크아웃
     public CustomResponseDto checkOutReservation(User auth, String code) {
         User user = userRepository.findByUserEmail(auth.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(""));
+                .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
         Reservation reservation = reservationRepository.findByCode(code)
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
 
         ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
 
         if (reservationMember.isStatus()) {
+            log.error("체크아웃 가능한 상태가 아닙니다.");
             return new CustomResponseDto(400);
         }
-
         reservationMember.checkOutReservationMember();
         reservationMemberRepository.save(reservationMember);
+        log.info("체크아웃 완료");
         return new CustomResponseDto(200);
     }
 }
