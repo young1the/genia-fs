@@ -55,7 +55,11 @@ public class ReservationService {
                 log.error("이미 예약 참여중인 회원입니다");
                 return new CustomResponseDto(400);
             }
-
+            // 선택 시간 체크
+            if (!isReservationTimeVaild(createReservationDto.getStartDate(), createReservationDto.getEndDate())){
+                log.error("선택한 예약 시간이 현재 시간을 지났습니다.");
+                return new CustomResponseDto(400);
+            }
             // 예약 시간간격 체크
             if (isValid(createReservationDto.getStartDate(), createReservationDto.getEndDate())) {
                 Reservation reservation = reservationRepository.save(createReservationDto.toEntity(room, user));
@@ -65,17 +69,15 @@ public class ReservationService {
                         .build();
                 reservationMember.setInvitor();
                 reservationMemberRepository.save(reservationMember);
+                log.info("예약이 성공적으로 완료되었습니다.");
                 return new CustomResponseDto(200);
             } else {
                 log.error("최소 예약 시간은 1시간 이상이어야 합니다.");
                 return new CustomResponseDto(400);
             }
-        } catch (UsernameNotFoundException | IllegalArgumentException e) {
-            log.error("예약 생성 중 오류가 발생했습니다: {}", e.getMessage());
-            return new CustomResponseDto(400);
         } catch (Exception e) {
             log.error("예약 생성 중 오류가 발생했습니다: {}", e.getMessage());
-            return new CustomResponseDto(500);
+            return new CustomResponseDto(400);
         }
     }
 
@@ -101,8 +103,13 @@ public class ReservationService {
         return true;
     }
 
-    public boolean isRoomAlreadyReserved(Room room, LocalDateTime startDate, LocalDateTime endDate) {
-        return room.isRoomReserved(startDate, endDate);
+    public boolean isReservationTimeVaild(LocalDateTime startDate, LocalDateTime endDate) {
+        LocalDateTime now = LocalDateTime.now();
+        boolean invalidStartDate = startDate.isBefore(now);
+        boolean invalidEndDate = endDate.isBefore(now);
+        boolean endDateIsBeforeOrEqualToStartDate = endDate.isBefore(startDate) || endDate.isEqual(startDate);
+
+        return !invalidStartDate && !invalidEndDate && !endDateIsBeforeOrEqualToStartDate;
     }
 
     public boolean doesUserTimeOverlap(User user, LocalDateTime startDate, LocalDateTime endDate) {
@@ -213,12 +220,7 @@ public class ReservationService {
                 reservationMemberRepository.delete(member);
             }
         }
-//        if (reservationMember != null) {
-//            for (ReservationMember member : reservationMember) {
-//                member.cancelReservationMember();
-//                reservationMemberRepository.save(member);
-//            }
-//        }
+
         reservationRepository.save(reservation);
         return new CustomResponseDto(200);
     }
@@ -235,12 +237,16 @@ public class ReservationService {
             log.error("예약가능한 상태가 아닙니다.");
             return new CustomResponseDto(400);
         }
+       if (!checkUserReservation(user)){
+           log.error("이미 참여중인 회원입니다.");
+           return new CustomResponseDto(400);
+       }
 
-        ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
-        if (existingReservationMember != null && !existingReservationMember.isStatus()) {
-            log.error("이미 참여중인 회원입니다.");
-            return new CustomResponseDto(400);
-        }
+//        ReservationMember existingReservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
+//        if (existingReservationMember != null && !existingReservationMember.isStatus()) {
+//            log.error("이미 참여중인 회원입니다.");
+//            return new CustomResponseDto(400);
+//        }
         if (reservation.getRoom().getCapacity() >= reservation.getReservationMembers().size()) {
 
             reservationMemberRepository.save(
@@ -265,9 +271,13 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다: " + code));
 
         ReservationMember reservationMember = reservationMemberRepository.findByReservationAndUser(reservation, user);
-
-        reservationMemberRepository.delete(reservationMember);
-        return new CustomResponseDto(200);
+        if (!reservationMember.isInvitor()){
+            reservationMemberRepository.delete(reservationMember);
+            return new CustomResponseDto(200);
+        }else {
+            log.info("예약 생성자는 참가 취소가 불가능합니다.");
+            return new CustomResponseDto(400);
+        }
     }
 
     // 강의실 체크인

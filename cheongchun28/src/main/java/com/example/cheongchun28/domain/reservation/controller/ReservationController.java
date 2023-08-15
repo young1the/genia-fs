@@ -30,7 +30,7 @@ public class ReservationController {
         log.info("reservation create, className: {}, auth: {}", createReservationDto.getRoomName(), auth.getUsername());
         CustomResponseDto reservation = reservationService.createReservation(auth, createReservationDto);
         if (reservation.getStatusCode() == 200) {
-            return ResponseEntity.ok(reservationService.createReservation(auth, createReservationDto));
+            return ResponseEntity.ok(reservation);
         } else {
             return ResponseEntity.badRequest().body(reservation);
         }
