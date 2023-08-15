@@ -5,6 +5,7 @@ import com.example.cheongchun28.domain.user.service.UserService;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +35,12 @@ public class UserController {
 
     //닉네임 중복 확인
     @PostMapping("/check-id/{nickName}")
-    public CustomResponseDto checkId(@PathVariable("nickName") String nickName) {
-        return userService.checkId(nickName);
+    public ResponseEntity<CustomResponseDto> checkId(@PathVariable("nickName") String nickName) {
+       if (userService.checkId(nickName)){
+           return ResponseEntity.ok(new CustomResponseDto(200));
+       }else {
+           return ResponseEntity.badRequest().body(new CustomResponseDto(400));
+       }
+
     }
 }

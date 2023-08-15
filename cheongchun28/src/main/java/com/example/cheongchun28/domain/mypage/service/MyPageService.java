@@ -5,6 +5,7 @@ import com.example.cheongchun28.domain.reservation.entity.Reservation;
 import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.domain.user.repository.UserRepository;
+import com.example.cheongchun28.domain.user.service.UserService;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import com.example.cheongchun28.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,20 +29,20 @@ public class MyPageService {
     private final ReservationRepository reservationRepository;
     private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
 
     @Transactional
     public CustomResponseDto changeMyInfo(User auth, MyPageDto.ChangeMyInfoRequestDto requestDto) throws SQLException {
         User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
-        User duplicateNickName = userRepository.findByNickName(requestDto.getNickName());
-        if (duplicateNickName == null) {
-            user.updateUser(requestDto);
-            userRepository.save(user);
-            return new CustomResponseDto(200);
-        } else {
-            log.info("닉네임 중복입니다.");
-            return new CustomResponseDto(400);
-        }
+       if (userService.checkId(requestDto.getNickName())){
+           user.updateUser(requestDto);
+           userRepository.save(user);
+           return new CustomResponseDto(200);
+       }else {
+           log.info("닉네임 중복입니다.");
+           return new CustomResponseDto(400);
+       }
     }
 
     public MyPageDto.getMyInfoResponseDto getMyInfo(HttpServletRequest httpServletRequest) throws SQLException {
