@@ -47,8 +47,13 @@ public class AdminController {
     }
 
     @DeleteMapping("/reservation")
-    public CustomResponseDto canselReservation(@RequestBody AdminDto.canselRequestDto requestDto) throws SQLException{
-        return adminService.canselReservation(requestDto);
+    public ResponseEntity<CustomResponseDto> cancelReservation(@RequestBody AdminDto.cancelRequestDto requestDto) {
+        CustomResponseDto cancelReservation = adminService.cancelReservation(requestDto);
+        if (cancelReservation.getStatusCode() == 200){
+            return ResponseEntity.ok(cancelReservation);
+        }else {
+            return ResponseEntity.badRequest().body(cancelReservation);
+        }
     }
 
 }

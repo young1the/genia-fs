@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,16 +91,19 @@ public class AdminService {
 
 
     @Transactional
-    public CustomResponseDto canselReservation(AdminDto.canselRequestDto requestDto) throws SQLException{
+    public CustomResponseDto cancelReservation(AdminDto.cancelRequestDto requestDto) {
         User user = userRepository.findByNickName(requestDto.getNickName());
 
-        ReservationMember member = reservationMemberRepository.findByStatusAndUser(false, user.getUserSequenceId()).orElseThrow(
-                () -> new SQLException("찾으시는 값이 없습니다.")
-        );
+        Optional<ReservationMember> member = reservationMemberRepository.findByStatusAndUser(false, user.getUserSequenceId());
 
-        reservationMemberRepository.delete(member);
-
-        return new CustomResponseDto(200);
+        if (!member.isPresent()) {
+            log.error("참여중인 예약내역이 없습니다");
+            return new CustomResponseDto(400);
+        } else {
+            log.info("선택한 회원의 예약내역을 삭제했습니다.");
+            member.ifPresent(reservationMemberRepository::delete);
+            return new CustomResponseDto(200);
+        }
     }
 
     public List<ReservationResponseDto.UserAllResponseDto> getAllUserInfo() {

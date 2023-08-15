@@ -32,7 +32,7 @@ public class AdminDto{
     }
 
     @Getter
-    public static class canselRequestDto {
+    public static class cancelRequestDto {
         private String nickName;
     }
 
