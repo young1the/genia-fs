@@ -1,0 +1,8 @@
+# database
+db
+
+# env files
+db.env
+front.env
+
+.DS_Store
