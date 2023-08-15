@@ -35,7 +35,7 @@ public class MyPageService {
     public CustomResponseDto changeMyInfo(User auth, MyPageDto.ChangeMyInfoRequestDto requestDto) throws SQLException {
         User user = userRepository.findByUserEmail(auth.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(auth.getUsername() + "를 찾을 수 없습니다."));
-       if (userService.checkId(requestDto.getNickName())){
+       if (user.getNickName().equals(requestDto.getNickName()) || userService.checkId(requestDto.getNickName())){
            user.updateUser(requestDto);
            userRepository.save(user);
            return new CustomResponseDto(200);
@@ -52,7 +52,7 @@ public class MyPageService {
         );
 
         log.info(user.getNickName());
-        return new MyPageDto.getMyInfoResponseDto(user.getUserEmail(), user.getNickName(), user.getProfileImage(), user.getEmpNumber());
+        return new MyPageDto.getMyInfoResponseDto(user.getUserEmail(), user.getNickName(), user.getProfileImage(), user.getEmpNumber(), user.isNotificationAgreement());
     }
 
     public CustomResponseDto changeMyPassword(MyPageDto.ChangeMyPasswordRequestDto requestDto, HttpServletRequest httpServletRequest) throws SQLException {
