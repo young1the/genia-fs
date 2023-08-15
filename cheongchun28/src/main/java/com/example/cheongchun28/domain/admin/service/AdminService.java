@@ -55,7 +55,6 @@ public class AdminService {
         );
 
         user.setNickName(requestDto.getNickName());
-        user.setEncodedPassword(bCryptPasswordEncoder.encode(requestDto.getPassword()));
         user.setEmpNumber(requestDto.getEmpNumber());
 
         userRepository.save(user);
