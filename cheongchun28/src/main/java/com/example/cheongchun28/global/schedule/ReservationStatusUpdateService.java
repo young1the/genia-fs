@@ -22,7 +22,7 @@ public class ReservationStatusUpdateService {
     private final ReservationRepository reservationRepository;
     private final ReservationMemberRepository reservationMemberRepository;
 
-    @Scheduled(cron = "0 10 * * * *")
+    @Scheduled(cron = "0 5 * * * *")
     @Transactional
     public void checkAndCompleteExpiredReservations() {
         log.info("종료된 예약 상태 변경 작업 시작");
@@ -31,6 +31,7 @@ public class ReservationStatusUpdateService {
         reservationRepository.findAll().stream()
                 .filter(reservation -> reservation.getStatus() != ReservationStatus.COMPLETED && currentTime.isAfter(reservation.getEndDate()))
                 .forEach(reservation -> {
+                    log.info("reservationCode:{}", reservation.getCode());
                     reservation.completeReservation();
                     List<ReservationMember> reservationMembers = reservation.getReservationMembers();
                     for (ReservationMember reservationMember: reservationMembers) {

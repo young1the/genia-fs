@@ -87,7 +87,6 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-
     public boolean isRoomAvailable(Room room, LocalDateTime startDate, LocalDateTime endDate) {
         List<Reservation> reservations = reservationRepository.findAllByRoom(room);
 

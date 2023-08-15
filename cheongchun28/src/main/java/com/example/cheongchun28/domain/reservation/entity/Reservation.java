@@ -67,10 +67,6 @@ public class Reservation {
     @Column(name = "RESERVATION_CODE", unique = true, nullable = false)
     private String code;
 
-//    public String generateCode() {
-//        return UUID.randomUUID().toString().replace("-", "");
-//    }
-
     private String createReservationCoder() {
         return RandomString.make(8);
     }
