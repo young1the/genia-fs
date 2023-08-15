@@ -1,3 +1,7 @@
+import PPTContainer from "@/components/ppt/PPTContainer";
+
 export default function Home() {
-  return <></>;
+  return <div>
+    <PPTContainer/>
+  </div>;
 }
