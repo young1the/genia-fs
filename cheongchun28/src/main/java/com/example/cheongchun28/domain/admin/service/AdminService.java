@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -66,12 +67,12 @@ public class AdminService {
         List<Reservation> reservations = reservationRepository.findAll();
         List<ReservationResponseDto.ReservationAllResponseDto> reservationAllResponseDto = new ArrayList<>();
         for (Reservation reservation : reservations) {
-            List<String> resUser = reservation.getRoom()
-                    .getReservations()
+           List<String> memberUser = reservation.getReservationMembers()
                     .stream()
                     .map(res -> res.getUser().getNickName())
                     .collect(Collectors.toList());
 
+            log.info("memberUser:{}", memberUser.size());
             ReservationResponseDto.ReservationAllResponseDto response = ReservationResponseDto.ReservationAllResponseDto
                     .builder()
                     .reservationCode(reservation.getCode())
@@ -79,7 +80,7 @@ public class AdminService {
                     .status(String.valueOf(reservation.getStatus()))
                     .nickName(reservation.getUser().getNickName())
                     .roomName(reservation.getRoom().getRoomName())
-                    .user(resUser)
+                    .user(memberUser)
                     .startDate(reservation.getStartDate())
                     .endDate(reservation.getEndDate())
                     .build();
@@ -89,6 +90,7 @@ public class AdminService {
     }
 
 
+    @Transactional
     public CustomResponseDto canselReservation(AdminDto.canselRequestDto requestDto) throws SQLException{
         User user = userRepository.findByNickName(requestDto.getNickName());
 
