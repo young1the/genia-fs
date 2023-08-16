@@ -3,22 +3,20 @@ package com.example.cheongchun28.domain.admin.service;
 import com.example.cheongchun28.domain.admin.dto.AdminDto;
 import com.example.cheongchun28.domain.reservation.dto.ReservationResponseDto;
 import com.example.cheongchun28.domain.reservation.entity.Reservation;
+import com.example.cheongchun28.domain.reservation.entity.ReservationStatus;
 import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
-import com.example.cheongchun28.domain.reservation.entity.ReservationMember;
-import com.example.cheongchun28.domain.reservation.repository.ReservationMemberRepository;
+import com.example.cheongchun28.domain.reservation.service.ReservationService;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.domain.user.repository.UserRepository;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,8 +26,7 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
-    private final ReservationMemberRepository reservationMemberRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ReservationService reservationService;
 
     public CustomResponseDto setPermission(AdminDto.setPermissionRequestDto requestDto) throws SQLException {
         User user = userRepository.findByUserEmail(requestDto.getEmail()).orElseThrow(
@@ -92,18 +89,14 @@ public class AdminService {
 
     @Transactional
     public CustomResponseDto cancelReservation(AdminDto.cancelRequestDto requestDto) {
-        User user = userRepository.findByNickName(requestDto.getNickName());
-
-        Optional<ReservationMember> member = reservationMemberRepository.findByStatusAndUser(false, user.getUserSequenceId());
-
-        if (!member.isPresent()) {
-            log.error("참여중인 예약내역이 없습니다");
+        Reservation reservation = reservationRepository.findByReservationCode(requestDto.getReservationCode());
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED){
+            log.error("선택한 회원의 진행중인 예약내역이 없습니다");
             return new CustomResponseDto(400);
-        } else {
-            log.info("선택한 회원의 예약내역을 삭제했습니다.");
-            member.ifPresent(reservationMemberRepository::delete);
-            return new CustomResponseDto(200);
         }
+        reservationService.deleteReservationAndMember(reservation);
+        log.info("선택한 회원의 예약내역을 취소했습니다.");
+        return new CustomResponseDto(200);
     }
 
     public List<ReservationResponseDto.UserAllResponseDto> getAllUserInfo() {
