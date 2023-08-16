@@ -7,10 +7,7 @@ import { checkInRoom, checkOutRoom, getRoomById } from "@/lib/api/room/method";
 import { Room, RoomId } from "@/lib/api/room/type";
 import LoginModal from "../common/modal/LoginModal";
 import { Suspense } from "react";
-import { ReservationButtonSkeleton } from "../reservation/ReservationButtonSkeleton";
 import ReservationInfoButton from "../reservation/ReservationInfoButton";
-import { Reservation } from "@/lib/api/reservation/type";
-import { getReservationData } from "@/lib/api/reservation/method";
 import { useModal } from "@/lib/modal";
 import Spinner from "../common/loader/Spinner";
 import ReservationTicket from "../reservation/ReservationTicket/ReservationTicket";
@@ -24,14 +21,6 @@ const RoomInfo = ({ id }: Props) => {
   const { data } = useQuery<Room>(["room", id], {
     queryFn: async () => getRoomById(id),
     suspense: true,
-  });
-  const { data: reservationData } = useQuery<Reservation>({
-    suspense: true,
-    queryKey: ["reservation", data?.reservationCode],
-    queryFn: () => {
-      return getReservationData(data?.reservationCode as any);
-    },
-    enabled: !!data,
   });
   const roomType = data ? getRoomType(data) : 0;
   const onCheckInHandler = async () => {
@@ -62,13 +51,11 @@ const RoomInfo = ({ id }: Props) => {
         })}
       </div>
       <TitleText title={"현재 진행중인 예약"} />
-      {data && data.reservationCode != ("" as any) ? (
-        <Suspense fallback={<ReservationButtonSkeleton />}>
-          <ReservationInfoButton
-            reservationData={reservationData}
-            onClickHandler={on}
-          />
-        </Suspense>
+      {data && data.reservationCode ? (
+        <ReservationInfoButton
+          reservationData={{ ...data } as any}
+          onClickHandler={on}
+        />
       ) : null}
       <div className='w-full flex space-x-4 justify-end'>
         <GreenButton title='입실' onClickHandler={onCheckInHandler} />

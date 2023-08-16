@@ -11,9 +11,6 @@ const ReservationTable = () => {
   });
   return (
     <div className='relative overflow-x-auto shadow-md sm:rounded-lg p-4'>
-      <div className='w-full flex justify-end items-center mb-4'>
-        <GreenButton title={"전체취소"} />
-      </div>
       <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
         <thead className='text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
           <tr>
