@@ -29,6 +29,7 @@ public class MyPageDto {
         private String nickName;
         private String profileImage;
         private String empNumber;
+        private boolean notificationAgreement;
     }
 
 

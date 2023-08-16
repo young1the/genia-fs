@@ -41,16 +41,4 @@ public class Room {
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private final List<Reservation> reservations = new ArrayList<>();
 
-
-    public boolean isRoomReserved(LocalDateTime startDate, LocalDateTime endDate) {
-        for (Reservation reservation : reservations) {
-            LocalDateTime reservationStartDate = reservation.getStartDate();
-            LocalDateTime reservationEndDate = reservation.getEndDate();
-            if (reservationStartDate.isBefore(endDate) && reservationEndDate.isAfter(startDate)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

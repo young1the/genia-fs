@@ -65,9 +65,5 @@ public class RoomResponseDto {
           this.reservationCode = reservationCode;
         }
 
-        private static boolean isReservationConfirmed(Reservation reservation) {
-            return reservation.getStatus() == ReservationStatus.CONFIRMED;
-        }
-
     }
 }

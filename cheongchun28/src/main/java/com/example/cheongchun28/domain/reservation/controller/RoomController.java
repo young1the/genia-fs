@@ -21,9 +21,10 @@ public class RoomController {
 
     private final RoomService roomService;
 
+    // 강의실 전체 조회
     @GetMapping()
     public ResponseEntity<List<RoomResponseDto.RoomGetResponseDto>> getAllRooms() {
-        List<RoomResponseDto.RoomGetResponseDto> RoomDto = roomService.getAllRooms(); // 서비스에서 DTO에 엔티티를 담는 작업 =
+        List<RoomResponseDto.RoomGetResponseDto> RoomDto = roomService.getAllRooms();
         return ResponseEntity.ok(RoomDto);
 
     }

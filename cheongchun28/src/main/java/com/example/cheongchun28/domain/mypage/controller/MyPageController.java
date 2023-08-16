@@ -6,6 +6,7 @@ import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.global.common.dto.CustomResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,14 @@ public class MyPageController {
     private final MyPageService mypageService;
 
     @PutMapping
-    public CustomResponseDto changeMyInfo(@AuthenticationPrincipal User auth, @RequestBody MyPageDto.ChangeMyInfoRequestDto requestDto) throws SQLException {
+    public ResponseEntity<CustomResponseDto> changeMyInfo(@AuthenticationPrincipal User auth, @RequestBody MyPageDto.ChangeMyInfoRequestDto requestDto) throws SQLException {
         log.info("auth:{}, requestDto:{}", auth.getUsername(), requestDto);
-
-        return  mypageService.changeMyInfo(auth, requestDto);
+        CustomResponseDto customResponseDto = mypageService.changeMyInfo(auth, requestDto);
+        if (customResponseDto.getStatusCode() == 200){
+            return ResponseEntity.ok(customResponseDto);
+        }else {
+            return ResponseEntity.badRequest().body(customResponseDto);
+        }
     }
 
     @GetMapping

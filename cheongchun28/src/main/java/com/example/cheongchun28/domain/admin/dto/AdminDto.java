@@ -1,6 +1,5 @@
 package com.example.cheongchun28.domain.admin.dto;
 
-import com.example.cheongchun28.domain.user.entity.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +31,7 @@ public class AdminDto{
     }
 
     @Getter
-    public static class canselRequestDto {
+    public static class cancelRequestDto {
         private String nickName;
     }
 

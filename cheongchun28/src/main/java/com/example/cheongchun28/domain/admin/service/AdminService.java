@@ -13,10 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,7 +56,6 @@ public class AdminService {
         );
 
         user.setNickName(requestDto.getNickName());
-        user.setEncodedPassword(bCryptPasswordEncoder.encode(requestDto.getPassword()));
         user.setEmpNumber(requestDto.getEmpNumber());
 
         userRepository.save(user);
@@ -66,12 +67,12 @@ public class AdminService {
         List<Reservation> reservations = reservationRepository.findAll();
         List<ReservationResponseDto.ReservationAllResponseDto> reservationAllResponseDto = new ArrayList<>();
         for (Reservation reservation : reservations) {
-            List<String> resUser = reservation.getRoom()
-                    .getReservations()
+           List<String> memberUser = reservation.getReservationMembers()
                     .stream()
                     .map(res -> res.getUser().getNickName())
                     .collect(Collectors.toList());
 
+            log.info("memberUser:{}", memberUser.size());
             ReservationResponseDto.ReservationAllResponseDto response = ReservationResponseDto.ReservationAllResponseDto
                     .builder()
                     .reservationCode(reservation.getCode())
@@ -79,7 +80,7 @@ public class AdminService {
                     .status(String.valueOf(reservation.getStatus()))
                     .nickName(reservation.getUser().getNickName())
                     .roomName(reservation.getRoom().getRoomName())
-                    .user(resUser)
+                    .user(memberUser)
                     .startDate(reservation.getStartDate())
                     .endDate(reservation.getEndDate())
                     .build();
@@ -89,16 +90,20 @@ public class AdminService {
     }
 
 
-    public CustomResponseDto canselReservation(AdminDto.canselRequestDto requestDto) throws SQLException{
+    @Transactional
+    public CustomResponseDto cancelReservation(AdminDto.cancelRequestDto requestDto) {
         User user = userRepository.findByNickName(requestDto.getNickName());
 
-        ReservationMember member = reservationMemberRepository.findByStatusAndUser(false, user.getUserSequenceId()).orElseThrow(
-                () -> new SQLException("찾으시는 값이 없습니다.")
-        );
+        Optional<ReservationMember> member = reservationMemberRepository.findByStatusAndUser(false, user.getUserSequenceId());
 
-        reservationMemberRepository.delete(member);
-
-        return new CustomResponseDto(200);
+        if (!member.isPresent()) {
+            log.error("참여중인 예약내역이 없습니다");
+            return new CustomResponseDto(400);
+        } else {
+            log.info("선택한 회원의 예약내역을 삭제했습니다.");
+            member.ifPresent(reservationMemberRepository::delete);
+            return new CustomResponseDto(200);
+        }
     }
 
     public List<ReservationResponseDto.UserAllResponseDto> getAllUserInfo() {

@@ -48,12 +48,12 @@ public class UserService {
         return new UserDto.loginResponseDto(user.getNickName(), user.getProfileImage(), user.getRole());
     }
 
-    public CustomResponseDto checkId(String nickName) {
+    public boolean checkId(String nickName) {
         User user = userRepository.findByNickName(nickName);
         if (user == null) {
-            return new CustomResponseDto(200);
+            return true;
         } else {
-            return new CustomResponseDto(204);
+            return false;
         }
     }
 }

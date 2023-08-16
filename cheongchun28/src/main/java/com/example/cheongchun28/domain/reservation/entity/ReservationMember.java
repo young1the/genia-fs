@@ -52,10 +52,6 @@ public class ReservationMember {
         this.isInvitor = true;
     }
 
-    public void cancelReservationMember(){
-        this.status = true;
-    }
-
     public void completeReservationMember() {
         this.status = true;
     }
