@@ -2,6 +2,8 @@ package com.example.cheongchun28.domain.mypage.service;
 
 import com.example.cheongchun28.domain.mypage.dto.MyPageDto;
 import com.example.cheongchun28.domain.reservation.entity.Reservation;
+import com.example.cheongchun28.domain.reservation.entity.ReservationMember;
+import com.example.cheongchun28.domain.reservation.repository.ReservationMemberRepository;
 import com.example.cheongchun28.domain.reservation.repository.ReservationRepository;
 import com.example.cheongchun28.domain.user.entity.User;
 import com.example.cheongchun28.domain.user.repository.UserRepository;
@@ -27,6 +29,7 @@ public class MyPageService {
 
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
+    private final ReservationMemberRepository reservationMemberRepository;
     private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
@@ -73,19 +76,20 @@ public class MyPageService {
     }
 
     public List<MyPageDto.getMyReservationResponseDto> getMyReservation(User auth) {
-        List<Reservation> reservations = reservationRepository.findAllByUser(auth);
+//        List<Reservation> reservations = reservationRepository.findAllByUser(auth);
+        List<ReservationMember> reservationMembers = reservationMemberRepository.findByUser(auth);
         List<MyPageDto.getMyReservationResponseDto> responseDtos = new ArrayList<>();
 
-        if (reservations != null) {
-            for (Reservation reservation : reservations) {
+        if (reservationMembers != null) {
+            for (ReservationMember member : reservationMembers) {
                 MyPageDto.getMyReservationResponseDto responseDto = new MyPageDto.getMyReservationResponseDto();
-                responseDto.setRoomName(reservation.getRoom().getRoomName());
-                responseDto.setNickName(reservation.getUser().getNickName());
-                responseDto.setStartDate(reservation.getStartDate());
-                responseDto.setEndDate(reservation.getEndDate());
-                responseDto.setStatus(reservation.getStatus());
-                responseDto.setReservationCode(reservation.getCode());
-                responseDto.setTopic(reservation.getTopic());
+                responseDto.setRoomName(member.getReservation().getRoom().getRoomName());
+                responseDto.setNickName(member.getReservation().getUser().getNickName());
+                responseDto.setStartDate(member.getReservation().getStartDate());
+                responseDto.setEndDate(member.getReservation().getEndDate());
+                responseDto.setStatus(member.getReservation().getStatus());
+                responseDto.setReservationCode(member.getReservation().getCode());
+                responseDto.setTopic(member.getReservation().getTopic());
                 responseDtos.add(responseDto);
             }
         } else {
