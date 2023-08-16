@@ -267,6 +267,7 @@ public class ReservationService {
 
     }
 
+    @Transactional
     // 예약 참가 취소
     public CustomResponseDto joinCancelReservation(User auth, String code) {
         User user = userRepository.findByUserEmail(auth.getUsername())
