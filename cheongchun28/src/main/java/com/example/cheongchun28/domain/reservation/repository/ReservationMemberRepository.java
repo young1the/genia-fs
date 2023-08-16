@@ -28,7 +28,8 @@ public interface ReservationMemberRepository extends JpaRepository<ReservationMe
     @Query(value = "SELECT * FROM t_reservation_member r WHERE r.status = :status AND r.reservation_sequence_id = :reservationId", nativeQuery = true)
     List<ReservationMember> findByReservation(@Param("status") boolean status, @Param("reservationId") Long reservationId);
 
-    @Query(value = "SELECT * FROM t_reservation_member r WHERE r.status = :status AND r.user_sequence_id = :user_sequence_id", nativeQuery = true)
-    Optional<ReservationMember> findByStatusAndUser(@Param("status") boolean status, @Param("user_sequence_id") Long user_sequence_id);
+//    @Query(value = "SELECT * FROM t_reservation_member r WHERE r.status = :status AND r.user_sequence_id = :user_sequence_id", nativeQuery = true)
+//    Optional<ReservationMember> findByStatusAndUser(@Param("status") boolean status, @Param("user_sequence_id") Long user_sequence_id);
 
+    List<ReservationMember> findByUser(User user);
 }
