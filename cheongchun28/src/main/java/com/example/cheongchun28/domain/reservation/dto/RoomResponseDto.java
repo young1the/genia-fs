@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,15 +55,22 @@ public class RoomResponseDto {
         private boolean blackBoard;
         private boolean computer;
         private String reservationCode;
+        private String topic;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
 
         @Builder
-        public RoomGetOneDto(Long roomId, String roomName, boolean beamProjector, boolean blackBoard, boolean computer, String reservationCode) {
+        public RoomGetOneDto(Long roomId, String roomName, boolean beamProjector, boolean blackBoard, boolean computer, String reservationCode,
+        String topic, LocalDateTime startDate, LocalDateTime endDate) {
           this.roomId = roomId;
           this.roomName = roomName;
           this.beamProjector = beamProjector;
           this.blackBoard = blackBoard;
           this.computer = computer;
           this.reservationCode = reservationCode;
+          this.topic = topic;
+          this.startDate = startDate;
+          this.endDate = endDate;
         }
 
     }

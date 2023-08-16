@@ -39,16 +39,31 @@ public class RoomService {
     public RoomResponseDto.RoomGetOneDto getRoomById(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("해당 Room이 없습니다. roomid: " + roomId));
         List<Reservation> reservations = room.getReservations();
-        String reservationCode = "";
+        LocalDateTime now = LocalDateTime.now();
         log.info("reservations:{}", reservations.size());
 
+        int count = 0;
+        Reservation findedReservation = null;
         for (Reservation reservation : reservations) {
-            if (reservation.getStatus() == ReservationStatus.CONFIRMED
-                    && LocalDateTime.now().isAfter(reservation.getStartDate())
-                    && LocalDateTime.now().isBefore(reservation.getEndDate())) {
-                reservationCode = reservation.getCode();
-                break;
+            if (reservation.getStatus() == ReservationStatus.CONFIRMED && now.isAfter(reservation.getStartDate()) && now.isBefore(reservation.getEndDate())) {
+                findedReservation = reservation;
+                count++;
             }
+            if (count >= 1) {
+                return RoomResponseDto.RoomGetOneDto.builder()
+                        .roomId(room.getId())
+                        .roomName(room.getRoomName())
+                        .beamProjector(room.isBeamProjector())
+                        .blackBoard(room.isBlackBoard())
+                        .computer(room.isComputer())
+                        .reservationCode(findedReservation.getCode())
+                        .topic(findedReservation.getTopic())
+                        .startDate(findedReservation.getStartDate())
+                        .endDate(findedReservation.getEndDate())
+                        .build();
+            }
+
+
         }
 
         return RoomResponseDto.RoomGetOneDto.builder()
@@ -57,7 +72,6 @@ public class RoomService {
                 .beamProjector(room.isBeamProjector())
                 .blackBoard(room.isBlackBoard())
                 .computer(room.isComputer())
-                .reservationCode(reservationCode)
                 .build();
     }
 
