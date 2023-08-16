@@ -3,8 +3,8 @@ import { ReservationCode } from "../reservation/type";
 export type Room = {
   id: string;
   roomName: string;
-  beamProject: number;
-  blackboard: number;
+  beamProjector: number;
+  blackBoard: number;
   computer: number;
   reservationCode: ReservationCode;
 };

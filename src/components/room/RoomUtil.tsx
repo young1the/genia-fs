@@ -12,10 +12,10 @@ type RoomOptionType = {
 };
 
 export const getRoomType = (roomData: Room) => {
-  const { beamProject, blackboard, computer } = roomData;
+  const { beamProjector, blackBoard, computer } = roomData;
   let type = 0;
-  if (beamProject > 0) type |= BEAM;
-  if (blackboard > 0) type |= BOARD;
+  if (beamProjector > 0) type |= BEAM;
+  if (blackBoard > 0) type |= BOARD;
   if (computer > 0) type |= DESKTOP;
   return type;
 };

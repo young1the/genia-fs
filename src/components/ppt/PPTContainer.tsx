@@ -124,31 +124,25 @@ const ProjectGoals = () => {
       <h2 className='text-3xl font-semibold mb-6'>프로젝트 목표</h2>
       <ul className='list-disc list-inside pl-8 text-xl'>
         <li className='list-none mb-2'>
-          사용자 친화적인 웹 애플리케이션 제작
+          {`로그인 (인증 및 사용자 관리 기능)`}
           <ul className='list-disc list-inside pl-8'>
-            <li>사용자의 니즈에 맞는 UI/UX 디자인 구현</li>
-            <li>높은 반응성과 사용 편의성 확보</li>
+            <li>단계별 회원가입</li>
           </ul>
         </li>
         <li className='list-none mb-2'>
-          기존 서비스의 단점 보완 및 추가 기능 구현
+          강의실 예약 서비스
           <ul className='list-disc list-inside pl-8'>
-            <li>성능 개선 및 버그 수정</li>
-            <li>새로운 기능 도입</li>
+            <li>티켓 형태의 디자인과 QR코드 지원</li>
+            <li>
+              사용자가 주제를 스스로 정하고 예약하는 방식을 통해 강의실 예약을
+              더 의미 있게
+            </li>
           </ul>
         </li>
         <li className='list-none mb-2'>
-          효율적인 데이터 관리와 보안 강화
+          관리자 페이지
           <ul className='list-disc list-inside pl-8'>
-            <li>데이터베이스 최적화</li>
-            <li>보안 취약점 보완</li>
-          </ul>
-        </li>
-        <li className='list-none mb-2'>
-          사용자 경험 개선
-          <ul className='list-disc list-inside pl-8'>
-            <li>높은 성능과 빠른 페이지 로딩</li>
-            <li>직관적인 사용자 인터페이스</li>
+            <li>구글 애널리틱스</li>
           </ul>
         </li>
       </ul>
@@ -179,16 +173,16 @@ const ProjectDuration = () => {
         <div className='w-2/3 flex items-center'>
           <div className='flex space-x-8'>
             <div className='text-center'>
-              <h3 className='text-xl font-semibold mb-2'>준비</h3>
-              <p>요구사항 정의 및 계획 수립</p>
+              <h3 className='text-xl font-semibold mb-2'>~6월 20일</h3>
+              <p>착수보고서</p>
             </div>
             <div className='text-center'>
-              <h3 className='text-xl font-semibold mb-2'>착수</h3>
-              <p>개발 및 디자인 작업 시작</p>
+              <h3 className='text-xl font-semibold mb-2'>~8월 10일</h3>
+              <p>프로젝트 마감 및 테스트 시작</p>
             </div>
             <div className='text-center'>
-              <h3 className='text-xl font-semibold mb-2'>테스트</h3>
-              <p>품질 검증 및 사용자 피드백 수집</p>
+              <h3 className='text-xl font-semibold mb-2'>~8월 17일</h3>
+              <p>프로젝트 최종발표</p>
             </div>
           </div>
         </div>

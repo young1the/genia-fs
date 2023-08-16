@@ -72,11 +72,7 @@ const RoomInfo = ({ id }: Props) => {
       ) : null}
       <div className='w-full flex space-x-4 justify-end'>
         <GreenButton title='입실' onClickHandler={onCheckInHandler} />
-        <GreenButton
-          title='퇴실'
-          isActive={false}
-          onClickHandler={onCheckOutHandler}
-        />
+        <GreenButton title='퇴실' onClickHandler={onCheckOutHandler} />
       </div>
       {data?.reservationCode ? (
         <ModalBackDrop state={state} off={off}>
