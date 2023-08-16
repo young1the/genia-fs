@@ -29,7 +29,6 @@ const authOptions = {
             }),
           }
         );
-        console.log(credentials?.email, credentials?.password);
         const user = await res.json();
         if (res.ok && user) {
           return {
