@@ -12,7 +12,9 @@ const ReservationRow = ({ reservationData }: Props) => {
     toast.promise(
       new Promise(async (resolve, reject) => {
         try {
-          await cancelReservation({ nickName: reservationData.nickName });
+          await cancelReservation({
+            reservationCode: reservationData.reservationCode,
+          });
           resolve(true);
         } catch (e) {
           reject(e);

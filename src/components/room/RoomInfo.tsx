@@ -14,7 +14,7 @@ import { getReservationData } from "@/lib/api/reservation/method";
 import { useModal } from "@/lib/modal";
 import Spinner from "../common/loader/Spinner";
 import ReservationTicket from "../reservation/ReservationTicket/ReservationTicket";
-
+import QRCode from "react-qr-code";
 interface Props {
   id: RoomId;
 }
@@ -44,6 +44,10 @@ const RoomInfo = ({ id }: Props) => {
   return (
     <div className='flex flex-col justify-center w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 space-y-8 md:space-y-8 sm:p-8'>
       <TitleText title={data?.roomName ?? ""} />
+      <QRCode
+        value={`${process.env.NEXT_PUBLIC_BASE_URL}/room/${id}`}
+        size={200}
+      />
       <LoginModal keepOpen={true} />
       <div className='w-full gap-4 grid grid-cols-3 place-items-center'>
         {RoomType.map((ele) => {
