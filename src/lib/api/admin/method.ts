@@ -18,7 +18,7 @@ export const delUser = async (body: DelUser) => {
   return http.delete(`api/admin/user`, { data: body });
 };
 export const cancelReservation = async (
-  body: Pick<Reservation, "nickName">
+  body: Pick<Reservation, "reservationCode">
 ) => {
   return axiosInstance.delete(`/api/admin/reservation`, { data: body });
 };
