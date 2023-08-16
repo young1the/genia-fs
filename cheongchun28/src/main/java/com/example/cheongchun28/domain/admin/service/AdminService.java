@@ -89,18 +89,14 @@ public class AdminService {
 
     @Transactional
     public CustomResponseDto cancelReservation(AdminDto.cancelRequestDto requestDto) {
-        User user = userRepository.findByNickName(requestDto.getNickName());
-
-        List<Reservation> userReservations = user.getReservations();
-        for (Reservation reservation : userReservations){
-            if (reservation.getStatus() == ReservationStatus.CONFIRMED){
-                reservationService.deleteReservationAndMember(reservation);
-                log.info("선택한 회원의 예약내역을 취소했습니다.");
-                return new CustomResponseDto(200);
-            }
-        }
-            log.error("선택한 회왼의 진행중인 예약내역이 없습니다");
+        Reservation reservation = reservationRepository.findByReservationCode(requestDto.getReservationCode());
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED){
+            log.error("선택한 회원의 진행중인 예약내역이 없습니다");
             return new CustomResponseDto(400);
+        }
+        reservationService.deleteReservationAndMember(reservation);
+        log.info("선택한 회원의 예약내역을 취소했습니다.");
+        return new CustomResponseDto(200);
     }
 
     public List<ReservationResponseDto.UserAllResponseDto> getAllUserInfo() {
