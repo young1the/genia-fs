@@ -209,8 +209,8 @@ const ImplementationProcess = () => {
     <div className='w-full m-20 p-8'>
       <Image
         priority={false}
-        src={"/teamlogo.png"}
-        alt={"team logo"}
+        src={"/process.png"}
+        alt={"process"}
         fill={true}
       />
     </div>
