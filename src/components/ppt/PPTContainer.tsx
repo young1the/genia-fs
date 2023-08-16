@@ -193,12 +193,13 @@ const ProjectDuration = () => {
 
 const UsedTechnologies = () => {
   return (
-    <div className='w-full m-20 p-8'>
+    <div className='w-full m-20 p-8 flex flex-col justify-center items-center'>
       <Image
         priority={false}
         src={"/techStack.png"}
         alt={"기술스택"}
-        fill={true}
+        width={1220}
+        height={602}
       />
     </div>
   );
@@ -206,12 +207,13 @@ const UsedTechnologies = () => {
 
 const ImplementationProcess = () => {
   return (
-    <div className='w-full m-20 p-8'>
+    <div className='w-full m-20 p-8 flex flex-col justify-center items-center'>
       <Image
         priority={false}
         src={"/process.png"}
         alt={"process"}
-        fill={true}
+        width={764}
+        height={330}
       />
     </div>
   );
