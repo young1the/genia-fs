@@ -1,6 +1,5 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import GreenButton from "../common/button/GreenButton";
 import ReservationRow from "./ReservationRow";
 import { getAdminReservations } from "@/lib/api/admin/method";
 import { Reservation } from "@/lib/api/reservation/type";
