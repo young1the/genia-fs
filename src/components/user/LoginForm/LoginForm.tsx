@@ -31,7 +31,7 @@ const LoginForm = () => {
       setEmail("");
       focus();
     } else {
-      router.replace("/");
+      router.back();
     }
   };
 

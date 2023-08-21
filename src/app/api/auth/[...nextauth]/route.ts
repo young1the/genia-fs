@@ -48,6 +48,8 @@ const authOptions = {
   callbacks: {
     async jwt(params: any) {
       const { token, user } = params;
+      // console.log("jwt callback");
+      // console.log(user);
       if (user) {
         token.email = user.email;
         token.accessToken = user.accessToken;
