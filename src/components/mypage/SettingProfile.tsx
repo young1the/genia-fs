@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FileInput from "../common/input/FileInput";
+// import FileInput from "../common/input/FileInput";
 import Checkbox from "../common/input/Checkbox";
 import GreenButton from "../common/button/GreenButton";
 import Input from "../common/input/Input";
@@ -19,17 +19,18 @@ const SettingProfile = () => {
   const [notificationAgreement, setNotificationAgreement] = useState(
     data?.notificationAgreement ?? false
   );
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  // const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { mutate } = useMutation(
     async () =>
       toast.promise(
         new Promise(async (resolve, reject) => {
           try {
             const formData = new FormData();
-            if (selectedImage) {
-              formData.append("profileImage", selectedImage);
-            }
+            // if (selectedImage) {
+            //   formData.append("profileImage", selectedImage);
+            // }
             formData.append("nickName", userName);
+            formData.append("profileImage", "tempImage");
             formData.append("empNumber", empNumber);
             formData.append(
               "notificationAgreement",
@@ -56,12 +57,12 @@ const SettingProfile = () => {
   return (
     <>
       <div className='space-y-4 flex flex-col'>
-        <div className='flex justify-center'>
+        {/* <div className='flex justify-center'>
           <FileInput
             currentImage={selectedImage}
             setSelectedImage={setSelectedImage}
           />
-        </div>
+        </div> */}
         <div className='w-full flex items-center'>
           <div className='w-full flex flex-col space-y-4'>
             <label className='font-semibold text-gray-500 dark:text-gray-200'>

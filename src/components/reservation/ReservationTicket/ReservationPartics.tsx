@@ -2,10 +2,11 @@
 import React, { useMemo } from "react";
 
 interface Props {
-  partics: object;
+  partics: any[] | undefined;
+  owner: string;
 }
 
-const ReservationPartics = ({ partics }: Props) => {
+const ReservationPartics = ({ partics, owner }: Props) => {
   const colors = [
     "bg-amber-100",
     "bg-blue-100",
@@ -15,21 +16,29 @@ const ReservationPartics = ({ partics }: Props) => {
     "bg-purple-100",
     "bg-green-100",
   ];
-  const particArray = useMemo(() => partics ? Object.values(partics) : null, [partics]);
+  const particArray = useMemo(
+    () => (partics ? Object.values(partics) : null),
+    [partics]
+  );
   return (
     <div className='flex -space-x-4'>
       {particArray
         ? particArray
-            .filter((_, index) => index < 5)
+            .filter((user, index) => index < 5 && user != owner)
             .map((ele) => {
               const randomColor =
                 Math.floor(Math.random() * 100) % colors.length;
               return (
-                <div
-                  key={`partic${ele}`}
-                  className={`flex items-center justify-center w-10 h-10 border-2 border-white dark:border-gray-800  rounded-full ${colors[randomColor]}`}
-                >
-                  {ele.charAt(0)}
+                <div className='group' key={`partic${ele}`}>
+                  <div
+                    className={`flex items-center justify-center w-10 h-10 border-2 border-white dark:border-gray-800
+                  rounded-full ${colors[randomColor]}`}
+                  >
+                    {ele.charAt(0)}
+                  </div>
+                  <p className='hidden absolute group-hover:inline-block'>
+                    {ele}
+                  </p>
                 </div>
               );
             })

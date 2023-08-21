@@ -27,9 +27,12 @@ const ReservationControlPanel = ({ id }: Props) => {
   const { data } = useQuery(["reservation", id], {
     queryFn: async () => getReservationData(id),
   });
-  const { data: myReservationCode } = useQuery(["myReservationCode"], {
-    queryFn: getMyReservationId,
-  });
+  const { data: myReservationCode } = useQuery<ReservationCode>(
+    ["myReservationCode"],
+    {
+      queryFn: getMyReservationId,
+    }
+  );
   const { data: sessionData } = useSession();
   const { state, on, off, ModalBackDrop } = useModal({
     scrollLock: true,
@@ -47,16 +50,16 @@ const ReservationControlPanel = ({ id }: Props) => {
           <ReservationMemberPanel
             on={on}
             setModalType={setModalType}
-            isPart={myReservationCode === data?.reservationCode}
+            isPart={myReservationCode === id}
           />
         )}
       </div>
       {state ? (
-        <ModalBackDrop state={state} off={off}>
+        <ModalBackDrop state={state} off={() => {}}>
           <ReservationModal
             off={off}
             modalType={modalType as any}
-            reservationData={{ ...data } as any}
+            reservationData={{ ...data, ["reservationCode"]: id } as any}
           />
         </ModalBackDrop>
       ) : null}

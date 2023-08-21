@@ -3,18 +3,15 @@ import { Suspense, useState } from "react";
 import TitleText from "../common/text/TitleText";
 import { useQuery } from "@tanstack/react-query";
 import { getAllReservations } from "@/lib/api/reservation/method";
-import { Reservation } from "@/lib/api/reservation/type";
+import { Reservation, ReservationState } from "@/lib/api/reservation/type";
 import ReservationInfoButton from "../reservation/ReservationInfoButton";
 import { useModal } from "@/lib/modal";
 import Spinner from "../common/loader/Spinner";
 import ReservationTicket from "../reservation/ReservationTicket/ReservationTicket";
 
-const 진행중 = 1;
-const 완료 = 0;
-const 취소 = 2;
-
 const ReservationHistory = () => {
-  const [historyFilter, setHistoryFilter] = useState(진행중);
+  const [historyFilter, setHistoryFilter] =
+    useState<ReservationState>("CONFIRMED");
   const [selected, setSelected] = useState<string>();
   const { state, on, off, ModalBackDrop } = useModal();
   const { data } = useQuery<Reservation[]>(["allReservations"], {
@@ -27,12 +24,12 @@ const ReservationHistory = () => {
         <li
           className='w-full'
           onClick={() => {
-            setHistoryFilter(진행중);
+            setHistoryFilter("CONFIRMED");
           }}
         >
           <span
             className={`inline-block w-full p-4 ${
-              historyFilter == 진행중
+              historyFilter == "CONFIRMED"
                 ? "text-white bg-primary"
                 : "bg-white hover:text-primary"
             } rounded-l-lg dark:bg-gray-700 dark:text-white`}
@@ -43,12 +40,12 @@ const ReservationHistory = () => {
         <li
           className='w-full'
           onClick={() => {
-            setHistoryFilter(완료);
+            setHistoryFilter("COMPLETED");
           }}
         >
           <span
             className={`inline-block w-full p-4 ${
-              historyFilter == 완료
+              historyFilter == "COMPLETED"
                 ? "text-white bg-primary"
                 : "bg-white hover:text-primary"
             } dark:bg-gray-700 dark:text-white`}
@@ -59,12 +56,12 @@ const ReservationHistory = () => {
         <li
           className='w-full'
           onClick={() => {
-            setHistoryFilter(취소);
+            setHistoryFilter("CANCELLED");
           }}
         >
           <span
             className={`inline-block w-full p-4 ${
-              historyFilter == 취소
+              historyFilter == "CANCELLED"
                 ? "text-white bg-primary"
                 : "bg-white hover:text-primary"
             } rounded-r-lg dark:bg-gray-700 dark:text-white`}
@@ -75,17 +72,19 @@ const ReservationHistory = () => {
       </ul>
       {data
         ? data
-            .filter((ele) => ele.reservationState == historyFilter)
+            .filter((ele) => ele.status == historyFilter)
             .map((ele) => {
-              return (<ReservationInfoButton
-                key={ele.reservationCode}
-                reservationData={ele}
-                onClickHandler={() => {
-                  setSelected(ele.reservationCode);
-                  on();
-                }}
-              />)
-              })
+              return (
+                <ReservationInfoButton
+                  key={ele.reservationCode}
+                  reservationData={ele}
+                  onClickHandler={() => {
+                    setSelected(ele.reservationCode);
+                    on();
+                  }}
+                />
+              );
+            })
         : null}
       {state ? (
         <ModalBackDrop state={state} off={off}>

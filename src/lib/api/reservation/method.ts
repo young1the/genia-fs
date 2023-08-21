@@ -1,5 +1,10 @@
 import { http } from "../axios";
-import { ReservaionNew, ReservationCode, Reservation } from "./type";
+import {
+  ReservaionNew,
+  ReservationCode,
+  Reservation,
+  ReservationPut,
+} from "./type";
 import * as URL from "./url";
 
 export const newReservation = async (body: ReservaionNew) => {
@@ -9,44 +14,38 @@ export const newReservation = async (body: ReservaionNew) => {
 export const getMyReservationId = async () => {
   try {
     const response = await http.get<ReservationCode>(URL.getMyReservationIdURL);
-    return response.reservationCode;
+    return response.reservationCode as any;
   } catch (error) {
     return "";
   }
 };
 
-export const getReservationData = async (
-  id: ReservationCode
-) => {
+export const getReservationData = async (id: ReservationCode) => {
   return http.get<Reservation>(`/api/reservation/${id}`);
 };
 
-export const modifyReservationData = async (
-  id: ReservationCode,
-  topic: Pick<Reservation, 'topic'>
-) => {
-  return http.put(`/api/reservation/${id}`, {topic});
-}
+export const modifyReservationData = async (body: ReservationPut) => {
+  const { topic, roomName, startDate, endDate, reservationCode } = body;
+  return http.put(`/api/reservation/${reservationCode}`, {
+    topic,
+    roomName,
+    startDate,
+    endDate,
+  });
+};
 
-export const deleteReservationData = async (
-  id: ReservationCode
-) => {
+export const deleteReservationData = async (id: ReservationCode) => {
   return http.delete(`/api/reservation/${id}`);
-}
+};
 
-export const entrantReservation = async (
-  id: ReservationCode
-) => {
+export const entrantReservation = async (id: ReservationCode) => {
   return http.post(`/api/reservation/entrant/${id}`);
-}
+};
 
-export const deEntrantReservation = async (
-  id: ReservationCode
-) => {
+export const deEntrantReservation = async (id: ReservationCode) => {
   return http.delete(`/api/reservation/entrant/${id}`);
-}
+};
 
-export const getAllReservations = async (
-) => {
+export const getAllReservations = async () => {
   return http.get(`api/mypage/reservation`);
-}
+};

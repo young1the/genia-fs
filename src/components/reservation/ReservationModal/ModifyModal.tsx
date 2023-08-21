@@ -9,13 +9,17 @@ import { modifyReservationData } from "@/lib/api/reservation/method";
 import toast from "react-hot-toast";
 
 const ModifyModal = ({ reservationData, off }: ModalProps) => {
-  const [newTopic, setNewTopic] = useState("");
+  const [newTopic, setNewTopic] = useState(reservationData.topic);
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     async () => {
       return toast.promise(
-        modifyReservationData(reservationData.reservationCode as any, {
+        modifyReservationData({
+          reservationCode: reservationData.reservationCode,
           topic: newTopic,
+          roomName: reservationData.roomName,
+          startDate: reservationData.startDate,
+          endDate: reservationData.endDate,
         }),
         {
           loading: "기다려주세요...",

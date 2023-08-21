@@ -16,8 +16,9 @@ const LoginForm = () => {
   const [isError, setIsError] = useState(false);
   const { focusElement, focus } = useFocus<HTMLInputElement>();
   const router = useRouter();
-  const loginButtonHandler = async (event: React.FormEvent) => {
+  const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (email === "" || password === "") return;
     const response = await signIn("credentials", {
       email,
       password,
@@ -42,7 +43,10 @@ const LoginForm = () => {
           아이디 또는 비밀번호가 올바르지 않습니다.
         </p>
       ) : null}
-      <form className='flex flex-col justify-center space-y-4 md:space-y-6'>
+      <form
+        onSubmit={submitHandler}
+        className='flex flex-col justify-center space-y-4 md:space-y-6'
+      >
         <Input
           state={[email, setEmail]}
           placeholder='이메일을 입력해주세요'
@@ -54,7 +58,7 @@ const LoginForm = () => {
           isActive={!!email && !!password}
           type='submit'
           title='로그인'
-          onClickHandler={loginButtonHandler}
+          onClickHandler={submitHandler}
         />
         <p className='text-sm font-light text-gray-500 dark:text-gray-400 text-center'>
           <Link

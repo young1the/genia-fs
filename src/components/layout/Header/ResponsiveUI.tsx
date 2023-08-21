@@ -1,16 +1,20 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { UserStatus } from "@/lib/link/types";
+import { LinkUserStatus } from "@/lib/link/types";
 import OnlyDesktop from "./desktopUI/OnlyDesktop";
 import OnlyMobile from "./mobileUI/OnlyMobile";
 
 export interface UIProps {
-  status: UserStatus;
+  status: LinkUserStatus;
 }
 
 const ResponsiveUI = () => {
-  const { status } = useSession();
+  const { status: authStatus, data } = useSession();
+  const status =
+    data?.user.role === "MANAGER" || data?.user.role === "ADMIN"
+      ? "admin"
+      : authStatus;
   return (
     <>
       <OnlyDesktop status={status} />

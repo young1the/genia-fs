@@ -1,6 +1,6 @@
 import { OmitId } from "../../../types/utils";
 
-export type UserRole = "MANAGER" | "EMPLOYEE" | "USER";
+export type UserRole = "MANAGER" | "EMPLOYEE" | "USER" | "ADMIN";
 export interface User {
   email: string;
   password: string;
@@ -13,7 +13,11 @@ export interface User {
 export interface SignUp extends Omit<User, "role"> {
   confirmCode: string;
 }
-export interface SignUpBody extends Omit<User, "confirmCode"> {}
+export interface SignUpBody extends Omit<User, "confirmCode" | "role"> {
+  profileImage: string;
+}
+
+export interface CheckNickName extends Pick<User, "nickName"> {}
 
 export interface SendEmail extends Pick<User, "email"> {}
 export interface SendEmailBody extends OmitId<SendEmail> {}

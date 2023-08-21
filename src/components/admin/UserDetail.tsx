@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import GreenButton from "../common/button/GreenButton";
 import { User, UserRole } from "@/lib/api/user/type";
-import { permissionUser, putUser } from "@/lib/api/admin/method";
+import { delUser, permissionUser, putUser } from "@/lib/api/admin/method";
 import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -12,18 +12,27 @@ interface Props {
 
 const UserDetail = ({ userData, off }: Props) => {
   const [nickName, setNickName] = useState(userData?.nickName ?? "");
-  const [profileImage, setProfileImage] = useState("유지");
+  // const [profileImage, setProfileImage] = useState("유지");
   const [role, setRole] = useState<UserRole>(userData?.role ?? "USER");
   const [empNumber, setEmpNumber] = useState(userData?.empNumber ?? "");
   const queryClient = useQueryClient();
   const onClickHandler = async () => {
-    toast.promise(
+    await toast.promise(
       new Promise(async (resolve, reject) => {
         try {
-          await putUser({ nickName, email: userData?.email ?? "", empNumber });
+          if (
+            (nickName != userData?.nickName ?? "") ||
+            (empNumber != userData?.empNumber ?? "")
+          )
+            await putUser({
+              nickName,
+              email: userData?.email ?? "",
+              empNumber,
+            });
           if (role != userData?.role) {
             await permissionUser({ email: userData?.email ?? "", role });
           }
+          queryClient.invalidateQueries(["admin", "users"]);
           resolve(true);
         } catch (e) {
           reject(e);
@@ -35,9 +44,28 @@ const UserDetail = ({ userData, off }: Props) => {
         error: "Error",
       }
     );
-    queryClient.invalidateQueries(["admin", "users"]);
     off();
   };
+  const onDeleteClickHandler = async () => {
+    await toast.promise(
+      new Promise(async (resolve, reject) => {
+        try {
+          await delUser({ email: userData?.email ?? "" });
+          queryClient.invalidateQueries(["admin", "users"]);
+          resolve(true);
+        } catch (e) {
+          reject(e);
+        }
+      }),
+      {
+        loading: "기다려주세요...",
+        success: "완료",
+        error: "Error",
+      }
+    );
+    off();
+  };
+
   return (
     <section className='bg-white dark:bg-gray-900 rounded-md'>
       <form className='px-8 py-4 mx-auto max-w-2xl lg:py-16'>
@@ -68,7 +96,7 @@ const UserDetail = ({ userData, off }: Props) => {
             />
           </div>
           <div className='w-full'>
-            <label className='block mb-2 text-sm font-bold text-gray-900 dark:text-white'>
+            {/* <label className='block mb-2 text-sm font-bold text-gray-900 dark:text-white'>
               프로필사진
             </label>
             <select
@@ -78,7 +106,7 @@ const UserDetail = ({ userData, off }: Props) => {
             >
               <option value='유지'>유지</option>
               <option value='삭제'>삭제</option>
-            </select>
+            </select> */}
           </div>
           <div>
             <label className='block mb-2 text-sm font-bold text-gray-900 dark:text-white'>
@@ -107,7 +135,7 @@ const UserDetail = ({ userData, off }: Props) => {
           </div>
           <div className='col-span-2 justify-self-end'>
             <button
-              onClick={() => {}}
+              onClick={onDeleteClickHandler}
               type='button'
               className='text-white bg-red-500 hover:bg-red-500 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2'
             >

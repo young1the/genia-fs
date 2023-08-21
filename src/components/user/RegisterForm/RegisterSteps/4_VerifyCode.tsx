@@ -1,18 +1,18 @@
 "use client";
 import { useState } from "react";
 import useFocus from "@/hooks/useFocus";
-import * as API from "@/lib/api";
 import GreenButton from "@/components/common/button/GreenButton";
 import Input from "@/components/common/input/Input";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 import { useRegisterStep } from "@/store/Register/hooks";
+import { verifyCode } from "@/lib/api/user/method";
 
 const VerifyCode = () => {
   const [codeInput, setCodeInput] = useState("");
   const { focusElement, focus } = useFocus<HTMLInputElement>();
   const { nextStep, isError, userInput, setUserInput } = useRegisterStep({
     api: async () => {
-      return API.methods.verifyCode({
+      return verifyCode({
         email: userInput["email"],
         confirmCode: codeInput,
       });

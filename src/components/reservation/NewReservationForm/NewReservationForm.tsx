@@ -39,8 +39,8 @@ const NewReservationForm = () => {
     if (isDone) {
       const roomName = reservationInputs.ROOM;
       const topic = reservationInputs.TITLE;
-      const times = reservationInputs.TIME.split(" ");
       const date = reservationInputs.DATE;
+      const times = reservationInputs.TIME.split(" ");
       const startDate = `${date}T${times[0]}.000000`;
       const endDate = `${date}T${times[1]}.000000`;
       const body = { roomName, topic, startDate, endDate };
@@ -71,12 +71,12 @@ const NewReservationForm = () => {
   return (
     <div
       className='flex flex-col justify-center w-full
-  bg-white rounded-lg shadow dark:border
+    bg-white rounded-lg shadow dark:border
       md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700
       p-6 space-y-8 sm:p-8'
     >
       <IconContainer />
-      <form className='flex flex-col space-y-8'>
+      <form className='flex flex-col space-y-8' onSubmit={onClickHandler}>
         {reservationSteps[currentKey]}
         <GreenButton
           type='submit'

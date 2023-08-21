@@ -1,18 +1,27 @@
 "use client";
 import React, { useState } from "react";
 import useFocus from "@/hooks/useFocus";
-import * as API from "@/lib/api";
 import GreenButton from "@/components/common/button/GreenButton";
 import Input from "@/components/common/input/Input";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 import { useRegisterStep } from "@/store/Register/hooks";
+import { register } from "@/lib/api/user/method";
 
 const EmployeeNumber = () => {
   const [empNumberInput, setEmpNumberInput] = useState("");
   const { focusElement } = useFocus<HTMLInputElement>();
   const { nextStep, userInput, setUserInput } = useRegisterStep({
     api: async () => {
-      return API.methods.register({ ...userInput, ["profileImage"]: "" });
+      const { nickName, password, email, notificationAgreement, empNumber } =
+        userInput;
+      return register({
+        nickName,
+        password,
+        email,
+        notificationAgreement,
+        empNumber,
+        profileImage: "temp",
+      });
     },
     errorCallback: () => {
       focus();

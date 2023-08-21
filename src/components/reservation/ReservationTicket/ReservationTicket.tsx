@@ -35,6 +35,7 @@ const ReservationTicket = ({ id, isInModal = false }: Props) => {
     const now = new Date();
     const diff = start.getTime() - now.getTime();
     if (diff <= 0) {
+      if (end.getTime() - now.getTime() >= 0) return "예약진행중";
       return "예약종료";
     }
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -98,7 +99,10 @@ const ReservationTicket = ({ id, isInModal = false }: Props) => {
         </div>
         <div className='flex flex-col font-bold'>
           <span className='font-light'>참가자</span>
-          <ReservationPartics partics={data?.particName} />
+          <ReservationPartics
+            partics={data?.user}
+            owner={data?.nickName + ""}
+          />
         </div>
       </div>
       <div className='bg-white flex-1 p-8 flex flex-col gap-4 md:justify-between'>

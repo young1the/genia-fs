@@ -31,9 +31,6 @@ const UserTable = () => {
       <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
         <thead className='text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
           <tr>
-            <th className='p-4'>
-              <div className='flex items-center'></div>
-            </th>
             <th className='px-6 py-3'>유저</th>
             <th className='px-6 py-3'>권한</th>
             <th className='px-6 py-3'>마케팅 수신</th>

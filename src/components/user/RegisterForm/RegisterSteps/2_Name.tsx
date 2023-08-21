@@ -5,11 +5,20 @@ import Input from "@/components/common/input/Input";
 import GreenButton from "@/components/common/button/GreenButton";
 import KeywordHighlight from "@/components/common/text/KeywordHighlight";
 import { useRegisterStep } from "@/store/Register/hooks";
+import { checkNickName } from "@/lib/api/user/method";
 
 const Name = () => {
   const [nameInput, setNameInput] = useState("");
   const { focusElement } = useFocus<HTMLInputElement>();
-  const { nextStep, setUserInput } = useRegisterStep();
+  const { nextStep, isError, setUserInput } = useRegisterStep({
+    api: async () => {
+      return checkNickName({ nickName: nameInput });
+    },
+    errorCallback: () => {
+      focus();
+      setNameInput("");
+    },
+  });
   const isActive = !!nameInput;
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +40,9 @@ const Name = () => {
         ref={focusElement}
         state={[nameInput, setNameInput]}
       />
+      {!nameInput && isError ? (
+        <p className='text-red-600 absolute -bottom-7'>닉네임이 중복입니다.</p>
+      ) : null}
       <GreenButton title='다음' type='submit' isActive={isActive} />
     </form>
   );

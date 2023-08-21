@@ -20,7 +20,7 @@ const SignOutBox = () => {
         onClickHandler={() => {
           unsetAccessTokenAttachedToAxiosDefaults();
           signOut({ redirect: false });
-          router.push("/");
+          router.replace("/user/login");
         }}
       />
     </div>

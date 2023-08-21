@@ -12,7 +12,7 @@ const options = {
   todayBtnText: "오늘",
   clearBtn: false,
   maxDate: new Date("2030-01-01"),
-  minDate: new Date("2023-07-07"),
+  minDate: new Date(),
   theme: {
     background: "",
     todayBtn: "bg-primary hover:bg-primary-hover",

@@ -25,6 +25,7 @@ const ApplyModal = ({ reservationData, off }: ModalProps) => {
           "reservation",
           reservationData.reservationCode,
         ]);
+        queryClient.invalidateQueries(["myReservationCode"]);
       },
     }
   );

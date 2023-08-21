@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import GoogleProvider from "next-auth/providers/google";
-import * as API from "@/lib/api";
 
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
@@ -17,10 +16,8 @@ const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // console.log("authorize callback");
         const res = await fetch(
-          (process.env.NEXT_PUBLIC_API_SERVER as string) +
-            API.constants.URL["LOGIN"],
+          process.env.NEXT_PUBLIC_API_SERVER + `/api/user/login`,
           {
             method: "POST",
             headers: {
@@ -58,16 +55,17 @@ const authOptions = {
         token.accessToken = user.accessToken;
         token.nickName = user.nickName;
         token.profileImage = user.profileImage;
+        token.role = user.role;
       }
       return token;
     },
     async session(params: any) {
-      // console.log("session callback");
       const { session, token } = params;
       session.user.email = token.email;
       session.user.nickName = token.nickName;
       session.user.profileImage = token.profileImage;
       session.user.accessToken = token.accessToken;
+      session.user.role = token.role;
       return session;
     },
   },

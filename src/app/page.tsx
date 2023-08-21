@@ -1,9 +1,9 @@
-import Test from "@/components/Test";
+import PPTContainer from "@/components/ppt/PPTContainer";
 
 export default function Home() {
   return (
     <div>
-      <Test></Test>
+      <PPTContainer />
     </div>
   );
 }
