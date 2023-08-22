@@ -27,12 +27,12 @@ fclean: clean
 re: fclean all
 
 front:
+	docker stop ${FRONT_IMAGE}-1
 	docker rmi -f ${FRONT_IMAGE}
 	rm -f ${FRONT_SRC_DIR}/.env
-	docker stop ${FRONT_IMAGE}-1
 back:
-	docker rmi -f ${BACK_NAME}
 	docker stop ${BACK_NAME}-1
+	docker rmi -f ${BACK_NAME}
 full: front back
 
 prune: 
