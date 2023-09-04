@@ -3,6 +3,25 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
         layout:decorate="~{layout/layout}">
 <main layout:fragment="content">
+    <div th:if="${first == 'true'}">
+        <script type="text/javascript">
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                timer: 3000,
+                showConfirmButton: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: "success",
+                title: "가입을 축하 드립니다!",
+            })
+        </script>
+    </div>
+
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-4">

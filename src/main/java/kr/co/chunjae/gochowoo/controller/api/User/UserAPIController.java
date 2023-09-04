@@ -28,7 +28,7 @@ public class UserAPIController {
                 .nickName(nickName)
                 .build());
         if (join == null) return "redirect:/user/join";
-        return "redirect:/user/login";
+        return "redirect:/user/login?first=true";
     }
 
     @PostMapping("/login")

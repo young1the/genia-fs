@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 
     @GetMapping("/login")
-    public String showLoginPage(@RequestParam(required = false) String callback, Model model) {
+    public String showLoginPage(@RequestParam(required = false) String callback, @RequestParam(required = false) String first, Model model) {
         if (callback != null && !callback.isEmpty()) {
             model.addAttribute("callback",callback);
+        }
+        if (first != null && !first.isEmpty()) {
+            model.addAttribute("first",first);
         }
         return "views/user/login";
     }

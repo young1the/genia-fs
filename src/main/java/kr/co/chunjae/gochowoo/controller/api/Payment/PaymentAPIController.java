@@ -14,6 +14,7 @@ import kr.co.chunjae.gochowoo.service.cart.PokemonCartService;
 import kr.co.chunjae.gochowoo.service.order.PurchaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +32,7 @@ public class PaymentAPIController {
     private final PokemonCartService pokemonCartService;
     private final ItemCartService itemCartService;
     private final PurchaseService.OrderService orderService;
-
+    @Transactional
     @PostMapping("/payment")
     public String buy(HttpSession session, @RequestParam Long address) {
         User user = (User) session.getAttribute("user");
