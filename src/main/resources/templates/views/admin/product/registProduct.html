@@ -136,6 +136,25 @@
             }
         });
 
+        uploadButton.onchange = () => {
+            const files = uploadButton.files;
+
+            if (files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    chosenImage.setAttribute("src", reader.result);
+                }
+                fileName.textContent = file.name;
+                uploadButton.files = files;
+
+                $('#upload').hide();
+                $('#cancel').show();
+            }
+        };
+
         const clearFile = () => {
             uploadButton.value = "";
             chosenImage.setAttribute("src", "");
