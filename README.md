@@ -1,4 +1,4 @@
-# 천재교육 디지털러닝팀 웹사이트 강의실 예약서비스 및 인증 및 사용자 관리 기능 개발 (청춘28)
+# 강의실 예약서비스 및 인증 및 사용자 관리 기능 개발 (청춘28)
 <img src="https://github.com/28chungchun/chungchun-builder/assets/86599495/9aa47881-dc35-41d2-addf-00d851f551a4" width="200" height="200"/>
 
 ## ⌛ 기간
