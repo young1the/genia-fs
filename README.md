@@ -5,6 +5,9 @@
 
 2023/06/20~2023/08/17
 
+## 🪢 프로젝트 구조
+![fe](https://github.com/28chungchun/chungchun28/assets/86599495/532eaa80-02a7-41b4-939f-b3f562c4cd9c)
+
 ## ⚡️ 사용한 기술
 
 ### 프론트엔드
@@ -45,15 +48,6 @@
 3-2. 유저관리
 
 3-3. 예약관리
-
-
-## 🐣 Members
-
-
-|                                              조영일                                              |                                             김규민                                              |                                             임성현                                              |                                             최세진                                              |                                             우장희                                              |                                             안지현                                              |                                             이명철                                              |설예진|
-| :----------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |:---------------------------------------------------------------------------------------------: |:---------------------------------------------------------------------------------------------: |:---------------------------------------------------------------------------------------------: |
-|<img src="https://avatars.githubusercontent.com/u/86599495?v=4" width="100" height="100"/>       | <img src="https://avatars.githubusercontent.com/u/106909332?v=4" width="100" height="100"/>     |  <img src="https://avatars.githubusercontent.com/u/132827203?v=4" width="100" height="100"/> | <img src="https://avatars.githubusercontent.com/u/136671151?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/136553440?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/136677360?v=4" width="100" height="100"/>| <img src="https://avatars.githubusercontent.com/u/136779345?v=4" width="100" height="100"/>| <img src="https://avatars.githubusercontent.com/u/72060838?v=4" width="100" height="100"/>|
-|                           [young1the](https://github.com/young1the)                              |                            [starMinK](https://github.com/starMinK)                            |                             [dlraud3](https://github.com/dlraud3)                          |                               [sejiniyam](https://github.com/sejiniyam)          |                               [jangheeda](https://github.com/jangheeda)         |   [jhreposi](https://github.com/jhreposi) | [MyungChulEE](https://github.com/MyungChulEE)| [yejin-s](https://github.com/yejin-s)|
 
 ## 🖥 Demo
 
@@ -113,8 +107,14 @@
 |-|
 |![admin_reservation](https://github.com/28chungchun/chungchun28/assets/86599495/4c952351-870e-4ebb-8b77-8a7193073323)|
 
-## 🪢 프로젝트 구조
-![fe](https://github.com/28chungchun/chungchun28/assets/86599495/532eaa80-02a7-41b4-939f-b3f562c4cd9c)
+## 🐣 Members
+
+
+|                                              조영일                                              |                                             김규민                                              |                                             임성현                                              |                                             최세진                                              |                                             우장희                                              |                                             안지현                                              |                                             이명철                                              |설예진|
+| :----------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |:---------------------------------------------------------------------------------------------: |:---------------------------------------------------------------------------------------------: |:---------------------------------------------------------------------------------------------: |
+|<img src="https://avatars.githubusercontent.com/u/86599495?v=4" width="100" height="100"/>       | <img src="https://avatars.githubusercontent.com/u/106909332?v=4" width="100" height="100"/>     |  <img src="https://avatars.githubusercontent.com/u/132827203?v=4" width="100" height="100"/> | <img src="https://avatars.githubusercontent.com/u/136671151?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/136553440?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/136677360?v=4" width="100" height="100"/>| <img src="https://avatars.githubusercontent.com/u/136779345?v=4" width="100" height="100"/>| <img src="https://avatars.githubusercontent.com/u/72060838?v=4" width="100" height="100"/>|
+|                           [young1the](https://github.com/young1the)                              |                            [starMinK](https://github.com/starMinK)                            |                             [dlraud3](https://github.com/dlraud3)                          |                               [sejiniyam](https://github.com/sejiniyam)          |                               [jangheeda](https://github.com/jangheeda)         |   [jhreposi](https://github.com/jhreposi) | [MyungChulEE](https://github.com/MyungChulEE)| [yejin-s](https://github.com/yejin-s)|
+
 
 ## 🙇‍♂️ 감사합니다.
 #### 사용자가 주제를 스스로 정하고 예약하는 방식을 통해 강의실 예약을 더 의미 있게 만들었습니다.
