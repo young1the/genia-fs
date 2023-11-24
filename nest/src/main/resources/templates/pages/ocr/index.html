@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>OCR 변환 관리</title>
+	<th:block th:replace="~{fragments/include:: include}"/>
+</head>
+<body>
+<div id="wrap">
+	<th:block th:replace="~{fragments/header:: header}"/>
+		<div class="container">
+			<div class="inner">
+				<div class="index-tit">OCR 변환 관리 > OCR 변환</div>
+				<h1 class="page-tit">OCR 변환</h1>
+				<div class="tab-wrap">
+					<ul class="tab-menu-type01">
+						<li class="ui-tab-btn active">
+							<a href="javascript:;">작업 중</a>
+						</li>
+						<li class="ui-tab-btn">
+							<a href="/ocr/done">작업 완료</a>
+						</li>
+					</ul>
+					<div class="contents on">
+						<div class="cnt-txt">
+							* 업로드한 PDF 교재로 OCR 변환 작업을 진행합니다.
+						</div>
+						<div class="search-box-wrap">
+							<form action="/ocr" method="GET">
+							<div class="search-box">
+								<div class="box">
+									<span>검색 조건</span>
+									<div class="select-wrap">
+										<select class="select-box" id="year" name="year">
+											<option value="전체" th:selected="${searchKeywordDTO.year =='전체'}">년도</option>
+											<option value="2023" th:selected="${searchKeywordDTO.year =='2023'}">2023</option>
+											<option value="2022" th:selected="${searchKeywordDTO.year =='2022'}">2022</option>
+										</select>
+									</div>
+									<div class="select-wrap">
+										<select class="select-box" id="month" name="month">
+											<option value="0" th:selected="${searchKeywordDTO.month ==0}">출제 월</option>
+											<option value="1" th:selected="${searchKeywordDTO.month ==1}">1월</option>
+											<option value="2" th:selected="${searchKeywordDTO.month ==2}">2월</option>
+											<option value="3" th:selected="${searchKeywordDTO.month ==3}">3월</option>
+											<option value="4" th:selected="${searchKeywordDTO.month ==4}">4월</option>
+											<option value="5" th:selected="${searchKeywordDTO.month ==5}">5월</option>
+											<option value="6" th:selected="${searchKeywordDTO.month ==6}">6월</option>
+											<option value="7" th:selected="${searchKeywordDTO.month ==7}">7월</option>
+											<option value="8" th:selected="${searchKeywordDTO.month ==8}">8월</option>
+											<option value="9" th:selected="${searchKeywordDTO.month ==9}">9월</option>
+											<option value="10" th:selected="${searchKeywordDTO.month ==10}">10월</option>
+											<option value="11" th:selected="${searchKeywordDTO.month ==11}">11월</option>
+											<option value="12" th:selected="${searchKeywordDTO.month ==12}">12월</option>
+										</select>
+									</div>
+									<div class="select-wrap">
+										<select class="select-box" id="areaSelect" name="area">
+											<option value="전체" th:selected="${searchKeywordDTO.area =='전체'}">영역</option>
+											<option value="국어" th:selected="${searchKeywordDTO.area =='국어'}">국어</option>
+											<option value="수학" th:selected="${searchKeywordDTO.area =='수학'}">수학</option>
+											<option value="영어" th:selected="${searchKeywordDTO.area =='영어'}">영어</option>
+											<option value="한국사" th:selected="${searchKeywordDTO.area =='한국사'}">한국사</option>
+											<option value="사회탐구" th:selected="${searchKeywordDTO.area =='사회탐구'}">사회탐구</option>
+											<option value="과학탐구" th:selected="${searchKeywordDTO.area =='과학탐구'}">과학탐구</option>
+											<option value="직업탐구" th:selected="${searchKeywordDTO.area =='직업탐구'}">직업탐구</option>
+											<option value="제2외국어/한문" th:selected="${searchKeywordDTO.area =='제2외국어/한문'}">제2외국어/한문</option>
+										</select>
+									</div>
+									<div class="select-wrap">
+										<select class="select-box" id="subjectSelect" name="subject">
+											<option value="전체">과목</option>
+										</select>
+									</div>
+									<div class="select-wrap">
+										<select class="select-box" id="searchOption" name="searchOption">
+											<option value="전체" th:selected="${searchKeywordDTO.searchOption =='전체'}">전체</option>
+											<option value="name" th:selected="${searchKeywordDTO.searchOption =='name'}">시험지 명</option>
+											<option value="user_id" th:selected="${searchKeywordDTO.searchOption =='user_id'}">등록자</option>
+										</select>
+									</div>
+									<input type="text" placeholder="검색어" class="search-form" id="searchKeyword" name="searchKeyword"
+										   th:value="${searchKeywordDTO.searchKeyword}">
+								</div>
+								<div class="btn-wrap">
+									<button class="btn-green" type="submit">검색</button>
+									<button class="btn-gray" type="reset" id="reset">초기화</button>
+									<button class="btn-toggle"></button>
+								</div>
+							</div>
+							<div class="toggle-box">
+								<div class="search-box">
+									<div class="box">
+										<span>시험 종류</span>
+										<div class="check-wrap" id="category">
+											<input type="checkbox" id="grade00" name="category" value="수능" th:checked="${searchKeywordDTO.category =='수능'}">
+											<label for="grade00">수능</label>
+											<input type="checkbox" id="grade01" name="category" value="모의고사" th:checked="${searchKeywordDTO.category =='모의고사'}">
+											<label for="grade01">모의</label>
+											<input type="checkbox" id="grade02" name="category" value="학력고사" th:checked="${searchKeywordDTO.category =='학력고사'}">
+											<label for="grade02">학력</label>
+										</div>
+									</div>
+								</div>
+								<div class="search-box">
+									<div class="box">
+										<span>학년</span>
+										<div class="radio-wrap" id="grade">
+											<input type="radio" id="radio02_01" name="grade" value="전체" th:checked="${searchKeywordDTO.grade == '전체'}">
+											<label for="radio02_01">전체</label>
+											<input type="radio" id="radio02_02" name="grade" value="1" th:checked="${searchKeywordDTO.grade == '1'}">
+											<label for="radio02_02">1학년</label>
+											<input type="radio" id="radio02_03" name="grade" value="2" th:checked="${searchKeywordDTO.grade == '2'}">
+											<label for="radio02_03">2학년</label>
+											<input type="radio" id="radio02_04" name="grade" value="3" th:checked="${searchKeywordDTO.grade == '3'}">
+											<label for="radio02_04">3학년</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							</form>
+						</div><!--search-box-wrap end-->
+						<div class="table-wrap">
+							<div class="tab-top">
+								<div class="left-area">
+									<span class="total">총<em th:text="${papers.totalElements}">0</em>건</span>
+									<div class="select-wrap">
+										<select class="select-box w140" id="pageSizeSelect" th:name="size" onchange="selectOnChangeHandler(this)">
+											<option th:each="option : ${sizes}" th:value="${option}"
+													th:text="${option}+'개 보기'"
+													th:selected="${option} == ${papers.pageable.getPageSize()}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="btn-wrap">
+									<a class="btn-gray w120" id="excelDownload" download href="/ocr/download">엑셀 다운로드</a>
+								</div>
+							</div>
+							<table class="tbl-list">
+								<caption></caption>
+								<colgroup>
+									<!--                        <col style="width: 3%;">-->
+									<col style="width: 4%;">
+									<col style="width: 6%;">
+									<col style="width: 6%;">
+									<col style="width: 4%;">
+									<col style="width: 4%;">
+									<col style="width: 8%;">
+									<col style="width: 8%;">
+									<col style="width: 20%;">
+									<col style="width: 7%;">
+									<col style="width: 6%;">
+									<col style="width: 6%;">
+									<col style="width: 8%;">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>NO</th>
+										<th>출제 년도</th>
+										<th>출제 타입</th>
+										<th>월</th>
+										<th>학년</th>
+										<th>영역</th>
+										<th>과목</th>
+										<th>시험지 명</th>
+										<th>OCR 현황 수</th>
+										<th>문항 수</th>
+										<th>담당자</th>
+										<th>등록일</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="paper, iterStat : ${papers}">
+										<td th:text="${papers.totalElements - iterStat.index - ((papers.number) * papers.size)}"></td>
+										<td th:text="${paper.id}" style="display: none;" />
+										<td th:text="${paper.year}" />
+										<td th:text="${paper.category}" />
+										<td th:text="${paper.month}" />
+										<td th:text="${paper.grade}" />
+										<td th:text="${paper.area}" />
+										<td th:text="${paper.subject}" />
+										<td class="tit"><a th:href="@{/ocr/transform(id=${paper.id})}" target="_blank" th:text="${paper.name}"/></td>
+										<td th:text="${paper.ocrCount}" />
+										<td th:text="${paper.totalCount}" />
+										<td th:text="${paper.user.name}" />
+										<td th:text="${#temporals.format(paper.createdAt, 'yyyy-MM-dd')}"></td>
+									</tr>
+									<tr th:if="${papers.isEmpty()}" >
+										<td colspan="12">검색 결과가 없습니다.</td>
+									</tr>
+								</tbody>
+								</tbody>
+							</table>
+						</div>
+						<!-- 페이징 영역 -->
+						<div class="paging-wrap">
+							<th:block>
+								<a href="javascript:;" class="first" th:href="@{${ocrPageLink + 0}}"></a>
+								<a href="javascript:;" class="prev"  th:if="${papers.number >= 0}" th:href="@{${ocrPageLink + (papers.number - 1)}}"></a>
+							</th:block>
+							<th:block th:each="pageNumber : ${#numbers.sequence(0, papers.totalPages - 1)}" th:if="${pageNumber >= 0}">
+								<a href="javascript:;" class="page"
+								   th:classappend="${papers.number == pageNumber} ? 'active' : ''"
+								   th:href="@{${ocrPageLink + pageNumber}}">
+									<span th:text="${pageNumber + 1}"></span>
+								</a>
+							</th:block>
+							<th:block th:if="${papers.number <= papers.totalPages}">
+								<a href="javascript:;" class="next" th:href="@{${papers.number == papers.totalPages - 1 ? ocrPageLink + papers.number : ocrPageLink + (papers.number + 1)}}"></a>
+								<a href="javascript:;" class="last" th:href="@{${ocrPageLink + (papers.totalPages - 1)}}"></a>
+							</th:block>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+	function areaSelectHandler() {
+		const areaSelect = document.getElementById('areaSelect');
+		const subjectSelect = document.getElementById('subjectSelect');
+		const searchParam = new URLSearchParams(new URL(window.location.href).search);
+		const selectArea = areaSelect.value;
+		const subjectParam = searchParam.get("subject");
+
+		const subjectOptions = {
+			'국어': ['전체', '화법과 작문', '언어와 매체'],
+			'수학': ['전체', '확률과 통계', '미적분', '기하'],
+			'영어': ['전체', '영어'],
+			'한국사': ['전체', '한국사'],
+			'사회탐구': ['전체', '생활과 윤리', '윤리와 사상', '한국지리', '세계지리', '동아시아사', '세계사', '경제', '정치와 법'],
+			'과학탐구': ['전체', '물리학I', '화학I', '생명과학I', '지구과학I', '물리학II', '화학II', '생명과학II', '지구과학II'],
+			'직업탐구': ['전체', '농업 기초 기술', '공업 일반', '상업 경제', '수산 해운 산업 기초', '인간 발달', '성공적인 직업생활'],
+			'제2외국어/한문': ['전체', '독일어I', '프랑스어I', '스페인어I', '중국어I', '일본어I', '러시아어I', '아랍어I', '베트남어I', '한문I']
+		};
+
+		const optionsToAdd = subjectOptions[selectArea] || [];
+		optionsToAdd.forEach(option => addOption(subjectSelect, option, subjectParam));
+	}
+
+	document.addEventListener("DOMContentLoaded", areaSelectHandler);
+
+	areaSelect.addEventListener('change', function () {
+		const selectArea = areaSelect.value;
+		subjectSelect.innerHTML = ''; // 기존 내용 지우기
+
+		if (selectArea === '국어') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '화법과 작문');
+			addOption(subjectSelect, '언어와 매체');
+		} else if (selectArea === '수학') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '확률과 통계');
+			addOption(subjectSelect, '미적분');
+			addOption(subjectSelect, '기하');
+		} else if (selectArea === '영어') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '영어');
+		} else if (selectArea === '한국사') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '한국사');
+		} else if (selectArea === '사회탐구') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '생활과 윤리');
+			addOption(subjectSelect, '윤리와 사상');
+			addOption(subjectSelect, '한국지리');
+			addOption(subjectSelect, '세계지리');
+			addOption(subjectSelect, '동아시아사');
+			addOption(subjectSelect, '세계사');
+			addOption(subjectSelect, '경제');
+			addOption(subjectSelect, '정치와 법');
+		} else if (selectArea === '과학탐구') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '물리학I');
+			addOption(subjectSelect, '화학I');
+			addOption(subjectSelect, '생명과학I');
+			addOption(subjectSelect, '지구과학I');
+			addOption(subjectSelect, '물리학II');
+			addOption(subjectSelect, '화학II');
+			addOption(subjectSelect, '생명과학II');
+			addOption(subjectSelect, '지구과학II');
+		} else if (selectArea === '직업탐구') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '농업 기초 기술');
+			addOption(subjectSelect, '공업 일반');
+			addOption(subjectSelect, '상업 경제');
+			addOption(subjectSelect, '수산 해운 산업 기초');
+			addOption(subjectSelect, '인간 발달');
+			addOption(subjectSelect, '성공적인 직업생활');
+		} else if (selectArea === '제2외국어/한문') {
+			addOption(subjectSelect, '전체');
+			addOption(subjectSelect, '독일어I');
+			addOption(subjectSelect, '프랑스어I');
+			addOption(subjectSelect, '스페인어I');
+			addOption(subjectSelect, '중국어I');
+			addOption(subjectSelect, '일본어I');
+			addOption(subjectSelect, '러시아어I');
+			addOption(subjectSelect, '아랍어I');
+			addOption(subjectSelect, '베트남어I');
+			addOption(subjectSelect, '한문I');
+		}
+	});
+
+	function addOption(selectBox, optionText, subjectParam) { // 영역 - 과목 셀렉트 박스
+		const option = document.createElement('option');
+		option.text = optionText;
+		if (subjectParam && optionText === subjectParam) {
+			option.selected = true;
+		}
+		selectBox.add(option);
+	}
+
+	function updateTotalCount() { //  총 건수 세기
+		const totalCountElement = document.getElementById('totalCount');
+		if (totalCountElement) {
+			const totalCount = document.querySelectorAll('.left-area .select-box option').length;
+			totalCountElement.innerText = totalCount;
+		}
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		updateTotalCount();
+	});
+
+	document.getElementById("reset").addEventListener("click", function() {
+		window.location.href = "/ocr"; // 초기화
+	});
+
+	const setDownloadLink = () => { // 엑셀 다운로드
+		const downloadElem = document.getElementById("excelDownload")
+		let url = new URL(window.location.href);
+		url.pathname="/ocr/download";
+		downloadElem.href = url.toString();
+	}
+	setDownloadLink();
+
+	const selectOnChangeHandler = (elem) => { // 10개, 30개, 50개.. 선택하기
+		const selectedOption = elem.value;
+		console.log(elem.value);
+		const url = new URL(window.location.href);
+		const params = new URLSearchParams(url.search);
+		params.set("size", selectedOption);
+		url.search = params.toString();
+		location.href = url.href;
+	}
+</script>
+</body>
+
+</html>

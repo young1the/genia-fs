@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사용자 추가</title>
+    <th:block th:replace="~{fragments/include:: include}"/>
+
+</head>
+<style>
+    .tbl-list {
+        width: 100%;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+</style>
+<body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const now = new Date();
+        const nextYear = new Date();
+        nextYear.setFullYear(now.getFullYear() + 1);
+
+        function formatDate(date) {
+            const day = ("0" + date.getDate()).slice(-2);
+            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+            const year = date.getFullYear();
+
+            return year + "-" + month + "-" + day;
+        }
+
+        document.getElementById("startDate").value = formatDate(now);
+        document.getElementById("endDate").value = formatDate(nextYear);
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchParam = new URLSearchParams(new URL(window.location.href).search);
+        const selectOption = searchParam.get("searchOption");
+        const keywordParam = searchParam.get("searchKeyword");
+        if (selectOption) {
+            document.getElementById("searchOption").value = selectOption;
+            document.getElementById("searchKeyword").value = keywordParam;
+        }
+    });
+
+</script>
+
+<div id="wrap">
+    <th:block th:replace="~{fragments/header:: header}"/>
+    <div class="container">
+
+        <div class="inner">
+            <div class="index-tit">시스템 관리 > 계정 관리</div>
+            <h1 class="page-tit">사용자 관리</h1>
+
+            <div class="search-box-wrap">
+                <form class="search-box" action="/user/management" method="get">
+                    <div class="box">
+                        <select name="searchOption" id="searchOption" style="width: 90px">
+                            <option value="userId" selected>아이디</option>
+                            <option value="name">이름</option>
+                        </select>
+                        <input name="searchKeyword" type="text" placeholder="검색어" class="search-form"
+                               id="searchKeyword">
+                    </div>
+                    <div class="btn-wrap">
+                        <button class="btn-green" type="submit">검색</button>
+                        <button class="btn-gray" type="button" onclick="location.href='/user/management'" >초기화</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-wrap">
+                <div class="tab-top">
+                    <div class="left-area">
+                        <span class="total">총 <em th:text="${users.getTotalElements()}">0</em>명</span>
+                    </div>
+                    <div class="btn-wrap">
+                        <button class="btn-gray w100" onclick="toggleAddUser()">추가</button>
+                    </div>
+                </div>
+                <form action="/user/add" method="POST">
+                    <table class="tbl-list" style="text-align: center;">
+                        <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>관리자 그룹</th>
+                            <th>소속부서</th>
+                            <th>이름</th>
+                            <th>아이디</th>
+                            <th>사용기간</th>
+                            <th>비밀번호 초기화</th>
+                            <th>관리</th>
+                        </tr>
+                        </thead>
+                        <tr class="hidden" id="addForm">
+                            <td></td>
+                            <td>
+                                <div class="select-wrap">
+                                    <select class="select-box w140" id="role" name="role">
+                                        <option value="총괄관리자">총괄관리자</option>
+                                        <option value="수집담당자">수집담당자</option>
+                                        <option value="문제담당자">문제담당자</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td><input type="text" id="part" name="part"></td>
+                            <td><input type="text" id="name" name="name"></td>
+                            <td><input type="text" id="userId" name="userId"></td>
+                            <td style="display: flex; height: 43.33px;">
+                                <input type="date" id="startDate" name="startDate" style="width: 140px;">
+                                ~
+                                <input type="date" id="endDate" name="endDate" style="width: 140px;">
+                            </td>
+                            <th style="border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; text-align: center;">
+                                -
+                            </th>
+
+                            <th style="border-bottom: 1px solid #ccc;">
+                                <button class="btn-gray w100" type="button"
+                                        style=" color: white; background-color: gray;" th:attr="onclick=|createUser()|">
+                                    저장
+                                </button>
+                            </th>
+                        </tr>
+                        <tr th:each="user, iterStat : ${users}">
+                            <td th:text="${users.totalElements - iterStat.index - (users.number * users.pageable.getPageSize()) }"/>
+                            <td th:text="${user.role.role}"></td>
+                            <td th:text="${user.part}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.userId}"></td>
+                            <td>
+                                <span th:text="${user.role.startDate}"></span>~
+                                <span th:text="${user.role.endDate}"></span>
+                            </td>
+                            <td>
+                                <button class="btn-gray w100" type="button" th:attr="onclick=|resetUser('${user.id}')|"
+                                        style="color: white; background-color: gray;">초기화
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn-gray w100" type="button" th:attr="onclick=|deleteUser('${user.id}')|"
+                                        style="color: white; background-color: gray;">삭제
+                                </button>
+                            </td>
+
+                        </tr>
+                    </table>
+
+                    <div class="paging-wrap">
+                        <th:block th:if="${users.getTotalElements() > 0}">
+                        <a href="javascript:;" class="first" th:href="@{/user/management(page=0)}"></a>
+                        <a href="javascript:;" class="prev" th:if="${users.number >= 0}" th:href="@{/user/management(page=${users.number - 1})}"></a>
+                        <th:block th:each="pageNumber : ${#numbers.sequence(0, users.totalPages - 1)}">
+                            <a href="javascript:;" class="page" th:classappend="${users.number == pageNumber} ? 'active' : ''" th:href="@{/user/management(page=${pageNumber})}">
+                                <span th:text="${pageNumber + 1}"></span>
+                            </a>
+                        </th:block>
+
+                        <a href="javascript:;" class="next" th:if="${users.number <= users.totalPages - 1}" th:href="@{/user/management(page=${users.number + 1})}"></a>
+                        <a href="javascript:;" class="last" th:href="@{/user/management(page=${users.totalPages - 1})}"></a>
+                        </th:block>
+                        <th:block th:if="${users.getTotalElements() <= 0}">
+                            <p>검색 결과가 없습니다.</p>
+                        </th:block>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function createUser() {
+        const roleValue = document.querySelector("select[name='role']").value;
+        const partValue = document.querySelector("input[name='part']").value;
+        const nameValue = document.querySelector("input[name='name']").value;
+        const userIdValue = document.querySelector("input[name='userId']").value;
+        const startDateValue = document.querySelector("input[name='startDate']").value;
+        const endDateValue = document.querySelector("input[name='endDate']").value;
+
+        if (!roleValue || !partValue || !nameValue || !userIdValue || !startDateValue || !endDateValue) {
+            alert("모든 필드를 입력해야 합니다.");
+            return;
+        }
+        const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+        if (!alphanumericRegex.test(userIdValue)) {
+            alert("아이디는 알파벳과 숫자로만 이루어져야 합니다.");
+            return ;
+        }
+        const userDTO = {
+            role: roleValue,
+            part: partValue,
+            name: nameValue,
+            userId: userIdValue,
+            startDate: startDateValue,
+            endDate: endDateValue
+        };
+        console.log(startDateValue, endDateValue);
+
+        // 서버로 데이터를 전송하고 결과에 따라 경고 메시지를 표시
+        const response = await fetch('/user/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userDTO)
+        });
+
+        if (response.ok) {
+            alert("사용자 추가 성공");
+        } else {
+            alert("사용자 추가 실패");
+        }
+        location.href = "/user/management";
+    }
+
+    async function resetUser(id) {
+
+
+        const response = await fetch(`/user/reset/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(response);
+
+        if (response.ok) {
+            alert("사용자 초기화 성공");
+        } else {
+            alert("사용자 초기화 실패");
+        }
+        location.reload();
+    }
+
+    async function deleteUser(id) {
+
+        const deleteYN = window.confirm("해당 회원을 삭제하시겠습니까?");
+
+        console.log(id);
+        if (deleteYN) {
+            const response = await fetch(`/user/delete/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                alert("사용자 삭제 성공");
+                location.reload();
+            } else {
+                alert("사용자 삭제 실패");
+            }
+        }
+    }
+
+    const toggleAddUser = () => {
+        const addFormElem = document.getElementById("addForm");
+        addFormElem.classList.toggle("hidden");
+
+    }
+</script>
+</body>
+</html>

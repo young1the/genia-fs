@@ -1,0 +1,66 @@
+<header th:fragment="header" class="header">
+    <div class="nav-wrap">
+        <div class="inner">
+            <div class="top">
+                <div class="logo">
+                    <a href="javascript:;"><img th:src="@{/images/logo.svg}" alt="천재교육"></a>
+                </div>
+                <div class="btn-wrap">
+                    <button><a href="/user/password/modify" class="user" th:text="${#ctx.session.user.userId}"></a></button>
+                    <button><a href="/user/logout" class="btn-login">로그아웃</a></button>
+                    <button><a href="javascript:;" class="user" th:text="${#ctx.session.user.role.role}"></a></button>
+
+                </div>
+            </div>
+            <div>
+                <ul class="nav">
+                    <li th:if="${#ctx.session.user.role.role.equals('문제담당자')==false}">
+                        <a href="/paper" class="location">수능/모의 관리</a>
+                        <ul class="depth2">
+                            <li>
+                                <a href="/paper">수능/모의 관리</a>
+                            </li>
+                            <li>
+                                <a onclick="openUploadPage()">수능/모의 업로드</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li th:if="${#ctx.session.user.role.role.equals('수집담당자')==false}">
+                        <a href="/ocr" class="location">OCR 변환</a>
+                        <ul class="depth2">
+                            <li>
+                                <a href="/ocr">OCR 변환 관리</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li th:if="${#ctx.session.user.role.role.equals('총괄관리자')}">
+                        <a href="/user/management" class="location">시스템 관리</a>
+                        <ul class="depth2">
+                            <li>
+                                <a href="/user/management">계정 관리</a>
+                            </li>
+                            <li>
+                                <a href="/user/management/assignment">작업 현황 관리</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const locations = document.getElementsByClassName("location");
+            const currentPath = window.location.href;
+            for (const location of locations) {
+                if (currentPath.indexOf(location.href) >= 0) {
+                    location.parentElement.classList.add("active");
+                    break ;
+                }
+            }
+        })
+        const openUploadPage = () => {
+            window.open('/paper/upload',"target='_blank'");
+        }
+    </script>
+</header>
