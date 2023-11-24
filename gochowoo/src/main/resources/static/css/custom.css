@@ -1,0 +1,289 @@
+/*
+Custom Css
+*/
+@font-face {
+    font-family: Orbit;
+    src: url('../webfonts/Orbit.woff');
+    unicode-range: U+AC00-D7A3;
+}
+
+@font-face {
+    font-family: Pokemon-Hollow;
+    src: url("../webfonts/Pokemon-Hollow.woff") format('woff');
+}
+@font-face {
+    font-family: Pokemon-Solid;
+    src: url("../webfonts/Pokemon-Solid.woff") format('woff');
+}
+
+:root {
+    --pokemon-blue: #3565AE;
+    --pokemon-yellow: #FFCB05;
+}
+
+* {
+    font-family: Orbit, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.Orbit-font {
+    font-family: Orbit, sans-serif !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.bg-pokemon-primary {background-color: var(--pokemon-blue)}
+.bg-pokemon-secondary {background-color: var(--pokemon-yellow)}
+
+/* 메인 헤더 로고 */
+.pokemon {
+    font-family: Pokemon-Solid, serif !important;
+    color: var(--pokemon-yellow) !important;
+
+    font-weight: bold !important;
+}
+.pokemon::before {
+    position: absolute;
+    content: attr(data-before-text);
+    font-family: Pokemon-Hollow, serif !important;
+    color: var(--pokemon-blue) !important;
+}
+
+/* 헤더 NAV */
+.navbar-collapse {
+    align-items: center;
+    width: 100%
+}
+
+/* 메인 검색 */
+#icon_ball_b {
+    width: 40px !important;
+}
+#templatemo_search {
+    opacity: 80%;
+}
+
+/* 메인 헤더 로고 소제목 */
+.pokemon.subtitle {
+    margin-left: 4rem;
+    margin-bottom: 0;
+}
+ul.nav.navbar-nav li a {
+    position: relative;
+}
+@media screen and (min-width: 992px) {
+    ul.nav.navbar-nav li a:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        height: 2px;
+        width: 0%;
+        background-color: #3565AE;
+        transition: all 0.3s ease;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    ul.nav.navbar-nav li a:hover:before{
+        width: 90%;
+    }
+}
+
+/* 푸터 로고 소제목 */
+#tempaltemo_footer .pokemon.subtitle {
+    margin-left: 20px;
+}
+
+/* 카드 이미지 */
+.img-fluid,
+.img-fluid-banner {
+    max-width: 100%;
+    height: auto;
+}
+
+@media screen and (min-width: 1400px) {
+    .img-fluid-banner {
+
+        width: 500px;
+        margin-left: 6rem;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.Unsupported {
+    filter: blur(1px);
+    pointer-events: none;
+}
+
+.Products,
+.Further {
+    margin-top: 30px;
+}
+
+/*** Shop ***/
+#shop_defaultImg {
+    height: 250px;
+}
+
+/* 카테고리 타입 */
+ul#Categories_Type > li > label {
+    cursor: pointer;
+}
+ul#Categories_Type > li > input,
+#collapsePrice > li > input {
+    display: none;
+}
+ul#Categories_Type > li > input:checked + label,
+#collapsePrice > li > input:checked + label,
+ul.shop-top-menu > li  input:checked + label {
+    font-weight: bold !important;
+}
+
+/*** Shop > Product ***/
+p#description {
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+}
+
+/*** Mypage ***/
+/*** Mypage > 충전 ***/
+.border-left-primary {
+    border-left: 0.25rem solid #3565AE !important;
+}
+.border-left-secondary {
+    border-left: 0.25rem solid #FFCB05 !important;
+}
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+#coin-input::before {
+    content: "₽";
+}
+
+/*** Mypage > 결재 내역 ***/
+.PENDING { color: black !important; }
+.SHIPPED { color: #3565AE !important; }
+.IN_TRANSIT { color: #5FBD58 !important; }
+.DELIVERED { color: #929294 !important; }
+.FAILED { color: crimson !important; }
+
+.bg_PENDING { background-color: black !important; opacity: 0.9 !important; }
+.bg_SHIPPED { background-color: #3565AE !important; opacity: 0.9 !important; }
+.bg_IN_TRANSIT { background-color: #5FBD58 !important; opacity: 0.9 !important; }
+.bg_DELIVERED { background-color: #929294 !important; opacity: 0.9 !important; }
+.bg_FAILED { background-color: crimson !important; opacity: 0.9 !important; }
+
+#purchase_detail {
+    cursor: pointer;
+    white-space: nowrap;
+}
+.hover-card:hover {
+    background-color: rgba(200, 200, 200, 0.3);
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+.product_date,
+.product_order_id{
+    color: #aaaaac;
+    font-size: 13px !important;
+}
+.product_amount {
+    font-size: 15px !important;
+}
+.product_total_price,
+.product_price{
+    font-weight: 600;
+}
+.product_total_price::after {
+    content: "(총 금액)";
+    font-size: 10px;
+    margin-left: 5px;
+}
+.product_price::after {
+    content: "(개당)";
+    font-size: 10px;
+    margin-left: 5px;
+}
+.product_detail_date{
+    color: #aaaaac;
+    font-size: 17px !important;
+    position: absolute;
+    width: auto;
+    float: right;
+    top: 1rem;
+    right: 1rem;
+}
+.product_img {
+    width: 75px;
+}
+
+/* 관리자 제품등록 */
+#valid_name,
+#valid_number {
+    display: none;
+    font-size: 10px;
+    color: red;
+    margin-left: 10px;
+}
+/* 파일 */
+.files #file_drop {
+    outline: 2px dashed #92b0b3;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 120px 0px 85px 35%;
+    text-align: center !important;
+    margin: 0;
+    width: 100% !important;
+}
+.files #file_drop:focus{
+    outline: 2px dashed #92b0b3;  outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
+}
+.files{ position:relative}
+.files:after {  pointer-events: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 50px;
+    right: 0;
+    height: 56px;
+    content: "";
+    display: block;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.files #file_drop #upload_img {
+    position: absolute;
+    width: 12rem;
+    top: 50%;
+    left: calc(50% - 12rem/2);
+}
+.files #file_drop #upload_img strong {
+    color: var(--pokemon-blue);
+}
+
+#chosen-image {
+    width: 10rem !important;
+    margin-right: 10px;
+}
+
+#cancel {
+    display: none;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout}">
+<script th:if="${logoutSuccess}">
+  alert('Logout successful');
+</script>
+<main layout:fragment="content">
+  <section class="bg-success py-5">
+    <div class="container">
+      <div class="row align-items-center py-5">
+        <div class="col-md-7 text-white">
+          <h1>Profile Overview</h1>
+          <h5 th:text="${user.getNickName()}+'님, 안녕하세요'"></h5>
+          <h5 th:text="'저희와 '+${T(java.time.LocalDate).now().minusDays(user.getCreatedTime().toLocalDate().toEpochDay()).toEpochDay()+1}+'일 동안 함께 하셨어요'"></h5>
+          <p class="py-3">
+            Email: <span th:text="${user.getEmail()}"></span><br>
+            닉네임: <span th:text="${user.getNickName()}"></span><br>
+            TEAM: <span th:text="${user.team}"></span><br>
+            현재 잔액:  ₽<span th:text="${user.getCash()}"></span><br>
+          </p>
+          <form th:action="@{/api/user/logout}" method="post">
+            <button th:if="${session.email} != null"  type="submit" class="w-100 btn btn-primary">로그아웃</button>
+          </form>
+        </div>
+        <div class="col-md-5">
+          <img th:if="${user.team} == null" th:src="@{'/img/team/Logo.png'}" class="w-100" alt="User's Team">
+          <img th:unless="${user.team} == null" th:src="@{'/img/team/Team ' + ${user.team} + '.svg'}" alt="User's Team">
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Close Banner -->
+
+  <!-- Start Section -->
+  <section class="container py-5">
+    <div class="row text-center pt-5 pb-3">
+      <div class="col-lg-6 m-auto">
+        <h1 class="h1">Our Services</h1>
+        <p>
+          Welcome to our world of innovation and excellence. We are dedicated to providing top-notch solutions that cater to your unique needs.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-md-6 col-lg-3 pb-5 pointer" th:onclick="|location.href='/mypage/purchase'|">
+        <div class="h-100 py-5 services-icon-wap shadow">
+          <div class="h1 text-success text-center"><i class="fa-brands fa-shopify fa-lg"></i></div>
+          <h2 class="h5 mt-4 text-center fw-bold">결재 내역</h2>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 pb-5 pointer" th:onclick="|location.href='/mypage/post'|">
+        <div class="h-100 py-5 services-icon-wap shadow">
+          <div class="h1 text-success text-center"><i class="fa-regular fa-comments"></i></div>
+          <h2 class="h5 mt-4 text-center fw-bold">내가 쓴 글</h2>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 pb-5 pointer" th:onclick="|location.href='/mypage/cash'|">
+        <div class="h-100 py-5 services-icon-wap shadow">
+          <div class="h1 text-success text-center"><i class="fa-solid fa-peseta-sign"></i></div>
+          <h2 class="h5 mt-4 text-center fw-bold">캐시 충전</h2>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 pb-5 pointer" th:onclick="|location.href='/api/user/profile'|">
+        <div class="h-100 py-5 services-icon-wap shadow">
+          <div class="h1 text-success text-center"><i class="fa fa-user"></i></div>
+          <h2 class="h5 mt-4 text-center fw-bold">회원 정보 수정</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Section -->
+</main>
+</html>

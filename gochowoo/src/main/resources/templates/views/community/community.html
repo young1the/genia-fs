@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+        layout:decorate="~{layout/layout}">
+
+<main layout:fragment="content">
+    <script>
+        $(document).ready(() => {
+            DataTable();
+        })
+    </script>
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800"></h1>
+        <p class="my-4">
+            커뮤니티 규칙을 준수하세요.
+        </p>
+
+        <!-- DataTales Example -->
+        <div class="dcard shadow mb-4" style="pading: 16px">
+                <a class="btn btn-success" href="/community/write">글쓰기</a>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <table class="table table-bordered" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>No.</th><!--닉네임-->
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>조회수</th>
+                            <th>작성일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="community : ${communityList}">
+                                <td th:text="${community.id}">Id</td>
+                                <td><a th:href="@{/community/{id}(id=${community.id})}" th:text="${community.getTitle()}">제목</a></td>
+                                <td th:text="${community.getWriter().getNickName()}">작성자</td>
+                                <td th:text="${community.getHits()}">조회수</td>
+                                <td th:text="${community.getCreatedTime()}">작성일</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout}">
+<main layout:fragment="content">
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center',
+            showConfirmButton: false,
+            confirmButtonColor: "#3565AE",
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    </script>
+    <!-- Start Content -->
+    <section class="container py-5">
+        <div class="row">
+            <div class="col-lg-3">
+                <h1 class="h2 pb-4">Categories</h1>
+                <ul class="list-unstyled templatemo-accordion">
+                    <li class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                            ₽rice
+                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul id="collapsePrice" class="collapse list-unstyled pl-3">
+                            <li><input type="radio" name="price-range" value="all" id="price_all"
+                                       class="text-decoration-none" checked><label for="price_all"
+                                                                                   class="text-decoration-none">All</label>
+                            </li>
+                            <li><input type="radio" name="price-range" value="low" id="price_low"
+                                       class="text-decoration-none"><label for="price_low" class="text-decoration-none">~
+                                ₽500</label></li>
+                            <li><input type="radio" name="price-range" value="medium" id="price_medium"
+                                       class="text-decoration-none"><label for="price_medium"
+                                                                           class="text-decoration-none">₽501 ~
+                                999</label></li>
+                            <li><input type="radio" name="price-range" value="high" id="price_high"
+                                       class="text-decoration-none"><label for="price_high"
+                                                                           class="text-decoration-none">₽1000 ~</label>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                            Type
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul class="collapse show list-unstyled pl-3" id="Categories_Type">
+                            <li class="tx_normal"><input type="checkbox" value="NORMAL" id="chk_normal"> <label
+                                    for="chk_normal">노멀 (Normal)</label></li>
+                            <li class="tx_fire"><input type="checkbox" value="FIRE" id="chk_fire"> <label
+                                    for="chk_fire">불 (Fire)</label></li>
+                            <li class="tx_water"><input type="checkbox" value="WATER" id="chk_water"> <label
+                                    for="chk_water">물 (Water)</label></li>
+                            <li class="tx_electric"><input type="checkbox" value="ELECTRIC" id="chk_electric"> <label
+                                    for="chk_electric">전기 (Electric)</label></li>
+                            <li class="tx_grass"><input type="checkbox" value="GRASS" id="chk_grass"> <label
+                                    for="chk_grass">풀 (Grass)</label></li>
+                            <li class="tx_ice"><input type="checkbox" value="ICE" id="chk_ice"> <label for="chk_ice">얼음
+                                (Ice)</label></li>
+                            <li class="tx_fighting"><input type="checkbox" value="FIGHTING" id="chk_fighting"> <label
+                                    for="chk_fighting">격투 (Fighting)</label></li>
+                            <li class="tx_poison"><input type="checkbox" value="POISON" id="chk_poison"> <label
+                                    for="chk_poison">독 (Poison)</label></li>
+                            <li class="tx_ground"><input type="checkbox" value="GROUND" id="chk_ground"> <label
+                                    for="chk_ground">땅 (Ground)</label></li>
+                            <li class="tx_flying"><input type="checkbox" value="FLYING" id="chk_flying"> <label
+                                    for="chk_flying">비행 (Flying)</label></li>
+                            <li class="tx_psychic"><input type="checkbox" value="PSYCHIC" id="chk_psychic"> <label
+                                    for="chk_psychic">에스퍼 (Psychic)</label></li>
+                            <li class="tx_bug"><input type="checkbox" value="BUG" id="chk_bug"> <label for="chk_bug">벌레
+                                (Bug)</label></li>
+                            <li class="tx_rock"><input type="checkbox" value="ROCK" id="chk_rock"> <label
+                                    for="chk_rock">바위 (Rock)</label></li>
+                            <li class="tx_ghost"><input type="checkbox" value="GHOST" id="chk_ghost"> <label
+                                    for="chk_ghost">고스트 (Ghost)</label></li>
+                            <li class="tx_dragon"><input type="checkbox" value="DRAGON" id="chk_dragon"> <label
+                                    for="chk_dragon">드래곤 (Dragon)</label></li>
+                            <li class="tx_dark"><input type="checkbox" value="DARK" id="chk_dark"> <label
+                                    for="chk_dark">악 (Dark)</label></li>
+                            <li class="tx_steel"><input type="checkbox" value="STEEL" id="chk_steel"> <label
+                                    for="chk_steel">강철 (Steel)</label></li>
+                            <li class="tx_fairy"><input type="checkbox" value="FAIRY" id="chk_fairy"> <label
+                                    for="chk_fairy">페어리(Fairy)</label></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-inline shop-top-menu pb-3 pt-1">
+                            <li class="list-inline-item">
+                                <input id="kind_all" type="radio" name="kind" class="filter-checkbox d-none" value="all"
+                                       checked>
+                                <label class="h3 text-dark text-decoration-none mr-3" for="kind_all">All</label>
+                            </li>
+                            <li class="list-inline-item">
+                                <input id="kind_pokemon" type="radio" name="kind" class="filter-checkbox d-none"
+                                       value="pokemon">
+                                <label class="h3 text-dark text-decoration-none mr-3"
+                                       for="kind_pokemon">Pokémon's</label>
+                            </li>
+                            <li class="list-inline-item">
+                                <input id="kind_item" type="radio" name="kind" class="filter-checkbox d-none"
+                                       value="item">
+                                <label class="h3 text-dark text-decoration-none" for="kind_item">Item's</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 pb-4">
+                        <div class="d-flex">
+                            <select id="featured" class="form-control">
+                                <option selected disabled>정렬</option>
+                                <option value="az">A to Z</option>
+                                <option value="za">Z to A</option>
+                                <option value="high">높은 가격순</option>
+                                <option value="low">낮은 가격순</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="pokemonContainer">
+                    <th:block th:each="pokemon : ${pokemonList}">
+                        <div th:id="'p_'+${pokemon.id}"
+                             th:class="${'col-md-4 pokemonCard '+ pokemon.type +' '+ (pokemon.price <= 500 ? 'low' : (pokemon.price > 500 && pokemon.price < 1000 ? 'medium' : 'high'))}">
+                            <div class="card mb-4 product-wap rounded-0">
+                                <div class="card rounded-0 p-2">
+                                    <img class="card-img rounded-0 img-fluid" id="shop_defaultImg"
+                                         th:src="@{/img/pokemon/{name}.png(name=${pokemon.name})}"
+                                         th:alt="${pokemon.name}">
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                                            <li><a class="btn btn-success text-white" href="#"><i
+                                                    class="far fa-heart"></i></a></li>
+                                            <li><a class="btn btn-success text-white mt-2" th:href="@{'/shop/pokemon/'+${pokemon.id}}"><i
+                                                    class="far fa-eye"></i></a></li>
+                                            <li th:onclick="'addToPokemonCart(\'' + ${pokemon.id} + '\')'"
+                                            ><a class="btn btn-success text-white mt-2" href="#"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body pointer"
+                                     th:onclick="|location.href='/shop/pokemon/'+${pokemon.id}|">
+                                    <a class="h3 text-decoration-none" th:text="${pokemon.name}">이름</a>
+                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                        <li th:text="${pokemon.type.ko+' 타입'}"
+                                            th:class="${'tx_'+pokemon.type.eng}"></li>
+                                        <li th:text="'NO.' + ${#numbers.formatInteger(pokemon.number, '0000')}">
+                                            NO.0000
+                                        </li>
+                                    </ul>
+                                    <p class="text-center mb-0" th:text="'₽' + ${pokemon.price}">₽1000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                    <th:block th:each="item : ${itemList}">
+                        <div th:id="'i_'+${item.id}"
+                             th:class="${'col-md-4 itemCard ' +' '+ (item.price <= 500 ? 'low' : (item.price > 500 && item.price < 1000 ? 'medium' : 'high'))}">
+                            <div class="card mb-4 product-wap rounded-0">
+                                <div class="card rounded-0 p-2">
+                                    <img class="card-img rounded-0 img-fluid" id="shop_defaultImg"
+                                         th:src="@{/img/item/{name}.png(name=${item.name})}"
+                                         th:alt="${item.name}">
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                                            <li><a class="btn btn-success text-white" href="#"><i
+                                                    class="far fa-heart"></i></a></li>
+                                            <li><a class="btn btn-success text-white mt-2" th:href="@{'/shop/item/'+${item.id}}"><i
+                                                    class="far fa-eye"></i></a></li>
+                                            <li
+                                                    th:onclick="'addToItemCart(\'' + ${item.id} + '\')'"
+                                            ><a class="btn btn-success text-white mt-2" href="#"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body pointer" th:onclick="|location.href='/shop/item/'+${item.id}|">
+                                    <a class="h3 text-decoration-none" th:text="${item.name}">이름</a>
+                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                        <li th:text="${item.type}"></li>
+                                        <li th:text="'ITEM.' + ${item.number}">NO.0000</li>
+                                    </ul>
+                                    <p class="text-center mb-0" th:text="'₽' + ${item.price}">₽1000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+
+                <!--  아이템 불러오기...   -->
+
+                <div class="row">
+                    <ul class="pagination pagination-lg justify-content-end" id="pagination"></ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- End Content -->
+
+    <!-- Start Team -->
+    <section class="bg-light py-5">
+        <th:block th:include="fragments/team"></th:block>
+    </section>
+    <!--End Team-->
+
+    <script>
+        async function addToPokemonCart(pokemonId) {
+            const response = await fetch("/api/cart/pokemon", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    productId: pokemonId,
+                    amount: 1,
+                }),
+            })
+            if (response.status === 401) {
+                const url = new URL(window.location.href);
+                const callback = url.pathname;
+                window.location.href = `/user/login?callback=${callback}`;
+                return false;
+            }
+            if (response.ok) {
+                await Toast.fire({
+                    icon: "success",
+                    title: "장바구니에 담겼어요",
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: '장바구니 가기',
+                    cancelButtonText: `취소`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/cart";
+                    }
+                })
+            } else {
+                Toast.fire({
+                    icon: "error",
+                    title: "뭔가 오류에요",
+                })
+            }
+        }
+
+        async function addToItemCart(itemId) {
+            const response = await fetch("/api/cart/item", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    productId: itemId,
+                    amount: 1,
+                }),
+            })
+            if (response.status === 401) {
+                const url = new URL(window.location.href);
+                const callback = url.pathname;
+                window.location.href = `/user/login?callback=${callback}`;
+                return false;
+            }
+            if (response.ok) {
+                await Toast.fire({
+                    icon: "success",
+                    title: "장바구니에 담겼어요",
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: '장바구니 가기',
+                    cancelButtonText: `취소`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/cart";
+                    }
+                })
+
+            } else {
+                Toast.fire({
+                    icon: "error",
+                    title: "뭔가 오류에요",
+                })
+            }
+        }
+
+        $(document).ready(function () {
+            checkURL();
+            applyFilters();
+            Pagination();
+            feature();
+
+            $('input[name="price-range"], #Categories_Type input[type="checkbox"], input[name="kind"]').on('change', () => {
+                applyFilters();
+                Pagination();
+            });
+
+            $('#pagination').on('click', '.page-link', function (e) {
+                e.preventDefault();
+                const pageNumber = parseInt($(this).text());
+                applyFilters();
+                Pagination(pageNumber);
+            });
+        });
+
+        const Pagination = (targetPage = 1) => {
+            const itemsPerPage = 9;
+            const visibleCards = $('.pokemonCard:visible, .itemCard:visible');
+            const totalCards = visibleCards.length;
+            const totalPages = Math.ceil(totalCards / itemsPerPage);
+
+            $('#pagination').empty();
+
+            for (let i = 1; i <= totalPages; i++) {
+                $('#pagination').append(`<li class="page-item"><a class="page-link" href="#">${i}</a></li>`);
+            }
+
+            showPage(targetPage);
+
+            function showPage(pageNumber) {
+                const startIndex = (pageNumber - 1) * itemsPerPage;
+                const endIndex = Math.min(startIndex + itemsPerPage, totalCards);
+
+                visibleCards.hide();
+                visibleCards.slice(startIndex, endIndex).show();
+
+                $('#pagination').find('.page-item').removeClass('active');
+                $('#pagination').find(`.page-item:nth-child(${pageNumber})`).addClass('active');
+
+                $('html, body').scrollTop(0);
+            }
+        }
+
+        const applyFilters = () => {
+            const selectedPriceRange = $('input[name="price-range"]:checked').val();
+            const selectedTypes = [];
+            $('#Categories_Type input[type="checkbox"]:checked').each(function () {
+                selectedTypes.push($(this).val());
+            });
+            const selectedKind = $('input[name="kind"]:checked').val();
+
+            const PriceArray = [];
+            const TypeArray = [];
+            const KindArray = [];
+
+            $('.pokemonCard, .itemCard').each(function () {
+                const itemId = $(this).attr('id');
+                const itemClasses = $(this).attr('class').split(' ');
+
+                if (selectedPriceRange === 'all' || $(this).hasClass(selectedPriceRange)) {
+                    PriceArray.push(itemId);
+                }
+
+                if (selectedTypes.length === 0) {
+                    TypeArray.push(itemId);
+                } else {
+                    const typeMatch = itemClasses.some(cls => selectedTypes.includes(cls));
+                    if (typeMatch) {
+                        TypeArray.push(itemId);
+                    }
+                }
+
+                if (selectedKind === 'all' || (selectedKind === 'pokemon' && $(this).hasClass('pokemonCard')) || (selectedKind === 'item' && $(this).hasClass('itemCard'))) {
+                    KindArray.push(itemId);
+                }
+            });
+
+            const intersection = PriceArray.filter(value => TypeArray.includes(value)).filter(value => KindArray.includes(value));
+
+
+            $('.pokemonCard, .itemCard').hide();
+            intersection.forEach(itemId => {
+                $('#' + itemId).show();
+            });
+        }
+
+        const feature = () => {
+            const featuredSelect = $("#featured");
+            const pokemonContainer = $("#pokemonContainer");
+
+            featuredSelect.on("change", function () {
+                const selectedValue = featuredSelect.val();
+                const cards = $(".pokemonCard, .itemCard");
+                if (selectedValue === "az") {
+                    cards.sort((a, b) => {
+                        const nameA = $(a).find(".h3.text-decoration-none").text();
+                        const nameB = $(b).find(".h3.text-decoration-none").text();
+                        return nameA.localeCompare(nameB);
+                    });
+                } else if (selectedValue === "za") {
+                    cards.sort((a, b) => {
+                        const nameA = $(a).find(".h3.text-decoration-none").text();
+                        const nameB = $(b).find(".h3.text-decoration-none").text();
+                        return nameB.localeCompare(nameA);
+                    });
+                } else if (selectedValue === "high") {
+                    cards.sort((a, b) => {
+                        const priceA = parseInt($(a).find(".text-center.mb-0").text().slice(1));
+                        const priceB = parseInt($(b).find(".text-center.mb-0").text().slice(1));
+                        return priceB - priceA;
+                    });
+                } else if (selectedValue === "low") {
+                    cards.sort((a, b) => {
+                        const priceA = parseInt($(a).find(".text-center.mb-0").text().slice(1));
+                        const priceB = parseInt($(b).find(".text-center.mb-0").text().slice(1));
+                        return priceA - priceB;
+                    });
+                }
+
+                for (const card of cards) {
+                    pokemonContainer.append(card);
+                }
+                cards.show();
+                applyFilters();
+                Pagination();
+            });
+        }
+
+        const checkURL = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const kind = urlParams.get("kind");
+            const type = urlParams.get("type");
+
+            if (kind) {
+                const kindBtn = $("#kind_" + kind);
+                if (kindBtn) {
+                    kindBtn.prop("checked", true);
+                }
+            }
+            if (type) {
+                const typeBtn = $("#chk_" + type);
+                if (typeBtn) {
+                    typeBtn.prop("checked", true);
+                }
+            }
+        }
+    </script>
+</main>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+        layout:decorate="~{layout/layout}">
+
+<main layout:fragment="content">
+    <th:block th:include="fragments/nav"></th:block>
+    <section class="container my-2">
+        <h1>제품 등록</h1>
+        <h5 th:text="${type}" class="text-muted"></h5>
+    </section>
+    <section class="container my-1">
+        <form th:action="|/api/admin/product/insert/${type}|" method="post" class="d-flex justify-content-center flex-column py-3"
+              onsubmit="return onSubmitHandler(this)" th:object="${product}" enctype="multipart/form-data">
+            <label for="name" class="fw-bold d-flex">상품 명 <span id="valid_name">*사용 불가능</span></label>
+            <input type="text" id="name" th:field="*{name}" class="p-2 mb-2" oninput="validName(this)" placeholder="ex) 피카츄 / 마스터볼">
+
+            <label for="number" class="fw-bold">도감 번호/ 상품 번호 <span id="valid_number">*사용 불가능</span></label>
+            <input type="number" min="1" id="number" th:field="*{number}" class="p-2 mb-2" oninput="validNumber(this)" placeholder="ex) 1">
+
+            <label for="price" class="fw-bold">상품 가격</label>
+            <input type="number" min="0" id="price" th:field="*{price}" class="p-2 mb-2" value="" placeholder="ex) 100">
+
+            <label for="type" class="fw-bold">타입 및 분류</label>
+            <th:block th:if="${type} == 'pokemon'">
+                <select id="type" th:field="*{type}" class="p-2 mb-2">
+                    <th:block th:each="t : ${Types}">
+                        <option th:value="${t}" th:text="${t}" th:class="'tx_'+${t.toLowerCase()}"></option>
+                    </th:block>
+                </select>
+            </th:block>
+            <th:block th:unless="${type} == 'pokemon'">
+                <input type="text" id="type" th:field="*{type}" class="p-2 mb-2" placeholder="ex) NORMAL / 회복">
+            </th:block>
+            <label for="description" class="fw-bold">설명</label>
+            <textarea id="description" th:field="*{description}" rows="4" cols="50" class="p-2 mb-2" placeholder="상세 정보"></textarea>
+
+            <div class="form-group files" id="upload">
+                <label class="fw-bold">이미지</label>
+                <div id="file_drop">
+                    <label for="image" class="fw-bold pointer" id="upload_img">
+                        <span class="text-muted">이미지를 드래그 하거나</span><br/>
+                        <strong>클릭</strong>
+                    </label>
+                    <input type="file" id="image" name="image" class="d-none" accept="image/png">
+                </div>
+            </div>
+            <figure class="image-container d-flex align-items-center">
+                <img id="chosen-image" src="" alt="">
+                <figcaption id="file-name"></figcaption>
+                <span id="cancel" onclick="clearFile()" class="m-2 pointer"><i class="fa-solid fa-eraser"></i></span>
+            </figure>
+            <button type="submit" class="btn btn-primary">Regist</button>
+        </form>
+    </section>
+    <script>
+        let nameCheck =false;
+        let numberCheck =false;
+
+        const validName = (obj) => {
+            if(obj.value !== "") {
+                fetch(`/[[${type}]]/valid/name/` + obj.value)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        nameCheck = data.data;
+                        if(data.data === true)
+                            $("#valid_name").show();
+                        else
+                            $("#valid_name").hide();
+                    })
+                    .catch((error) => {
+                        console.error("오류 발생: ", error);
+                    });
+            }
+        }
+        const validNumber = (obj) => {
+            if(obj.value !== "") {
+                fetch(`/[[${type}]]/valid/number/` + obj.value)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        numberCheck = data.data;
+                        if(data.data === true)
+                            $("#valid_number").show();
+                        else
+                            $("#valid_number").hide();
+                    })
+                    .catch((error) => {
+                        console.error("오류 발생: ", error);
+                    });
+            }
+        }
+
+        const uploadButton = document.getElementById("image");
+        const chosenImage = document.getElementById("chosen-image");
+        const fileName = document.getElementById("file-name");
+        const dropZone = document.getElementById("upload");
+
+        dropZone.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropZone.classList.add("dragover");
+        });
+
+        dropZone.addEventListener("dragleave", (event) => {
+            event.preventDefault();
+            dropZone.classList.remove("dragover");
+        });
+
+        dropZone.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropZone.classList.remove("dragover");
+            const files = event.dataTransfer.files;
+
+            if (files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    chosenImage.setAttribute("src", reader.result);
+                }
+                fileName.textContent = file.name;
+                uploadButton.files = files;
+
+                $('#upload').hide();
+                $('#cancel').show();
+            }
+        });
+
+        uploadButton.onchange = () => {
+            const files = uploadButton.files;
+
+            if (files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    chosenImage.setAttribute("src", reader.result);
+                }
+                fileName.textContent = file.name;
+                uploadButton.files = files;
+
+                $('#upload').hide();
+                $('#cancel').show();
+            }
+        };
+
+        const clearFile = () => {
+            uploadButton.value = "";
+            chosenImage.setAttribute("src", "");
+            fileName.textContent = "";
+            $('#upload').show();
+            $('#cancel').hide();
+        }
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 2000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        const onSubmitHandler = () => {
+            if (!$('#name').val()) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '상품명을 입력해주세요'
+                });
+                return false;
+            }
+            if(nameCheck !== false) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '잘못된 상품명입니다'
+                });
+                return false;
+            }
+            if (!$('#number').val()) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '상품 번호를 입력해주세요'
+                });
+                return false;
+            }
+            if(numberCheck !== false) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '잘못된 도감/상품 번호입니다'
+                });
+                return false;
+            }
+            if (isNaN($('#price').val()) || !$('#price').val()) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '올바른 상품 가격을 입력해주세요'
+                });
+                return false;
+            }
+            if (!$('#type').val()) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '타입 및 분류를 입력해주세요'
+                });
+                return false;
+            }
+            if (!$('#description').val()) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '상품 설명을 입력해주세요'
+                });
+                return false;
+            }
+            if (!$('#image').val()) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '이미지를 등록해주세요'
+                });
+                return false;
+            }
+
+            return true;
+        };
+    </script>
+
+</main>
+</html>

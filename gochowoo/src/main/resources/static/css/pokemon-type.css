@@ -1,0 +1,74 @@
+.icon {
+    border-radius: 100%;
+    height: 100px;
+    width: 100px;
+    margin:auto;
+    transition: 200ms all;
+}
+
+.icon:hover{
+    filter: saturate(200%);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.icon img {
+    height: 60%;
+    width: 60%;
+    margin: 20%;
+}
+
+/* Color */
+.bg_bug { background: #92BC2C !important; }
+.tx_bug { color: #92BC2C !important; }
+
+.bg_dark { background: #595761 !important; }
+.tx_dark { color: #595761 !important; }
+
+.bg_dragon { background: #0C69C8 !important; }
+.tx_dragon { color: #0C69C8 !important; }
+
+.bg_electric { background: #F2D94E !important; }
+.tx_electric { color: #F2D94E !important; }
+
+.bg_fire { background: #FBA54C !important; }
+.tx_fire { color: #FBA54C !important; }
+
+.bg_fairy { background: #EE90E6 !important; }
+.tx_fairy { color: #EE90E6 !important; }
+
+.bg_fighting { background: #D3425F !important; }
+.tx_fighting { color: #D3425F !important; }
+
+.bg_flying { background: #A1BBEC !important; }
+.tx_flying { color: #A1BBEC !important; }
+
+.bg_ghost { background: #5F6DBC !important; }
+.tx_ghost { color: #5F6DBC !important; }
+
+.bg_grass {background: #5FBD58 !important; }
+.tx_grass { color: #5FBD58 !important; }
+
+.bg_ground { background: #DA7C4D !important; }
+.tx_ground { color: #DA7C4D !important; }
+
+.bg_ice { background: #75D0C1 !important; }
+.tx_ice { color: #75D0C1 !important; }
+
+.bg_normal { background: #A0A29F !important; }
+.tx_normal { color: #A0A29F !important; }
+
+.bg_poison { background: #B763CF !important; }
+.tx_poison { color: #B763CF !important; }
+
+.bg_psychic { background: #FA8581 !important; }
+.tx_psychic { color: #FA8581 !important; }
+
+.bg_rock { background: #C9BB8A !important; }
+.tx_rock {color: #C9BB8A !important; }
+
+.bg_steel { background: #5695A3 !important; }
+.tx_steel { color: #5695A3 !important; }
+
+.bg_water { background: #539DDF !important; }
+.tx_water { color: #539DDF !important; }
