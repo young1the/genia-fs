@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .cc-page-wrapper {
+    @apply flex flex-col items-center justify-center px-6 py-8 mx-auto
+  }
+  .cc-border-normal {
+    @apply border border-gray-300 dark:border-gray-600;
+  }
+  .cc-input {
+    @apply cc-border-normal bg-gray-50 focus:outline-primary rounded-lg w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white;
+  }
+  .cc-text-black {
+    @apply text-black dark:text-white;
+  }
+  .cc-text-gray {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+}
+
+body,
+html {
+  min-height: 100%;
+}

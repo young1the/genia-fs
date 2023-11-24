@@ -1,0 +1,45 @@
+version: "3"
+services:
+  db:
+    image: mariadb:11.1.1-rc-jammy
+    command:
+      [
+        "mariadbd",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
+    volumes:
+      - "./db/store:/var/lib/mysql"
+    expose:
+      - 3306
+    env_file:
+      - ./db.env
+    networks:
+      - chungchun-network
+
+  backend:
+    build:
+      context: ./back-end/cheongchun28
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    networks:
+      - chungchun-network
+
+  frontend:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - 3000:3000
+    networks:
+      - chungchun-network
+
+networks:
+  chungchun-network:
