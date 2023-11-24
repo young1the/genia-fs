@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout/layout}"
+      layout:fragment="content"
+>
+<style>
+
+    .ken {
+        width: 100px;
+        height: 100px;
+    }
+
+    .ken--success {
+        background: url("/images/ken_success.png");
+        background-size: cover;
+    }
+
+    .ken--failed {
+        background: url("/images/ken_failed.png");
+        background-size: cover;
+    }
+
+    .ken--search {
+        background: url("/images/ken_search.png");
+        background-size: cover;
+    }
+
+    .infoContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .controlPanel {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        bottom: 32px;
+        right: 32px;
+        z-index: 2000;
+    }
+
+</style>
+<main>
+    <div id="map" style="width:'calc(100vw-120px)'; height: 100vh; margin-left: 120px;"></div>
+    <div class="controlPanel">
+        <md-fab onclick="showAroundSchoolBoundary()" variant="primary" size="large" aria-label="Edit">
+            <md-icon slot="icon">conditions</md-icon>
+        </md-fab>
+        <md-fab onclick="getGeolocation()" variant="secondary" size="large" aria-label="Edit">
+            <md-icon slot="icon">my_location</md-icon>
+        </md-fab>
+    </div>
+</main>
+<script>
+    const mapOption = {
+        center: new naver.maps.LatLng(37.5666805, 126.9784147),
+        zoom: 10,
+        zoomControl: true,
+        zoomControlOptions: {
+            position: naver.maps.Position.TOP_RIGHT,
+            style: naver.maps.ZoomControlStyle.SMALL
+        },
+        mapTypeId: naver.maps.MapTypeId.NORMAL
+    };
+    const mapId = 'map';
+    const {
+        getGeolocation,
+        closeInfo,
+        showAroundSchoolBoundary,
+        addMarkers,
+        clearMarkers,
+        moveToCoordinate,
+        getAroundSchool,
+        closeAroundCircle,
+    } = mapBase(mapId, mapOption);
+</script>
+</html>

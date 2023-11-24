@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--xmlns:sec="http://www.w3.org/1999/xhtml"-->
+<header th:fragment="header">
+    <div class="header-wrap">
+    <div class="header">
+        <div class="top">
+            <div class="logo">
+                <h1><img src="/images/logo.svg" alt="천재교육"/></h1>
+            </div>
+            <div class="btn_wrap justify_between">
+                <a sec:authorize="isAuthenticated()" href="#none" class="name"><span th:text="${#authentication.name}"></span></a>
+                <div class="box" sec:authorize="isAuthenticated()" >
+                    <select class="select_box">
+                        <option value="1">총괄관리자</option>
+                        <option value="2">수집담당자</option>
+                        <option value="3">문제운영자</option>
+                        <option value="4">문제검수자</option>
+                    </select>
+                </div>
+
+                <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn_default btn_gray right">로그아웃</a>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn_default btn_gray right">로그인</a>
+            </div>
+        </div>
+        <div class="nav_bar">
+            <ul class="menu">
+                <li><a>기출 시험지 관리</a></li>
+                <li><a>OCR 변환</a></li>
+                <li><a>유사 문제 관리</a></li>
+                <li><a>서비스 관리</a></li>
+                <li><a>시스템 관리</a></li>
+            </ul>
+            <div class="nav_box">
+                <ul>
+                    <li><a>기출 시험지 관리</a></li>
+                    <li><a>시험지 업로드</a></li>
+                </ul>
+                <ul>
+                    <li><a>OCR 변환 관리</a></li>
+                </ul>
+                <ul>
+                    <li><a>유사 문제 관리</a></li>
+                    <li><a>검수 관리</a></li>
+                </ul>
+                <ul>
+                    <li><a>서비스 관리</a></li>
+                    <li><a>빈출도 분석</a></li>
+                    <li><a>보충 필요 문제</a></li>
+                </ul>
+                <ul>
+                    <li><a href="/school/search">학교 정보 검색</a></li>
+                    <li><a href="/school/add">학교등록</a></li>
+                    <li><a href="/admin/csv">학교 엑셀 파일 관리</a></li>
+                </ul>
+            </div>
+            <div class="dim"></div>
+        </div>
+    </div>
+    </div>
+</header>
+</html>
